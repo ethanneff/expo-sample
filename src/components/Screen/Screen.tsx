@@ -3,7 +3,7 @@ import { View } from '~/components/View/View';
 import { useAppTheme } from '~/theme/useAppTheme';
 
 export const Screen = ({ children }: { children: React.ReactNode }) => {
-  const { colors } = useAppTheme();
+  const { colors, spacing } = useAppTheme();
 
   return (
     <View backgroundColor={colors.background} flex={1}>
@@ -11,8 +11,8 @@ export const Screen = ({ children }: { children: React.ReactNode }) => {
         <ScrollView
           contentContainerStyle={{
             flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
+            padding: spacing.$12,
+            gap: spacing.$12,
           }}>
           {children}
         </ScrollView>

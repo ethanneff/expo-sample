@@ -15,6 +15,8 @@ export type TextSize =
   | '8xl'
   | '9xl';
 
+export type TextLetterSpacing = 'tighter' | 'tight' | 'normal' | 'wide' | 'wider' | 'widest';
+
 export type TextWeight = 'light' | 'regular' | 'medium' | 'semibold' | 'bold';
 
 export type FontFamily = 'Geist' | 'GeistMono';
@@ -47,6 +49,25 @@ export const getTextSize = (size: TextSize) => {
       return { fontSize: 96, lineHeight: 96 };
     case '9xl':
       return { fontSize: 128, lineHeight: 128 };
+    default:
+      return Typescript.assertNever(size);
+  }
+};
+
+export const getLetterSpacing = (size: TextLetterSpacing) => {
+  switch (size) {
+    case 'tighter':
+      return -0.8;
+    case 'tight':
+      return -0.4;
+    case 'normal':
+      return 0;
+    case 'wide':
+      return 0.04;
+    case 'wider':
+      return 0.08;
+    case 'widest':
+      return 1.6;
     default:
       return Typescript.assertNever(size);
   }

@@ -39,7 +39,12 @@ const RootStack = createNativeStackNavigator({
       if: useUnAuth,
       screens: {
         Splash: SplashScreen,
-        Landing: LandingScreen,
+        Landing: {
+          screen: LandingScreen,
+          options: {
+            headerBackVisible: false,
+          },
+        },
         SignIn: SignInScreen,
         SignUp: SignUpScreen,
         ForgotPassword: ForgotPasswordScreen,
@@ -49,7 +54,10 @@ const RootStack = createNativeStackNavigator({
       if: useAuth,
       screens: {
         Splash: SplashScreen,
-        Tabs: Tabs,
+        Tabs: {
+          screen: Tabs,
+          options: { headerBackVisible: false },
+        },
       },
       screenOptions: { headerShown: false },
     },
@@ -92,5 +100,6 @@ export const Navigation = () => {
       heavy: { fontFamily: 'Geist', fontWeight: '700' },
     },
   };
+
   return <RootNavigation theme={navigationTheme} />;
 };
