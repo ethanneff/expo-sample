@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    "streetsidesoftware.code-spell-checker",
+    "steoates.autoimport",
+    "formulahendry.auto-complete-tag",
+    "naumovs.color-highlight",
+    "dbaeumer.vscode-eslint",
+    "waderyan.gitblame",
+    "GitHub.copilot",
+    "GitHub.copilot-chat",
+    "gimenete.github-linker",
+    "esbenp.prettier-vscode",
+    "YoavBls.pretty-ts-errors",
+    "ms-playwright.playwright"
+  ]
+}

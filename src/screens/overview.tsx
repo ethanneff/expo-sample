@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { ScreenContent } from '~/components/ScreenContent';
 import { StyleSheet, View } from 'react-native';
+import { ScreenContent } from '~/components/ScreenContent';
+import { RootStackParamList } from '~/navigation/Navigation';
 import { Button } from '../components/Button';
-import { RootStackParamList } from '../navigation';
 
 type OverviewScreenNavigationProps = StackNavigationProp<RootStackParamList, 'Overview'>;
 
@@ -21,6 +21,7 @@ export default function Overview() {
         }
         title="Show Details"
       />
+      <Button onPress={() => navigation.navigate('Debug')} title="Show Debug" />
     </View>
   );
 }

@@ -1,0 +1,48 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.addMissingImports": "always",
+    "source.removeUnusedImports": "always",
+    "source.organizeImports": "always"
+  },
+  "editor.formatOnSave": true,
+  "editor.fontFamily": "FiraCode Nerd Font Mono",
+  "files.autoSave": "onFocusChange",
+  "editor.gotoLocation.multipleDeclarations": "goto",
+  "editor.gotoLocation.multipleDefinitions": "goto",
+  "editor.gotoLocation.multipleImplementations": "goto",
+  "editor.gotoLocation.multipleReferences": "goto",
+  "editor.gotoLocation.multipleTypeDefinitions": "goto",
+  "files.insertFinalNewline": true,
+  "git.mergeEditor": false,
+  "search.exclude": {
+    "**/Podfile.lock": true,
+    "**/node_modules": true,
+    "**/pnpm-lock.yaml": true,
+    "**/assets/**/*.json": true,
+    "**/CHANGELOG.md": true,
+    "**/tsconfig.tsbuildinfo": true,
+    "**/mobile/vendor/*": true,
+    "**/*.log": true,
+    "**/*.svg": true,
+    "**/.cxx": true,
+    "**/.cache": true,
+    "**/.next": true,
+    "**/Pods": true,
+    "**/dist": true,
+    "**/build": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true
+  },
+  "typescript.tsserver.maxTsServerMemory": 4096,
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.fontFamily": "FiraCode Nerd Font Mono",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.validate.enable": true,
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "workbench.editor.labelFormat": "short",
+  "workbench.editor.showTabs": "multiple"
+}

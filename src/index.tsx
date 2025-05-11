@@ -1,10 +1,10 @@
-import 'react-native-gesture-handler';
-import RootStack from './navigation';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import * as SplashScreen from 'expo-splash-screen';
 import { Ionicons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 import { useCallback, useEffect, useState } from 'react';
+import 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Navigation } from './navigation/Navigation';
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({ duration: 1000, fade: true });
@@ -34,7 +34,7 @@ export const App = () => {
 
   return (
     <SafeAreaProvider onLayout={handleLayout}>
-      <RootStack />
+      <Navigation />
     </SafeAreaProvider>
   );
 };
