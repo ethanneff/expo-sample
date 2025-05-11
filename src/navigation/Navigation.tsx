@@ -1,24 +1,24 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStaticNavigation, StaticParamList, Theme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { lazy } from 'react';
+import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
+import { ActivityIndicator } from 'react-native';
+import DebugScreen from '~/screens/DebugScreen/DebugScreen';
+import DetailsScreen from '~/screens/DetailsScreen/DetailsScreen';
+import ForgotPasswordScreen from '~/screens/ForgotPasswordScreen/ForgotPasswordScreen';
+import HomeScreen from '~/screens/HomeScreen/HomeScreen';
+import LandingScreen from '~/screens/LandingScreen/LandingScreen';
+import ModalScreen from '~/screens/ModalScreen/ModalScreen';
+import OverviewScreen from '~/screens/OverviewScreen/OverviewScreen';
+import ProfileScreen from '~/screens/ProfileScreen/ProfileScreen';
+import SignInScreen from '~/screens/SignInScreen/SignInScreen';
+import SignUpScreen from '~/screens/SignUpScreen/SignUpScreen';
+import SplashScreen from '~/screens/SplashScreen/SplashScreen';
 import { useStoreAuth } from '~/store/useStoreAuth';
 import { useAppTheme } from '~/theme/useAppTheme';
 
-// Lazy load all screens
-const DebugScreen = lazy(() => import('~/screens/DebugScreen/DebugScreen'));
-const DetailsScreen = lazy(() => import('~/screens/DetailsScreen/DetailsScreen'));
-const ForgotPasswordScreen = lazy(
-  () => import('~/screens/ForgotPasswordScreen/ForgotPasswordScreen')
-);
-const HomeScreen = lazy(() => import('~/screens/HomeScreen/HomeScreen'));
-const LandingScreen = lazy(() => import('~/screens/LandingScreen/LandingScreen'));
-const ModalScreen = lazy(() => import('~/screens/ModalScreen/ModalScreen'));
-const OverviewScreen = lazy(() => import('~/screens/OverviewScreen/OverviewScreen'));
-const ProfileScreen = lazy(() => import('~/screens/ProfileScreen/ProfileScreen'));
-const SignInScreen = lazy(() => import('~/screens/SignInScreen/SignInScreen'));
-const SignUpScreen = lazy(() => import('~/screens/SignUpScreen/SignUpScreen'));
-const SplashScreen = lazy(() => import('~/screens/SplashScreen/SplashScreen'));
+// Lazy load all screens (does not work on web)
 
 const useAuth = () => useStoreAuth((state) => state.user !== null);
 const useUnAuth = () => useStoreAuth((state) => state.user === null);
@@ -34,6 +34,11 @@ const Tabs = createBottomTabNavigator({
 });
 
 const RootStack = createNativeStackNavigator({
+  screenLayout: ({ children }) => (
+    <ErrorBoundary fallback={<div>Something went wrong</div>}>
+      <Suspense fallback={<ActivityIndicator />}>{children}</Suspense>
+    </ErrorBoundary>
+  ),
   groups: {
     Guest: {
       if: useUnAuth,
@@ -94,10 +99,10 @@ export const Navigation = () => {
       notification: colors.destructive,
     },
     fonts: {
-      regular: { fontFamily: 'Geist', fontWeight: '400' },
-      medium: { fontFamily: 'Geist', fontWeight: '500' },
-      bold: { fontFamily: 'Geist', fontWeight: '600' },
-      heavy: { fontFamily: 'Geist', fontWeight: '700' },
+      regular: { fontFamily: 'Geist-Regular', fontWeight: '400' },
+      medium: { fontFamily: 'Geist-Medium', fontWeight: '500' },
+      bold: { fontFamily: 'Geist-SemiBold', fontWeight: '600' },
+      heavy: { fontFamily: 'Geist-Bold', fontWeight: '700' },
     },
   };
 
