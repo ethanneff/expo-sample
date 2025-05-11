@@ -18,7 +18,6 @@ function HomeScreen() {
   const navigation = useNavigation();
   const login = useStoreAuth((state) => state.actions.login);
   const logout = useStoreAuth((state) => state.actions.logout);
-  console.log(logout);
   const user = useStoreAuth((state) => state.user);
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

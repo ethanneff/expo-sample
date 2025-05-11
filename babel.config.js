@@ -3,8 +3,13 @@ module.exports = function (api) {
   let plugins = [];
 
   return {
-    presets: ['babel-preset-expo'],
-
+    presets: [
+      [
+        'babel-preset-expo',
+        // needed for zustand 5
+        { unstable_transformImportMeta: true },
+      ],
+    ],
     plugins,
   };
 };
