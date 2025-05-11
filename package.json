@@ -2,11 +2,13 @@
   "name": "expo",
   "version": "1.0.0",
   "scripts": {
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "start": "expo start --clear --dev-client",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
+    "clean": "npx expo prebuild --clean",
+    "validate": "npx install-expo-modules@latest && npx npm-check-updates -i && npx expo install --check && npx expo-doctor",
     "web": "expo start --web"
   },
   "dependencies": {
@@ -22,7 +24,10 @@
     "react-native-gesture-handler": "~2.24.0",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.10.0",
-    "zustand": "^4.5.1"
+    "zustand": "^4.5.1",
+    "expo-splash-screen": "~0.30.8",
+    "expo-font": "~13.3.1",
+    "expo-system-ui": "~5.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

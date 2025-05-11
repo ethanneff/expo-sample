@@ -1,9 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { ScreenContent } from 'components/ScreenContent';
-
+import { ScreenContent } from '~/components/ScreenContent';
 import { StyleSheet, View } from 'react-native';
-
 import { Button } from '../components/Button';
 import { RootStackParamList } from '../navigation';
 

@@ -1,6 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
 import Overview from '../screens/overview';
 import Details from '../screens/details';
 import { BackButton } from '../components/BackButton';
