@@ -9,34 +9,34 @@ importers:
   .:
     dependencies:
       '@expo/vector-icons':
-        specifier: ^14.0.0
+        specifier: 14.1.0
         version: 14.1.0(expo-font@13.3.1(expo@53.0.9(@babel/core@7.27.1)(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react@19.0.0))(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@react-native-async-storage/async-storage':
         specifier: 2.1.2
         version: 2.1.2(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))
       '@react-navigation/native':
-        specifier: ^7.0.3
+        specifier: 7.1.8
         version: 7.1.8(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@react-navigation/stack':
-        specifier: ^7.0.4
+        specifier: 7.3.1
         version: 7.3.1(@react-navigation/native@7.1.8(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-gesture-handler@2.24.0(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-safe-area-context@5.4.0(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-screens@4.10.0(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@supabase/supabase-js':
-        specifier: ^2.38.4
+        specifier: 2.49.4
         version: 2.49.4
       expo:
-        specifier: ~53.0.9
+        specifier: 53.0.9
         version: 53.0.9(@babel/core@7.27.1)(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       expo-font:
-        specifier: ~13.3.1
+        specifier: 13.3.1
         version: 13.3.1(expo@53.0.9(@babel/core@7.27.1)(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react@19.0.0)
       expo-splash-screen:
-        specifier: ~0.30.8
+        specifier: 0.30.8
         version: 0.30.8(expo@53.0.9(@babel/core@7.27.1)(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))
       expo-status-bar:
-        specifier: ~2.2.3
+        specifier: 2.2.3
         version: 2.2.3(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       expo-system-ui:
-        specifier: ~5.0.7
+        specifier: 5.0.7
         version: 5.0.7(expo@53.0.9(@babel/core@7.27.1)(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))
       react:
         specifier: 19.0.0
@@ -51,32 +51,32 @@ importers:
         specifier: 5.4.0
         version: 5.4.0(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-screens:
-        specifier: ~4.10.0
+        specifier: 4.10.0
         version: 4.10.0(react-native@0.79.2(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       zustand:
-        specifier: ^4.5.1
-        version: 4.5.6(@types/react@19.0.14)(react@19.0.0)
+        specifier: 5.0.4
+        version: 5.0.4(@types/react@19.0.14)(react@19.0.0)(use-sync-external-store@1.5.0(react@19.0.0))
     devDependencies:
       '@babel/core':
-        specifier: ^7.20.0
+        specifier: 7.27.1
         version: 7.27.1
       '@types/react':
         specifier: ~19.0.10
         version: 19.0.14
       eslint:
-        specifier: ^9.25.1
+        specifier: 9.26.0
         version: 9.26.0
       eslint-config-expo:
-        specifier: ^9.2.0
+        specifier: 9.2.0
         version: 9.2.0(eslint@9.26.0)(typescript@5.8.3)
       eslint-config-prettier:
-        specifier: ^10.1.2
+        specifier: 10.1.5
         version: 10.1.5(eslint@9.26.0)
       prettier:
-        specifier: ^3.2.5
+        specifier: 3.5.3
         version: 3.5.3
       typescript:
-        specifier: ~5.8.3
+        specifier: 5.8.3
         version: 5.8.3
 
 packages:
@@ -3828,19 +3828,22 @@ packages:
   zod@3.24.4:
     resolution: {integrity: sha512-OdqJE9UDRPwWsrHjLN2F8bPxvwJBK22EHLWtanu0LSYr5YqzsaaW3RMgmjwr8Rypg5k+meEJdSPXJZXE/yqOMg==}
 
-  zustand@4.5.6:
-    resolution: {integrity: sha512-ibr/n1hBzLLj5Y+yUcU7dYw8p6WnIVzdJbnX+1YpaScvZVF2ziugqHs+LAmHw4lWO9c/zRj+K1ncgWDQuthEdQ==}
-    engines: {node: '>=12.7.0'}
+  zustand@5.0.4:
+    resolution: {integrity: sha512-39VFTN5InDtMd28ZhjLyuTnlytDr9HfwO512Ai4I8ZABCoyAj4F1+sr7sD1jP/+p7k77Iko0Pb5NhgBFDCX0kQ==}
+    engines: {node: '>=12.20.0'}
     peerDependencies:
-      '@types/react': '>=16.8'
+      '@types/react': '>=18.0.0'
       immer: '>=9.0.6'
-      react: '>=16.8'
+      react: '>=18.0.0'
+      use-sync-external-store: '>=1.2.0'
     peerDependenciesMeta:
       '@types/react':
         optional: true
       immer:
         optional: true
       react:
+        optional: true
+      use-sync-external-store:
         optional: true
 
 snapshots:
@@ -8467,9 +8470,8 @@ snapshots:
 
   zod@3.24.4: {}
 
-  zustand@4.5.6(@types/react@19.0.14)(react@19.0.0):
-    dependencies:
-      use-sync-external-store: 1.5.0(react@19.0.0)
+  zustand@5.0.4(@types/react@19.0.14)(react@19.0.0)(use-sync-external-store@1.5.0(react@19.0.0)):
     optionalDependencies:
       '@types/react': 19.0.14
       react: 19.0.0
+      use-sync-external-store: 1.5.0(react@19.0.0)
