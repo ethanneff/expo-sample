@@ -7,7 +7,7 @@ import {
   type ViewStyle,
 } from 'react-native';
 import { ColorName } from '~/theme/colors';
-import { useTheme } from '~/theme/useTheme';
+import { useAppTheme } from '~/theme/useAppTheme';
 
 type ViewProperties = ViewStyle & {
   readonly absoluteFillObject?: boolean;
@@ -21,7 +21,7 @@ type ViewProperties = ViewStyle & {
 };
 
 const useDropShadow = (dropShadowThemeColor: ColorName) => {
-  const { colors } = useTheme();
+  const { colors } = useAppTheme();
   if (dropShadowThemeColor === 'transparent') return {};
   return {
     backgroundColor: colors[dropShadowThemeColor],

@@ -1,6 +1,6 @@
 import { Typescript } from '~/utils/Typescript';
 
-type TextSize =
+export type TextSize =
   | 'xs'
   | 'sm'
   | 'md'
@@ -15,9 +15,9 @@ type TextSize =
   | '8xl'
   | '9xl';
 
-type TextWeight = 'light' | 'regular' | 'medium' | 'semibold' | 'bold';
+export type TextWeight = 'light' | 'regular' | 'medium' | 'semibold' | 'bold';
 
-type FontFamily = 'Geist' | 'GeistMono';
+export type FontFamily = 'Geist' | 'GeistMono';
 
 export const getTextSize = (size: TextSize) => {
   switch (size) {
@@ -57,15 +57,15 @@ export const getFontFamily = (family: FontFamily, fontWeight: TextWeight) => {
     case 'Geist':
       switch (fontWeight) {
         case 'light':
-          return { fontFamily: 'Geist-Light' };
+          return 'Geist-Light';
         case 'regular':
-          return { fontFamily: 'Geist-Regular' };
+          return 'Geist-Regular';
         case 'medium':
-          return { fontFamily: 'Geist-Medium' };
+          return 'Geist-Medium';
         case 'semibold':
-          return { fontFamily: 'Geist-SemiBold' };
+          return 'Geist-SemiBold';
         case 'bold':
-          return { fontFamily: 'Geist-Bold' };
+          return 'Geist-Bold';
         default:
           return Typescript.assertNever(fontWeight);
       }
@@ -74,10 +74,10 @@ export const getFontFamily = (family: FontFamily, fontWeight: TextWeight) => {
         case 'regular':
         case 'medium':
         case 'light':
-          return { fontFamily: 'GeistMono-Regular' };
+          return 'GeistMono-Regular';
         case 'semibold':
         case 'bold':
-          return { fontFamily: 'GeistMono-Bold' };
+          return 'GeistMono-Bold';
         default:
           return Typescript.assertNever(fontWeight);
       }
