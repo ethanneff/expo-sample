@@ -14,7 +14,7 @@ import {
 type Props = {
   title: string;
   color?: ColorName;
-  size: TextSize;
+  size?: TextSize;
   family?: FontFamily;
   weight?: TextWeight;
   align?: TextStyle['textAlign'];

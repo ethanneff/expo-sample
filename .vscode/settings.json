@@ -13,6 +13,7 @@
   "editor.gotoLocation.multipleImplementations": "goto",
   "editor.gotoLocation.multipleReferences": "goto",
   "editor.gotoLocation.multipleTypeDefinitions": "goto",
+  "color-highlight.markerType": "dot-before",
   "files.insertFinalNewline": true,
   "git.mergeEditor": false,
   "search.exclude": {

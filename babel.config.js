@@ -1,6 +1,5 @@
 module.exports = function (api) {
   api.cache(true);
-  let plugins = [];
 
   return {
     presets: [
@@ -10,6 +9,6 @@ module.exports = function (api) {
         { unstable_transformImportMeta: true },
       ],
     ],
-    plugins,
+    plugins: ['@babel/plugin-proposal-export-namespace-from', 'react-native-reanimated/plugin'],
   };
 };

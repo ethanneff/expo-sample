@@ -1,9 +1,10 @@
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback, useEffect, useState } from 'react';
-import 'react-native-gesture-handler';
 import { Platform } from 'react-native';
+import 'react-native-gesture-handler';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Navigation } from './navigation/Navigation';
 
@@ -11,7 +12,7 @@ SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({ duration: 1000, fade: true });
 
 const fonts = {
-  ...Ionicons.font,
+  ...FontAwesome6.font,
   ...(Platform.OS === 'web'
     ? {
         'Geist-Bold': require('../assets/fonts/Geist-Bold.ttf'),
@@ -50,7 +51,9 @@ export const App = () => {
 
   return (
     <SafeAreaProvider onLayout={handleLayout}>
-      <Navigation />
+      <KeyboardProvider>
+        <Navigation />
+      </KeyboardProvider>
     </SafeAreaProvider>
   );
 };

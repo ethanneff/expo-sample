@@ -1,4 +1,5 @@
 import { Pressable } from 'react-native';
+import Animated, { FadeIn, FadeOut, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { View } from '~/components/View/View';
 import { spacing } from '~/theme/spacing';
 import { useAppTheme } from '~/theme/useAppTheme';
@@ -11,27 +12,27 @@ type Props = {
 
 export const Toggle = ({ checked, onPress, size = 16 }: Props) => {
   const { colors } = useAppTheme();
+  const animatedStyle = useAnimatedStyle(() => {
+    return { transform: [{ translateX: withTiming(checked ? size : 0, { duration: 200 }) }] };
+  });
 
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPressIn={onPress}>
       <View
         flexDirection="row"
         alignItems="center"
         backgroundColor={checked ? colors.foreground : colors.border}
         borderRadius={size}
         padding={spacing.$2}>
-        <View
-          height={size}
-          width={size}
-          backgroundColor={checked ? colors.foreground : colors.primaryForeground}
-          borderRadius={size}
-        />
-        <View
-          height={size}
-          width={size}
-          backgroundColor={checked ? colors.primaryForeground : colors.border}
-          borderRadius={size}
-        />
+        <Animated.View style={animatedStyle} entering={FadeIn} exiting={FadeOut}>
+          <View
+            height={size}
+            width={size}
+            backgroundColor={colors.primaryForeground}
+            borderRadius={size}
+          />
+        </Animated.View>
+        <View height={size} width={size} borderRadius={size} opacity={0} />
       </View>
     </Pressable>
   );
