@@ -36,9 +36,9 @@ export const Loader = ({ size = 8, duration = 1500, absoluteFillObject, visible 
   useEffect(() => {
     if (visible) {
       progress.value = withRepeat(
-        withTiming(1, {
+        withTiming(4, {
           duration,
-          easing: Easing.inOut(Easing.quad),
+          easing: Easing.linear,
         }),
         -1,
         false
@@ -46,24 +46,40 @@ export const Loader = ({ size = 8, duration = 1500, absoluteFillObject, visible 
     } else {
       progress.value = withTiming(0, {
         duration,
-        easing: Easing.inOut(Easing.quad),
+        easing: Easing.linear,
       });
     }
   }, [duration, progress, visible]);
 
   const dot1Style = useAnimatedStyle(() => {
-    const opacity = interpolate(progress.value, [0, 0.25, 0.5], [0.2, 1, 0.2], 'clamp');
-    return { opacity };
+    return {
+      opacity: interpolate(progress.value, [0, 1, 2, 3, 4], [1, 0.4, 0.2, 0.4, 1], 'clamp'),
+      transform: [
+        { scale: interpolate(progress.value, [0, 1, 2, 3, 4], [1, 0.85, 0.7, 0.85, 1], 'clamp') },
+      ],
+    };
   });
 
   const dot2Style = useAnimatedStyle(() => {
-    const opacity = interpolate(progress.value, [0.25, 0.5, 0.75], [0.2, 1, 0.2], 'clamp');
-    return { opacity };
+    return {
+      opacity: interpolate(progress.value, [0, 1, 2, 3, 4], [0.4, 1, 0.4, 0.2, 0.4], 'clamp'),
+      transform: [
+        {
+          scale: interpolate(progress.value, [0, 1, 2, 3, 4], [0.85, 1, 0.85, 0.7, 0.85], 'clamp'),
+        },
+      ],
+    };
   });
 
   const dot3Style = useAnimatedStyle(() => {
-    const opacity = interpolate(progress.value, [0.5, 0.75, 1], [0.2, 1, 0.2], 'clamp');
-    return { opacity };
+    return {
+      opacity: interpolate(progress.value, [0, 1, 2, 3, 4], [0.2, 0.4, 1, 0.4, 0.2], 'clamp'),
+      transform: [
+        {
+          scale: interpolate(progress.value, [0, 1, 2, 3, 4], [0.85, 1, 0.85, 0.7, 0.85], 'clamp'),
+        },
+      ],
+    };
   });
 
   return (

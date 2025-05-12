@@ -107,6 +107,8 @@ export const Input = ({
           secureTextEntry={isSecureTextEntry}
           style={[
             {
+              backgroundColor: colors.background,
+              color: colors.foreground,
               padding: spacing.$8,
               borderRadius: spacing.$8,
               borderColor: error ? colors.destructive : colors.border,
