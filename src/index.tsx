@@ -1,11 +1,12 @@
 import { FontAwesome6 } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { useCallback, useEffect, useState } from 'react';
-import { Platform } from 'react-native';
-import 'react-native-gesture-handler';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Platform, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useAppTheme } from '~/theme/useAppTheme';
 import { Navigation } from './navigation/Navigation';
 
 SplashScreen.preventAutoHideAsync();
@@ -28,6 +29,7 @@ const fonts = {
 
 export const App = () => {
   const [appIsReady, setAppIsReady] = useState(false);
+  const { colors } = useAppTheme();
 
   const initializeApp = useCallback(async () => {
     try {
@@ -50,10 +52,16 @@ export const App = () => {
   if (!appIsReady) return null;
 
   return (
-    <SafeAreaProvider onLayout={handleLayout}>
-      <KeyboardProvider>
-        <Navigation />
-      </KeyboardProvider>
-    </SafeAreaProvider>
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <SafeAreaProvider
+          onLayout={handleLayout}
+          }}>
+          <KeyboardProvider>
+            <Navigation />
+          </KeyboardProvider>
+        </SafeAreaProvider>
+      </GestureHandlerRootView>
+    </View>
   );
 };
