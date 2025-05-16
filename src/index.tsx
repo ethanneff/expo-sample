@@ -1,7 +1,9 @@
+import 'react-native-get-random-values';
+// first
 import { FontAwesome6 } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Platform, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
@@ -56,6 +58,12 @@ export const App = () => {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaProvider
           onLayout={handleLayout}
+          style={{
+            maxWidth: 1280,
+            alignSelf: 'center',
+            width: '100%',
+            borderWidth: 1,
+            borderColor: colors.border,
           }}>
           <KeyboardProvider>
             <Navigation />

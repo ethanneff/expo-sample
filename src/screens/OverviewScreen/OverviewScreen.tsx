@@ -7,7 +7,6 @@ import { Screen } from '~/components/Screen/Screen';
 import { Text } from '~/components/Text/Text';
 import { Toggle } from '~/components/Toggle/Toggle';
 import { View } from '~/components/View/View';
-import { spacing } from '~/theme/spacing';
 import { useAppTheme } from '~/theme/useAppTheme';
 
 type ToggleSectionProps = {
@@ -17,6 +16,7 @@ type ToggleSectionProps = {
 };
 
 const ToggleSection = ({ title, description, checked }: ToggleSectionProps) => {
+  const { spacing } = useAppTheme();
   const [isChecked, setIsChecked] = useState(!!checked);
 
   return (

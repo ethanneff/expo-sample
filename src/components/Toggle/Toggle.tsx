@@ -1,7 +1,6 @@
 import { Pressable } from 'react-native';
 import Animated, { FadeIn, FadeOut, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { View } from '~/components/View/View';
-import { spacing } from '~/theme/spacing';
 import { useAppTheme } from '~/theme/useAppTheme';
 
 type Props = {
@@ -11,7 +10,7 @@ type Props = {
 };
 
 export const Toggle = ({ checked, onPress, size = 16 }: Props) => {
-  const { colors } = useAppTheme();
+  const { colors, spacing } = useAppTheme();
   const animatedStyle = useAnimatedStyle(() => {
     return { transform: [{ translateX: withTiming(checked ? size : 0, { duration: 200 }) }] };
   });

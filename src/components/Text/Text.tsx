@@ -1,6 +1,5 @@
 import { Text as RNText, TextProps, TextStyle } from 'react-native';
-import { ColorName } from '~/theme/colors';
-import { useAppTheme } from '~/theme/useAppTheme';
+import { ColorName, useAppTheme } from '~/theme/useAppTheme';
 import {
   FontFamily,
   getFontFamily,

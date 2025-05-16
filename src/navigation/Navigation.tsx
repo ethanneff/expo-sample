@@ -1,3 +1,4 @@
+import { FontAwesome6 } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStaticNavigation, StaticParamList, Theme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -9,12 +10,14 @@ import DetailsScreen from '~/screens/DetailsScreen/DetailsScreen';
 import ForgotPasswordScreen from '~/screens/ForgotPasswordScreen/ForgotPasswordScreen';
 import HomeScreen from '~/screens/HomeScreen/HomeScreen';
 import LandingScreen from '~/screens/LandingScreen/LandingScreen';
-import ModalScreen from '~/screens/ModalScreen/ModalScreen';
 import OverviewScreen from '~/screens/OverviewScreen/OverviewScreen';
 import ProfileScreen from '~/screens/ProfileScreen/ProfileScreen';
+import SettingsScreen from '~/screens/SettingsScreen/SettingsScreen';
 import SignInScreen from '~/screens/SignInScreen/SignInScreen';
 import SignUpScreen from '~/screens/SignUpScreen/SignUpScreen';
 import SplashScreen from '~/screens/SplashScreen/SplashScreen';
+import { SurveyCsatScreen } from '~/screens/SurveyCsatScreen/SurveyCsatScreen';
+import { SurveyNpsScreen } from '~/screens/SurveyNpsScreen/SurveyNpsScreen';
 import { useStoreAuth } from '~/store/useStoreAuth';
 import { useAppTheme } from '~/theme/useAppTheme';
 
@@ -23,13 +26,20 @@ import { useAppTheme } from '~/theme/useAppTheme';
 const useAuth = () => useStoreAuth((state) => state.user !== null);
 const useUnAuth = () => useStoreAuth((state) => state.user === null);
 
+const getTabBarIcon =
+  (icon: string) =>
+  ({ color, size }: { color: string; size: number }) => (
+    <FontAwesome6 name={icon} size={size - 8} color={color} />
+  );
+
 const Tabs = createBottomTabNavigator({
   options: { headerShown: false },
   screens: {
-    Home: HomeScreen,
-    Overview: OverviewScreen,
-    Details: DetailsScreen,
-    Profile: ProfileScreen,
+    Home: { screen: HomeScreen, options: { tabBarIcon: getTabBarIcon('house') } },
+    Overview: { screen: OverviewScreen, options: { tabBarIcon: getTabBarIcon('chart-line') } },
+    Details: { screen: DetailsScreen, options: { tabBarIcon: getTabBarIcon('list') } },
+    Profile: { screen: ProfileScreen, options: { tabBarIcon: getTabBarIcon('user') } },
+    Settings: { screen: SettingsScreen, options: { tabBarIcon: getTabBarIcon('gear') } },
   },
 });
 
@@ -69,7 +79,8 @@ const RootStack = createNativeStackNavigator({
     Modal: {
       screens: {
         Debug: DebugScreen,
-        Modal: ModalScreen,
+        SurveyNps: SurveyNpsScreen,
+        SurveyCsat: SurveyCsatScreen,
       },
       screenOptions: { presentation: 'modal' },
     },
@@ -80,6 +91,7 @@ type RootStackParamList = StaticParamList<typeof RootStack>;
 
 declare global {
   namespace ReactNavigation {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     interface RootParamList extends RootStackParamList {}
   }
 }
