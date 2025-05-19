@@ -1,4 +1,4 @@
-import { FontAwesome6 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { Pressable } from 'react-native';
 import { Loader } from '~/components/Loader/Loader';
@@ -45,7 +45,7 @@ export const Button = ({ title, onPress, disabled, icon, loading = false }: Prop
           justifyContent="center"
           alignItems="center"
           opacity={loading ? 0 : 1}>
-          {icon ? <FontAwesome6 name={icon} size={16} color={colors.foreground} /> : null}
+          {icon ? <Ionicons name={icon} size={16} color={colors.foreground} /> : null}
           <Text title={title} size="sm" weight="medium" />
         </View>
       </View>

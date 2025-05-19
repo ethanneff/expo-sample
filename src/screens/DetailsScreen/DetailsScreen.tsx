@@ -1,10 +1,11 @@
-import { FontAwesome6 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useRef, useState } from 'react';
-import { Dimensions, FlatList, StyleSheet } from 'react-native';
+import { Dimensions, FlatList } from 'react-native';
 import { Screen } from '~/components/Screen/Screen';
 import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
+import { useAppTheme } from '~/theme/useAppTheme';
 
 type Section = {
   id: string;
@@ -154,15 +155,15 @@ const generateLessonData = (): Lesson[] => {
 const getIconForLessonType = (type: LessonType) => {
   switch (type) {
     case 'normal':
-      return 'star';
+      return 'star-outline';
     case 'exercise':
-      return 'dumbbell';
+      return 'barbell-outline';
     case 'chest':
-      return 'explosion';
+      return 'cube-outline';
     case 'review':
-      return 'trophy';
+      return 'trophy-outline';
     case 'mini-challenge':
-      return 'fire';
+      return 'flame-outline';
   }
 };
 
@@ -173,6 +174,7 @@ const getIdFromId = (id: string): number => {
 const width = Dimensions.get('window').width;
 
 const DetailsScreen = () => {
+  const { colors, spacing } = useAppTheme();
   const lessonData = generateLessonData();
   const unitData = generateUnitData();
   const [currentSection, setCurrentSection] = useState('s1');
@@ -213,7 +215,7 @@ const DetailsScreen = () => {
     return (
       <View marginRight={getMarginForLesson(item.lessonInUnit, numLessonsInUnit, width / 3)}>
         <View
-          backgroundColor={'green'}
+          backgroundColor={colors.primary}
           borderRadius={100}
           padding={10}
           alignItems={'center'}
@@ -221,7 +223,11 @@ const DetailsScreen = () => {
           alignSelf={'center'}
           width={width / 4}
           height={width / 4}>
-          <FontAwesome6 name={getIconForLessonType(item.type)} size={width / 8} color="black" />
+          <Ionicons
+            name={getIconForLessonType(item.type)}
+            size={width / 8}
+            color={colors.background}
+          />
         </View>
       </View>
     );
@@ -229,44 +235,30 @@ const DetailsScreen = () => {
 
   return (
     <Screen>
-      {/* Sticky Header */}
-      <View padding={16} backgroundColor={'#e0e0e0'}>
+      <View
+        padding={spacing.$16}
+        backgroundColor={colors.popover}
+        borderColor={colors.border}
+        borderWidth={1}>
         <Text title={`Section ${getIdFromId(currentSection)}, Unit ${getIdFromId(currentUnit)}`} />
         <Text title={`${unitData[getIdFromId(currentUnit)].name}`} />
       </View>
 
-      {/* Level List */}
-      <View style={styles.listContainer}>
-        <FlatList
-          data={lessonData}
-          renderItem={renderLesson}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
-          onViewableItemsChanged={onViewableItemsChanged.current}
-          viewabilityConfig={viewabilityConfig.current}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
+      <FlatList
+        data={lessonData}
+        renderItem={renderLesson}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={{
+          paddingHorizontal: spacing.$16,
+          paddingVertical: spacing.$8,
+          gap: spacing.$16,
+        }}
+        onViewableItemsChanged={onViewableItemsChanged.current}
+        viewabilityConfig={viewabilityConfig.current}
+        showsVerticalScrollIndicator={false}
+      />
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    padding: 16,
-    backgroundColor: '#e0e0e0',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    alignItems: 'center',
-  },
-  listContainer: {
-    // flex: 1,
-  },
-  listContent: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    gap: 16,
-  },
-});
 
 export default DetailsScreen;

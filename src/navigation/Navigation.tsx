@@ -1,4 +1,4 @@
-import { FontAwesome6 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStaticNavigation, StaticParamList, Theme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -29,17 +29,17 @@ const useUnAuth = () => useStoreAuth((state) => state.user === null);
 const getTabBarIcon =
   (icon: string) =>
   ({ color, size }: { color: string; size: number }) => (
-    <FontAwesome6 name={icon} size={size - 8} color={color} />
+    <Ionicons name={icon} size={size - 8} color={color} />
   );
 
 const Tabs = createBottomTabNavigator({
   options: { headerShown: false },
   screens: {
-    Home: { screen: HomeScreen, options: { tabBarIcon: getTabBarIcon('house') } },
-    Overview: { screen: OverviewScreen, options: { tabBarIcon: getTabBarIcon('chart-line') } },
+    Home: { screen: HomeScreen, options: { tabBarIcon: getTabBarIcon('home') } },
+    Overview: { screen: OverviewScreen, options: { tabBarIcon: getTabBarIcon('bar-chart') } },
     Details: { screen: DetailsScreen, options: { tabBarIcon: getTabBarIcon('list') } },
-    Profile: { screen: ProfileScreen, options: { tabBarIcon: getTabBarIcon('user') } },
-    Settings: { screen: SettingsScreen, options: { tabBarIcon: getTabBarIcon('gear') } },
+    Profile: { screen: ProfileScreen, options: { tabBarIcon: getTabBarIcon('person') } },
+    Settings: { screen: SettingsScreen, options: { tabBarIcon: getTabBarIcon('cog') } },
   },
 });
 

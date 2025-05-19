@@ -1,4 +1,4 @@
-import { FontAwesome6 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { useCallback, useState } from 'react';
 import { TextInput, TextInputProps, TouchableOpacity } from 'react-native';
 import { Text } from '~/components/Text/Text';
@@ -25,7 +25,7 @@ type RequiredTextInputProperties = Required<
 
 type Properties = RequiredTextInputProperties &
   TextInputProps & {
-    label: string;
+    label?: string;
     error?: string;
     readonly ref?: React.RefObject<TextInput>;
   };
@@ -87,7 +87,7 @@ export const Input = ({
 
   return (
     <View>
-      <Text title={label} size="sm" weight="medium" />
+      {label ? <Text title={label} size="sm" weight="medium" /> : null}
       <View marginTop={spacing.$4}>
         <TextInput
           value={value}
@@ -123,7 +123,7 @@ export const Input = ({
         {showIcon ? (
           <View position="absolute" top={0} bottom={0} right={spacing.$8} justifyContent="center">
             <TouchableOpacity onPress={handleIconPress}>
-              <FontAwesome6 name={icon} size={iconSize} color={colors.mutedForeground} />
+              <Ionicons name={icon} size={iconSize} color={colors.mutedForeground} />
             </TouchableOpacity>
           </View>
         ) : null}
