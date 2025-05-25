@@ -1,6 +1,6 @@
 import 'react-native-get-random-values';
 // first
-import { FontAwesome6 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback, useEffect, useState } from 'react';
@@ -15,7 +15,7 @@ SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({ duration: 1000, fade: true });
 
 const fonts = {
-  ...FontAwesome6.font,
+  ...Ionicons.font,
   ...(Platform.OS === 'web'
     ? {
         'Geist-Bold': require('../assets/fonts/Geist-Bold.ttf'),
