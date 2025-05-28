@@ -1,28 +1,31 @@
 import { useNavigation } from '@react-navigation/native';
-import { Button } from 'react-native';
-import { Placeholder } from '~/components/Placeholder/Placeholder';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import { Button } from '~/components/Button/Button';
+import { Icon } from '~/components/Icon/Icon';
+import { Screen } from '~/components/Screen/Screen';
 import { Text } from '~/components/Text/Text';
-import { useStoreTheme } from '~/store/useStoreTheme';
+import { useAppTheme } from '~/theme/useAppTheme';
 
 const LandingScreen = () => {
   const navigation = useNavigation();
-
-  const toggleTheme = useStoreTheme((state) => state.actions.toggleTheme);
-  const theme = useStoreTheme((state) => state.theme);
+  const { spacing, colors } = useAppTheme();
 
   return (
-    <Placeholder title="Landing Screen">
-      <Text
-        title={`Theme: ${theme}`}
-        color="chart1"
-        size="lg"
-        family="Geist"
-        weight="medium"
-        align="center"
-      />
-      <Button title="Sign In" onPress={() => navigation.navigate('SignIn')} />
-      <Button title="Toggle Theme" onPress={toggleTheme} />
-    </Placeholder>
+    <Screen>
+      <KeyboardAwareScrollView
+        contentContainerStyle={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          flex: 1,
+          gap: spacing.$12,
+        }}>
+        <Icon name="trophy-outline" size={100} color={colors.primary} />
+        <Text title="Duolingo" />
+        <Text title="Learn for free. Forever." />
+      </KeyboardAwareScrollView>
+      <Button title="Get Started" onPress={() => navigation.navigate('Onboarding')} />
+      <Button title="I already have an account" onPress={() => navigation.navigate('SignIn')} />
+    </Screen>
   );
 };
 

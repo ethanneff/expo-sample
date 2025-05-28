@@ -5,12 +5,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ActivityIndicator } from 'react-native';
+import ActionSheetScreen from '~/screens/ActionSheetScreen/ActionSheetScreen';
 import DebugScreen from '~/screens/DebugScreen/DebugScreen';
 import DetailsScreen from '~/screens/DetailsScreen/DetailsScreen';
 import ForgotPasswordScreen from '~/screens/ForgotPasswordScreen/ForgotPasswordScreen';
 import HomeScreen from '~/screens/HomeScreen/HomeScreen';
 import LandingScreen from '~/screens/LandingScreen/LandingScreen';
+import OnboardingScreen from '~/screens/OnboardingScreen/OnboardingScreen';
 import OverviewScreen from '~/screens/OverviewScreen/OverviewScreen';
+import PrivacyPolicyScreen from '~/screens/PrivacyPolicyScreen/PrivacyPolicyScreen';
 import ProfileScreen from '~/screens/ProfileScreen/ProfileScreen';
 import SettingsScreen from '~/screens/SettingsScreen/SettingsScreen';
 import SignInScreen from '~/screens/SignInScreen/SignInScreen';
@@ -18,6 +21,7 @@ import SignUpScreen from '~/screens/SignUpScreen/SignUpScreen';
 import SplashScreen from '~/screens/SplashScreen/SplashScreen';
 import { SurveyCsatScreen } from '~/screens/SurveyCsatScreen/SurveyCsatScreen';
 import { SurveyNpsScreen } from '~/screens/SurveyNpsScreen/SurveyNpsScreen';
+import TermsScreen from '~/screens/TermsScreen/TermsScreen';
 import { useStoreAuth } from '~/store/useStoreAuth';
 import { useAppTheme } from '~/theme/useAppTheme';
 
@@ -27,7 +31,7 @@ const useAuth = () => useStoreAuth((state) => state.user !== null);
 const useUnAuth = () => useStoreAuth((state) => state.user === null);
 
 const getTabBarIcon =
-  (icon: string) =>
+  (icon: keyof typeof Ionicons.glyphMap) =>
   ({ color, size }: { color: string; size: number }) => (
     <Ionicons name={icon} size={size - 8} color={color} />
   );
@@ -60,6 +64,7 @@ const RootStack = createNativeStackNavigator({
             headerBackVisible: false,
           },
         },
+        Onboarding: OnboardingScreen,
         SignIn: SignInScreen,
         SignUp: SignUpScreen,
         ForgotPassword: ForgotPasswordScreen,
@@ -76,13 +81,27 @@ const RootStack = createNativeStackNavigator({
       },
       screenOptions: { headerShown: false },
     },
-    Modal: {
+    Modals: {
       screens: {
         Debug: DebugScreen,
         SurveyNps: SurveyNpsScreen,
         SurveyCsat: SurveyCsatScreen,
+        Terms: TermsScreen,
+        PrivacyPolicy: PrivacyPolicyScreen,
       },
       screenOptions: { presentation: 'modal' },
+    },
+    ActionSheets: {
+      screens: {
+        ActionSheet: ActionSheetScreen,
+      },
+      screenOptions: {
+        presentation: 'formSheet',
+        sheetExpandsWhenScrolledToEdge: false,
+        sheetCornerRadius: 16,
+        sheetGrabberVisible: true,
+        sheetAllowedDetents: [0.25, 0.75],
+      },
     },
   },
 });
