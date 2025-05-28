@@ -15,6 +15,7 @@ type Props = {
   color?: ColorName;
   size?: TextSize;
   family?: FontFamily;
+  fontStyle?: TextStyle['fontStyle'];
   weight?: TextWeight;
   align?: TextStyle['textAlign'];
   ellipsizeMode?: TextProps['ellipsizeMode'];
@@ -25,6 +26,7 @@ type Props = {
   decorationColor?: ColorName;
   decorationStyle?: TextStyle['textDecorationStyle'];
   textTransform?: TextStyle['textTransform'];
+  selectable?: boolean;
 };
 
 export const Text = ({
@@ -32,6 +34,7 @@ export const Text = ({
   color = 'foreground',
   size = 'md',
   family = 'Geist',
+  fontStyle = 'normal',
   weight = 'regular',
   align = 'left',
   ellipsizeMode,
@@ -42,6 +45,7 @@ export const Text = ({
   decoration,
   decorationColor,
   decorationStyle,
+  selectable = false,
 }: Props) => {
   const { colors } = useAppTheme();
   const { fontSize, lineHeight } = getTextSize(size);
@@ -52,6 +56,7 @@ export const Text = ({
     <RNText
       ellipsizeMode={ellipsizeMode}
       lineBreakMode={lineBreakMode}
+      selectable={selectable}
       numberOfLines={numberOfLines}
       style={{
         color: colors[color],
@@ -59,6 +64,7 @@ export const Text = ({
         letterSpacing,
         fontSize,
         lineHeight,
+        fontStyle,
         textDecorationLine: decoration,
         textDecorationColor: decorationColor,
         textDecorationStyle: decorationStyle,
