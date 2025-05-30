@@ -15,7 +15,7 @@ type Props = {
   disabled?: boolean;
   loading?: boolean;
   variant: ButtonVariant;
-  fullWidth?: boolean;
+  fitContent?: boolean;
 };
 
 export const Button = ({
@@ -25,7 +25,7 @@ export const Button = ({
   icon,
   loading,
   variant = 'primary',
-  fullWidth,
+  fitContent,
 }: Props) => {
   const { colors, spacing } = useAppTheme();
   const [isPressed, setIsPressed] = useState(false);
@@ -55,7 +55,7 @@ export const Button = ({
         backgroundColor={backgroundColor}
         opacity={isDisabled ? 0.5 : 1}
         borderColor={borderColor}
-        alignSelf={fullWidth ? 'auto' : 'center'}
+        alignSelf={fitContent ? 'center' : 'auto'}
         borderWidth={1}
         paddingHorizontal={spacing.$16}
         paddingVertical={spacing.$6}
