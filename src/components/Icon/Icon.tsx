@@ -9,5 +9,5 @@ type IconProps = {
 };
 
 export const Icon = ({ name, size, color = '#000' }: IconProps) => {
-  return <Icon name={name} size={size} color={color} />;
+  return <Ionicons name={name} size={size} color={color} />;
 };
