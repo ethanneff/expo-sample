@@ -9,16 +9,17 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { View } from '~/components/View/View';
-import { useAppTheme } from '~/theme/useAppTheme';
+import { ColorName, useAppTheme } from '~/theme/useAppTheme';
 
 type DotProps = {
   size: number;
+  color: ColorName;
 };
 
-const Dot = ({ size = 16 }: DotProps) => {
+const Dot = ({ size = 16, color }: DotProps) => {
   const { colors } = useAppTheme();
   return (
-    <View width={size} height={size} borderRadius={size / 2} backgroundColor={colors.primary} />
+    <View width={size} height={size} borderRadius={size / 2} backgroundColor={colors[color]} />
   );
 };
 
@@ -27,9 +28,16 @@ type LoaderProps = {
   duration?: number;
   absoluteFillObject?: boolean;
   visible: boolean;
+  color: ColorName;
 };
 
-export const Loader = ({ size = 8, duration = 1500, absoluteFillObject, visible }: LoaderProps) => {
+export const Loader = ({
+  size = 8,
+  duration = 1500,
+  absoluteFillObject,
+  visible,
+  color = 'primary',
+}: LoaderProps) => {
   const progress = useSharedValue(0);
   const { spacing } = useAppTheme();
 
@@ -91,13 +99,13 @@ export const Loader = ({ size = 8, duration = 1500, absoluteFillObject, visible 
       gap={spacing.$4}
       absoluteFillObject={absoluteFillObject}>
       <Animated.View style={dot1Style}>
-        <Dot size={size} />
+        <Dot size={size} color={color} />
       </Animated.View>
       <Animated.View style={dot2Style}>
-        <Dot size={size} />
+        <Dot size={size} color={color} />
       </Animated.View>
       <Animated.View style={dot3Style}>
-        <Dot size={size} />
+        <Dot size={size} color={color} />
       </Animated.View>
     </View>
   );
