@@ -372,9 +372,38 @@ const OverviewScreen = () => {
               />
               <View height={1} backgroundColor={colors.border} flex={1} />
             </View>
-            <Input label="Email" placeholder="m@example.com" />
-            <Input label="Password" placeholder="********" secureTextEntry />
-            <Button title="Create Account" onPress={() => {}} />
+            <Input
+              label="Email"
+              placeholder="m@example.com"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoComplete="email"
+              autoCorrect={false}
+              defaultValue=""
+              editable={true}
+              onChangeText={() => {}}
+              submitBehavior="submit"
+              onSubmitEditing={() => {}}
+              returnKeyType="done"
+              textContentType="emailAddress"
+            />
+            <Input
+              label="Password"
+              placeholder="********"
+              secureTextEntry
+              keyboardType="visible-password"
+              autoCapitalize="none"
+              autoComplete="password"
+              autoCorrect={false}
+              defaultValue=""
+              editable={true}
+              onChangeText={() => {}}
+              submitBehavior="submit"
+              onSubmitEditing={() => {}}
+              returnKeyType="done"
+              textContentType="password"
+            />
+            <Button title="Create Account" onPress={() => {}} variant="primary" />
           </View>
         </Card>
         <Card>
@@ -386,18 +415,103 @@ const OverviewScreen = () => {
               color="mutedForeground"
             />
           </View>
-          <Input label="Name" placeholder="John Doe" />
-          <Input label="City" placeholder="New York" />
-          <Input label="Card number" placeholder="1234 5678 9012 3456" />
+          <Input
+            label="Name"
+            placeholder="John Doe"
+            keyboardType="default"
+            autoCapitalize="none"
+            autoComplete="name"
+            autoCorrect={false}
+            defaultValue=""
+            editable={true}
+            onChangeText={() => {}}
+            submitBehavior="submit"
+            onSubmitEditing={() => {}}
+            returnKeyType="done"
+            textContentType="name"
+          />
+          <Input
+            label="City"
+            placeholder="New York"
+            keyboardType="default"
+            autoCapitalize="none"
+            autoComplete="address-line2"
+            autoCorrect={false}
+            defaultValue=""
+            editable={true}
+            onChangeText={() => {}}
+            submitBehavior="submit"
+            onSubmitEditing={() => {}}
+            returnKeyType="done"
+            textContentType="addressCity"
+          />
+          <Input
+            label="Card number"
+            placeholder="1234 5678 9012 3456"
+            keyboardType="number-pad"
+            autoCapitalize="none"
+            autoComplete="cc-number"
+            autoCorrect={false}
+            defaultValue=""
+            editable={true}
+            onChangeText={() => {}}
+            submitBehavior="submit"
+            onSubmitEditing={() => {}}
+            returnKeyType="done"
+            textContentType="creditCardNumber"
+          />
           <View flexDirection="row" gap={spacing.$6}>
             <View flex={1}>
-              <Input label="Expires" placeholder="Month" />
+              <Input
+                label="Expires"
+                placeholder="Month"
+                keyboardType="number-pad"
+                autoComplete="cc-exp-month"
+                editable={true}
+                onChangeText={() => {}}
+                defaultValue=""
+                autoCorrect={false}
+                autoCapitalize="none"
+                submitBehavior="submit"
+                onSubmitEditing={() => {}}
+                returnKeyType="done"
+                textContentType="creditCardExpirationMonth"
+              />
             </View>
             <View flex={1}>
-              <Input label="Year" placeholder="Year" />
+              <Input
+                label="Year"
+                placeholder="Year"
+                keyboardType="number-pad"
+                autoComplete="cc-exp-year"
+                autoCorrect={false}
+                editable={true}
+                onChangeText={() => {}}
+                defaultValue=""
+                submitBehavior="submit"
+                autoCapitalize="none"
+                onSubmitEditing={() => {}}
+                returnKeyType="done"
+                textContentType="creditCardExpirationYear"
+              />
             </View>
             <View flex={1}>
-              <Input label="CVC" placeholder="123" secureTextEntry />
+              <Input
+                label="CVC"
+                placeholder="123"
+                secureTextEntry
+                keyboardType="number-pad"
+                autoComplete="cc-csc"
+                autoCorrect={false}
+                defaultValue=""
+                editable={true}
+                onChangeText={() => {}}
+                textContentType="creditCardSecurityCode"
+                returnKeyType="done"
+                onSubmitEditing={() => {}}
+                submitBehavior="submit"
+                autoCapitalize="none"
+              />
             </View>
           </View>
           <Button title="Continue" onPress={() => {}} />
