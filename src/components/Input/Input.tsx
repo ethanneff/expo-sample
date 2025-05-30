@@ -83,9 +83,9 @@ export const Input = ({
   const icon = getIcon(showIcon, isSecureTextEntry);
 
   return (
-    <View>
+    <View gap={spacing.$4}>
       {label ? <Text title={label} size="sm" weight="medium" /> : null}
-      <View marginTop={spacing.$4}>
+      <View>
         <TextInput
           value={value}
           autoCapitalize={autoCapitalize}
@@ -125,7 +125,7 @@ export const Input = ({
           </View>
         ) : null}
       </View>
-      {/* <Text title={error} size="xs" color="destructive" /> */}
+      {error ? <Text title={error} size="xs" color="destructive" /> : null}
     </View>
   );
 };
