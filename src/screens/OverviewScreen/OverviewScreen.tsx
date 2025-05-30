@@ -325,18 +325,20 @@ const ButtonCard = () => {
 
 const OverviewScreen = () => {
   const { colors, spacing } = useAppTheme();
+
   return (
     <Screen>
       <KeyboardAwareScrollView
         contentContainerStyle={{
           padding: spacing.$12,
-          gap: spacing.$16,
+          gap: spacing.$12,
         }}>
         <ReviewCard />
         <SubscriptionCard />
         <TeamMembersCard />
         <ChatCard />
         <TypographyCard />
+        <ButtonCard />
         <Card>
           <View gap={spacing.$16}>
             <View>
@@ -356,10 +358,15 @@ const OverviewScreen = () => {
             </View>
             <View gap={spacing.$12} flexDirection="row" justifyContent="center">
               <View flex={1}>
-                <Button title="Google" onPress={() => {}} icon="logo-google" />
+                <Button title="Google" onPress={() => {}} icon="logo-google" variant="outline" />
               </View>
               <View flex={1}>
-                <Button title="Facebook" onPress={() => {}} icon="logo-facebook" />
+                <Button
+                  title="Facebook"
+                  onPress={() => {}}
+                  icon="logo-facebook"
+                  variant="outline"
+                />
               </View>
             </View>
             <View flexDirection="row" alignItems="center" gap={spacing.$6}>
@@ -514,7 +521,7 @@ const OverviewScreen = () => {
               />
             </View>
           </View>
-          <Button title="Continue" onPress={() => {}} />
+          <Button title="Continue" onPress={() => {}} variant="primary" />
         </Card>
         <Card>
           <View gap={spacing.$16}>
@@ -535,7 +542,7 @@ const OverviewScreen = () => {
               title="Performance Cookies"
               description="These cookies help to improve the performance of the website"
             />
-            <Button title="Save preferences" onPress={() => {}} />
+            <Button title="Save preferences" onPress={() => {}} variant="primary" />
           </View>
         </Card>
       </KeyboardAwareScrollView>
