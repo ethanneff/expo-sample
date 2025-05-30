@@ -27,10 +27,12 @@ type Props = {
   decorationStyle?: TextStyle['textDecorationStyle'];
   textTransform?: TextStyle['textTransform'];
   selectable?: boolean;
+  accessible?: boolean;
 };
 
 export const Text = ({
   title,
+  accessible,
   color = 'foreground',
   size = 'md',
   family = 'Geist',
@@ -54,6 +56,7 @@ export const Text = ({
 
   return (
     <RNText
+      accessible={accessible}
       ellipsizeMode={ellipsizeMode}
       lineBreakMode={lineBreakMode}
       selectable={selectable}
