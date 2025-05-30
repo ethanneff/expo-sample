@@ -1,6 +1,8 @@
-import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Pressable } from 'react-native';
+import { ButtonVariant } from '~/components/Button/types';
+import { useButtonStyles } from '~/components/Button/useButtonStyles';
+import { Icon, IconName } from '~/components/Icon/Icon';
 import { Loader } from '~/components/Loader/Loader';
 import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
@@ -8,45 +10,78 @@ import { useAppTheme } from '~/theme/useAppTheme';
 
 type Props = {
   title: string;
-  icon?: string;
+  icon?: IconName;
   onPress: () => void;
   disabled?: boolean;
   loading?: boolean;
+  variant: ButtonVariant;
+  fullWidth?: boolean;
 };
 
-export const Button = ({ title, onPress, disabled, icon, loading = false }: Props) => {
+export const Button = ({
+  title,
+  onPress,
+  disabled,
+  icon,
+  loading,
+  variant = 'primary',
+  fullWidth,
+}: Props) => {
   const { colors, spacing } = useAppTheme();
   const [isPressed, setIsPressed] = useState(false);
   const isDisabled = disabled || loading;
+  const { backgroundColor, borderColor, color } = useButtonStyles(variant);
+
+  const togglePressed = useCallback(
+    (value: boolean) => () => {
+      setIsPressed(value);
+    },
+    []
+  );
 
   return (
     <Pressable
       onPress={onPress}
       disabled={isDisabled}
-      onPressIn={() => setIsPressed(true)}
-      onPressOut={() => setIsPressed(false)}
-      onHoverIn={() => setIsPressed(true)}
-      onHoverOut={() => setIsPressed(false)}
+      onPressIn={togglePressed(true)}
+      onPressOut={togglePressed(false)}
+      onHoverIn={togglePressed(true)}
+      onHoverOut={togglePressed(false)}
       style={({ pressed }) => ({
-        opacity: pressed ? 0.8 : 1,
+        opacity: pressed ? 0.25 : 1,
         cursor: isDisabled ? 'auto' : 'pointer',
       })}>
       <View
-        backgroundColor={isPressed ? colors.accent : colors.background}
-        borderColor={colors.border}
+        backgroundColor={backgroundColor}
+        opacity={isDisabled ? 0.5 : 1}
+        borderColor={borderColor}
+        alignSelf={fullWidth ? 'auto' : 'center'}
         borderWidth={1}
-        paddingHorizontal={spacing.$12}
+        paddingHorizontal={spacing.$16}
         paddingVertical={spacing.$6}
         borderRadius={spacing.$8}>
-        <Loader absoluteFillObject visible={loading} />
+        <Loader absoluteFillObject visible={loading ?? false} color={color} />
         <View
           gap={spacing.$8}
           flexDirection="row"
           justifyContent="center"
           alignItems="center"
           opacity={loading ? 0 : 1}>
-          {icon ? <Ionicons name={icon} size={16} color={colors.foreground} /> : null}
-          <Text title={title} size="sm" weight="medium" />
+          {icon ? (
+            <View
+              position={title.length === 0 ? 'absolute' : 'relative'}
+              justifyContent="center"
+              alignItems="center">
+              <Icon name={icon} size={18} color={colors[color]} />
+            </View>
+          ) : null}
+          <Text
+            title={title}
+            size="sm"
+            weight="medium"
+            color={color}
+            decoration={variant === 'link' && isPressed ? 'underline' : 'none'}
+          />
         </View>
       </View>
     </Pressable>
