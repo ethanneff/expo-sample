@@ -5,7 +5,7 @@
     "android": "expo run:android",
     "ios": "expo run:ios --device 'iPhone 15 Pro'",
     "start": "expo start --clear --dev-client",
-    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\" && tsc",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
     "clean": "npx expo prebuild --clean",
     "validate": "npx npm-check-updates -i && npx expo@latest install --check && npx expo-doctor@latest",
