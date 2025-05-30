@@ -23,8 +23,16 @@ const LandingScreen = () => {
         <Text title="Duolingo" />
         <Text title="Learn for free. Forever." />
       </KeyboardAwareScrollView>
-      <Button title="Get Started" onPress={() => navigation.navigate('Onboarding')} />
-      <Button title="I already have an account" onPress={() => navigation.navigate('SignIn')} />
+      <Button
+        title="Get Started"
+        onPress={() => navigation.navigate('Onboarding')}
+        variant="primary"
+      />
+      <Button
+        title="I already have an account"
+        onPress={() => navigation.navigate('SignIn')}
+        variant="secondary"
+      />
     </Screen>
   );
 };

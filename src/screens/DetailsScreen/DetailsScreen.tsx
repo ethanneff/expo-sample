@@ -1,17 +1,11 @@
-import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useRef, useState } from 'react';
 import { Dimensions, FlatList } from 'react-native';
+import { Icon } from '~/components/Icon/Icon';
 import { Screen } from '~/components/Screen/Screen';
 import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
 import { useAppTheme } from '~/theme/useAppTheme';
-
-type Section = {
-  id: string;
-  name: string;
-  units: Unit[];
-};
 
 type Unit = {
   id: string;
@@ -223,11 +217,7 @@ const DetailsScreen = () => {
           alignSelf={'center'}
           width={width / 4}
           height={width / 4}>
-          <Ionicons
-            name={getIconForLessonType(item.type)}
-            size={width / 8}
-            color={colors.background}
-          />
+          <Icon name={getIconForLessonType(item.type)} size={width / 8} color={colors.background} />
         </View>
       </View>
     );
@@ -243,7 +233,6 @@ const DetailsScreen = () => {
         <Text title={`Section ${getIdFromId(currentSection)}, Unit ${getIdFromId(currentUnit)}`} />
         <Text title={`${unitData[getIdFromId(currentUnit)].name}`} />
       </View>
-
       <FlatList
         data={lessonData}
         renderItem={renderLesson}

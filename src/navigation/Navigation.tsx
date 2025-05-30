@@ -1,10 +1,10 @@
-import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStaticNavigation, StaticParamList, Theme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ActivityIndicator } from 'react-native';
+import { Icon, IconName } from '~/components/Icon/Icon';
 import ActionSheetScreen from '~/screens/ActionSheetScreen/ActionSheetScreen';
 import DebugScreen from '~/screens/DebugScreen/DebugScreen';
 import DetailsScreen from '~/screens/DetailsScreen/DetailsScreen';
@@ -31,9 +31,9 @@ const useAuth = () => useStoreAuth((state) => state.user !== null);
 const useUnAuth = () => useStoreAuth((state) => state.user === null);
 
 const getTabBarIcon =
-  (icon: keyof typeof Ionicons.glyphMap) =>
+  (icon: IconName) =>
   ({ color, size }: { color: string; size: number }) => (
-    <Ionicons name={icon} size={size - 8} color={color} />
+    <Icon name={icon} size={size - 8} color={color} />
   );
 
 const Tabs = createBottomTabNavigator({
