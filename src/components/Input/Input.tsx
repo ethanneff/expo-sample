@@ -1,6 +1,6 @@
-import { Ionicons } from '@expo/vector-icons';
 import { useCallback, useState } from 'react';
 import { TextInput, TextInputProps, TouchableOpacity } from 'react-native';
+import { Icon, IconName } from '~/components/Icon/Icon';
 import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
 import { useAppTheme } from '~/theme/useAppTheme';
@@ -27,17 +27,14 @@ type Properties = RequiredTextInputProperties &
   TextInputProps & {
     label?: string;
     error?: string;
-    readonly ref?: React.RefObject<TextInput>;
+    readonly ref?: React.RefObject<TextInput | null>;
   };
 
-const getIcon = (
-  hasValue: boolean,
-  secureTextEntry: boolean | undefined
-): 'times-circle' | 'eye-slash' | 'eye' => {
-  if (!hasValue) return 'times-circle';
-  if (secureTextEntry === undefined) return 'times-circle';
+const getIcon = (hasValue: boolean, secureTextEntry: boolean | undefined): IconName => {
+  if (!hasValue) return 'close';
+  if (secureTextEntry === undefined) return 'close';
   if (secureTextEntry) return 'eye';
-  return 'eye-slash';
+  return 'eye-off';
 };
 
 const iconSize = 16;
@@ -123,7 +120,7 @@ export const Input = ({
         {showIcon ? (
           <View position="absolute" top={0} bottom={0} right={spacing.$8} justifyContent="center">
             <TouchableOpacity onPress={handleIconPress}>
-              <Ionicons name={icon} size={iconSize} color={colors.mutedForeground} />
+              <Icon name={icon} size={iconSize} color={colors.mutedForeground} />
             </TouchableOpacity>
           </View>
         ) : null}
