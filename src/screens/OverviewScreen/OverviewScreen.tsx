@@ -1,7 +1,6 @@
-import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { useMemo, useState } from 'react';
-import { Text as RNText, TouchableOpacity } from 'react-native';
+import { useMemo, useRef, useState } from 'react';
+import { Text as RNText, TextInput } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { Button } from '~/components/Button/Button';
 import { Card } from '~/components/Card/Card';
@@ -103,7 +102,7 @@ const TeamMember = ({ name, email, roleId, avatar }: TeamMemberProps) => {
         <Text title={email} color="mutedForeground" size="sm" />
       </View>
       <Text
-        title={roles.find((role) => role.id === roleId)?.name}
+        title={roles.find((role) => role.id === roleId)?.name || ''}
         color="mutedForeground"
         size="xs"
       />
@@ -175,6 +174,9 @@ type Message = {
 
 const ChatCard = () => {
   const { spacing, colors } = useAppTheme();
+  const messageRef = useRef<TextInput>(null);
+  const message = useRef('');
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -206,6 +208,24 @@ const ChatCard = () => {
     },
   ]);
 
+  const handleSend = () => {
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: String(prev.length + 1),
+        content: message.current,
+        createdAt: new Date(),
+        senderId: '2',
+        isRead: true,
+      },
+    ]);
+    messageRef.current?.clear();
+  };
+
+  const handleChangeText = (text: string) => {
+    message.current = text;
+  };
+
   return (
     <Card>
       <View gap={spacing.$12}>
@@ -227,13 +247,23 @@ const ChatCard = () => {
         ))}
         <View flexDirection="row" gap={spacing.$6} alignItems="center">
           <View flex={1}>
-            <Input placeholder="Type your message..." />
+            <Input
+              ref={messageRef}
+              defaultValue=""
+              onChangeText={handleChangeText}
+              placeholder="Type your message..."
+              autoCapitalize="none"
+              autoComplete="off"
+              autoCorrect={false}
+              keyboardType="default"
+              returnKeyType="done"
+              textContentType="none"
+              editable={true}
+              submitBehavior="submit"
+              onSubmitEditing={handleSend}
+            />
           </View>
-          <View>
-            <TouchableOpacity>
-              <Ionicons name="send" size={24} color="foreground" />
-            </TouchableOpacity>
-          </View>
+          <Button title="" onPress={handleSend} variant="outline" icon="send" />
         </View>
       </View>
     </Card>
