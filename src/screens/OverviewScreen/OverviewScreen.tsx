@@ -1,5 +1,6 @@
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { Screen } from '~/components/Screen/Screen';
+import { CardAccordion } from '~/screens/OverviewScreen/CardAccordion';
 import { CardButtons } from '~/screens/OverviewScreen/CardButtons';
 import { CardCalendar } from '~/screens/OverviewScreen/CardCalendar';
 import { CardChat } from '~/screens/OverviewScreen/CardChat';
@@ -24,7 +25,8 @@ const OverviewScreen = () => {
         }}>
         <CardRevenue />
         <CardSubscriptions />
-        <CardCalendar initialTimestamp={new Date().getTime()} />
+        <CardAccordion />
+        <CardCalendar />
         <CardTeamMembers />
         <CardChat />
         <CardTypography />
