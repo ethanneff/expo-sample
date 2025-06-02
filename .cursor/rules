@@ -1,0 +1,47 @@
+# Cursor Rules Configuration
+
+# General behavior rules
+- Always use TypeScript
+- Use meaningful variable and function names
+- No incline comments
+- Use pure functions where possible
+- Use functional components instead of class components
+- Use /src/components directory for components
+- Use /src/screens directory for screens
+- Use zustand for state management
+- Use react-native-reanimated for animations
+- Don't use View, Button, Text, TextInput, StyleSheet, TouchableOpacity, Pressable from react-native
+
+# File organization rules
+- Focus on colocation of code
+
+<!-- # Testing rules
+- Tests should be in __tests__ directory
+- Write tests for new features
+- Maintain test coverage above 80%
+- Use Jest for unit tests
+- Use React Testing Library for component tests -->
+
+# Security rules
+- Never commit sensitive information
+- Use environment variables for secrets
+- Validate all user inputs
+- Sanitize data before rendering
+
+<!-- # Performance rules
+- Optimize bundle size
+- Use proper caching strategies
+- Implement lazy loading where appropriate
+- Monitor and optimize render performance -->
+
+# Accessibility rules
+- Follow WCAG 2.1 guidelines
+- Include proper ARIA attributes
+- Ensure keyboard navigation works
+- Maintain sufficient color contrast
+
+# Git rules
+- Write clear commit messages
+- Create feature branches for new work
+- Keep commits atomic and focused
+- Review code before merging
