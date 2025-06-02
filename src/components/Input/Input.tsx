@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react';
-import { TextInput, TextInputProps, TouchableOpacity } from 'react-native';
+import { useCallback, useRef, useState } from 'react';
+import { Pressable, TextInput, TextInputProps, TouchableOpacity } from 'react-native';
 import { Icon, IconName } from '~/components/Icon/Icon';
 import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
@@ -27,7 +27,7 @@ type Properties = RequiredTextInputProperties &
   TextInputProps & {
     label?: string;
     error?: string;
-    readonly ref?: React.RefObject<TextInput | null>;
+    ref?: React.Ref<TextInput>;
   };
 
 const getIcon = (hasValue: boolean, secureTextEntry: boolean | undefined): IconName => {
@@ -58,6 +58,7 @@ export const Input = ({
   submitBehavior,
   textContentType,
 }: Properties) => {
+  const inputRef = useRef<TextInput>(null);
   const [value, setValue] = useState(defaultValue);
   const [isSecureTextEntry, setIsSecureTextEntry] = useState(secureTextEntry);
   const { spacing, colors } = useAppTheme();
@@ -77,14 +78,35 @@ export const Input = ({
     }
     setValue('');
     onChangeText?.('');
+    inputRef.current?.focus();
   }, [onChangeText, secureTextEntry, isSecureTextEntry]);
+
+  const handleLabelPress = useCallback(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  const handleRef = useCallback(
+    (node: TextInput | null) => {
+      inputRef.current = node;
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref) {
+        ref.current = node;
+      }
+    },
+    [ref]
+  );
 
   const showIcon = value.length > 0;
   const icon = getIcon(showIcon, isSecureTextEntry);
 
   return (
     <View gap={spacing.$4}>
-      {label ? <Text title={label} size="sm" weight="medium" /> : null}
+      {label ? (
+        <Pressable onPress={handleLabelPress}>
+          <Text title={label} size="sm" weight="medium" />
+        </Pressable>
+      ) : null}
       <View>
         <TextInput
           value={value}
@@ -97,7 +119,7 @@ export const Input = ({
           onChangeText={handleChangeText}
           onSubmitEditing={onSubmitEditing}
           placeholder={placeholder}
-          ref={ref}
+          ref={handleRef}
           cursorColor={colors.primary}
           selectionColor={colors.primary}
           returnKeyType={returnKeyType}
