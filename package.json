@@ -9,6 +9,7 @@
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
     "clean": "npx expo prebuild --clean",
     "validate": "npx npm-check-updates -i && npx expo@latest install --check && npx expo-doctor@latest",
+    "install": "pnpx pod-install",
     "web": "expo start --web"
   },
   "dependencies": {
