@@ -4,12 +4,12 @@ import { Button } from '~/components/Button/Button';
 import { Card } from '~/components/Card/Card';
 import { Screen } from '~/components/Screen/Screen';
 import { Text } from '~/components/Text/Text';
+import { View } from '~/components/View/View';
 import { Route } from '~/navigation/Navigation';
-
 import { useAppTheme } from '~/theme/useAppTheme';
 
 const GamesScreen = () => {
-  const { colors } = useAppTheme();
+  const { spacing } = useAppTheme();
   const navigate = useNavigation();
 
   const nav = (route: Route) => () => {
@@ -19,17 +19,23 @@ const GamesScreen = () => {
   return (
     <Screen>
       <KeyboardAwareScrollView>
-        <Card>
-          <Text title="Games" />
-          <Button title="Game of life" onPress={nav('GameOfLife')} variant="secondary" />
-          <Button title="Tic tac toe" onPress={nav('GameTicTacToe')} variant="secondary" />
-          <Button title="Minesweeper" onPress={nav('GameMinesweeper')} variant="secondary" />
-          <Button title="Snake" onPress={nav('GameSnake')} variant="secondary" />
-          <Button title="Tetris" onPress={nav('GameTetris')} variant="secondary" />
-          <Button title="Bejeweled" onPress={nav('GameBejeweled')} variant="secondary" />
-          <Button title="Flappy bird" onPress={nav('GameFlappyBird')} variant="secondary" />
-          <Button title="PadiJump" onPress={nav('GamePadiJump')} variant="secondary" />
-        </Card>
+        <View gap={spacing.$4} padding={spacing.$12}>
+          <Card>
+            <Text title="Games" size="4xl" />
+            <View gap={spacing.$4}>
+              <Button title="Game of life" onPress={nav('GameOfLife')} variant="outline" />
+              <Button title="Tic tac toe" onPress={nav('GameTicTacToe')} variant="outline" />
+              <Button title="Minesweeper" onPress={nav('GameTicTacToe')} variant="outline" />
+              <Button title="Snake" onPress={nav('GameTicTacToe')} variant="outline" />
+              <Button title="Tetris" onPress={nav('GameTicTacToe')} variant="outline" />
+              <Button title="Bejeweled" onPress={nav('GameTicTacToe')} variant="outline" />
+              <Button title="Flappy bird" onPress={nav('GameTicTacToe')} variant="outline" />
+              <Button title="PadiJump" onPress={nav('GameTicTacToe')} variant="outline" />
+              <Button title="CoinMaster" onPress={nav('GameTicTacToe')} variant="outline" />
+              <Button title="TempleRun" onPress={nav('GameTicTacToe')} variant="outline" />
+            </View>
+          </Card>
+        </View>
       </KeyboardAwareScrollView>
     </Screen>
   );

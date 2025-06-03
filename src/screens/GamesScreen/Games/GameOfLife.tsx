@@ -258,7 +258,6 @@ const GameOfLife = () => {
 
   return (
     <Screen>
-      <Text title="Game of Life" />
       <View flexDirection="row" justifyContent="center" gap={10} marginVertical={10}>
         <TouchableOpacity onPress={toggleRunning}>
           <View
