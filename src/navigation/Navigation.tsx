@@ -101,7 +101,7 @@ const RootStack = createNativeStackNavigator({
         sheetCornerRadius: 16,
         sheetGrabberVisible: true,
         sheetAllowedDetents: [0.25, 0.75],
-      },
+      } as NativeStackNavigationOptions,
     },
   },
 });
