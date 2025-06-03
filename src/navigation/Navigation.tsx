@@ -1,6 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStaticNavigation, StaticParamList, Theme } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ActivityIndicator } from 'react-native';
@@ -9,6 +12,9 @@ import ActionSheetScreen from '~/screens/ActionSheetScreen/ActionSheetScreen';
 import DebugScreen from '~/screens/DebugScreen/DebugScreen';
 import DetailsScreen from '~/screens/DetailsScreen/DetailsScreen';
 import ForgotPasswordScreen from '~/screens/ForgotPasswordScreen/ForgotPasswordScreen';
+import GameOfLife from '~/screens/GamesScreen/Games/GameOfLife';
+import GameTicTacToe from '~/screens/GamesScreen/Games/GameTicTacToe';
+import GamesScreen from '~/screens/GamesScreen/GamesScreen';
 import HomeScreen from '~/screens/HomeScreen/HomeScreen';
 import LandingScreen from '~/screens/LandingScreen/LandingScreen';
 import OnboardingScreen from '~/screens/OnboardingScreen/OnboardingScreen';
@@ -44,6 +50,7 @@ const Tabs = createBottomTabNavigator({
     Details: { screen: DetailsScreen, options: { tabBarIcon: getTabBarIcon('list') } },
     Profile: { screen: ProfileScreen, options: { tabBarIcon: getTabBarIcon('person') } },
     Settings: { screen: SettingsScreen, options: { tabBarIcon: getTabBarIcon('cog') } },
+    Games: { screen: GamesScreen, options: { tabBarIcon: getTabBarIcon('game-controller') } },
   },
 });
 
@@ -88,6 +95,8 @@ const RootStack = createNativeStackNavigator({
         SurveyCsat: SurveyCsatScreen,
         Terms: TermsScreen,
         PrivacyPolicy: PrivacyPolicyScreen,
+        GameTicTacToe: GameTicTacToe,
+        GameOfLife: GameOfLife,
       },
       screenOptions: { presentation: 'modal' },
     },
@@ -107,6 +116,8 @@ const RootStack = createNativeStackNavigator({
 });
 
 type RootStackParamList = StaticParamList<typeof RootStack>;
+
+export type Route = keyof RootStackParamList;
 
 declare global {
   namespace ReactNavigation {
