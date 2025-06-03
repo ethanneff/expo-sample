@@ -8,8 +8,8 @@
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\" && tsc",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
     "clean": "npx expo prebuild --clean",
-    "validate": "npx npm-check-updates -i && npx expo@latest install --check && npx expo-doctor@latest",
     "install": "pnpx pod-install",
+    "validate": "pnpx npm-check-updates -i && pnpx expo@latest install --check && pnpx expo-doctor@latest",
     "web": "expo start --web"
   },
   "dependencies": {
