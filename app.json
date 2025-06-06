@@ -8,7 +8,9 @@
       "edgeToEdgeEnabled": true,
       "package": "com.ethanneff.expo"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "experiments": {
       "tsconfigPaths": true
     },
@@ -31,6 +33,7 @@
             "./assets/fonts/Geist-Medium.ttf",
             "./assets/fonts/Geist-Regular.ttf",
             "./assets/fonts/Geist-SemiBold.ttf",
+            "./assets/fonts/Geist-ExtraBold.ttf",
             "./assets/fonts/GeistMono-Bold.ttf",
             "./assets/fonts/GeistMono-Regular.ttf"
           ]
