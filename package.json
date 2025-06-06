@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "android": "expo run:android",
-    "ios": "expo run:ios --device 'iPhone 15 Pro'",
+    "ios": "expo run:ios --device 'iPhone 15 Pro Max'",
     "start": "expo start --clear --dev-client",
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\" && tsc",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
