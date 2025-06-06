@@ -23,7 +23,7 @@ export const Table = ({ headers, rows }: TableProps) => {
             borderRightWidth={index < headers.length - 1 ? 1 : 0}
             borderRightColor={colors.border}>
             <View padding={spacing.$4}>
-              <Text title={header} weight="semibold" />
+              <Text title={header} fontFamily="Geist-Bold" />
             </View>
           </View>
         ))}
