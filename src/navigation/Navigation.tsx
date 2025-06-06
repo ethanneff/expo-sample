@@ -12,7 +12,10 @@ import ActionSheetScreen from '~/screens/ActionSheetScreen/ActionSheetScreen';
 import DebugScreen from '~/screens/DebugScreen/DebugScreen';
 import DetailsScreen from '~/screens/DetailsScreen/DetailsScreen';
 import ForgotPasswordScreen from '~/screens/ForgotPasswordScreen/ForgotPasswordScreen';
+import GameBejeweled from '~/screens/GamesScreen/Games/GameBejeweled';
+import GameFlappyBird from '~/screens/GamesScreen/Games/GameFlappyBird';
 import GameOfLife from '~/screens/GamesScreen/Games/GameOfLife';
+import GamePapiJump from '~/screens/GamesScreen/Games/GamePapiJump';
 import GameTicTacToe from '~/screens/GamesScreen/Games/GameTicTacToe';
 import GamesScreen from '~/screens/GamesScreen/GamesScreen';
 import HomeScreen from '~/screens/HomeScreen/HomeScreen';
@@ -97,6 +100,9 @@ const RootStack = createNativeStackNavigator({
         PrivacyPolicy: PrivacyPolicyScreen,
         GameTicTacToe: GameTicTacToe,
         GameOfLife: GameOfLife,
+        GameFlappyBird: GameFlappyBird,
+        GamePapiJump: GamePapiJump,
+        GameBejeweled: GameBejeweled,
       },
       screenOptions: { presentation: 'modal' },
     },
@@ -143,8 +149,8 @@ export const Navigation = () => {
     fonts: {
       regular: { fontFamily: 'Geist-Regular', fontWeight: '400' },
       medium: { fontFamily: 'Geist-Medium', fontWeight: '500' },
-      bold: { fontFamily: 'Geist-SemiBold', fontWeight: '600' },
-      heavy: { fontFamily: 'Geist-Bold', fontWeight: '700' },
+      bold: { fontFamily: 'Geist-Bold', fontWeight: '600' },
+      heavy: { fontFamily: 'Geist-ExtraBold', fontWeight: '700' },
     },
   };
 

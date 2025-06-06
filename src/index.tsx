@@ -22,6 +22,7 @@ const fonts = {
         'Geist-Medium': require('../assets/fonts/Geist-Medium.ttf'),
         'Geist-Regular': require('../assets/fonts/Geist-Regular.ttf'),
         'Geist-SemiBold': require('../assets/fonts/Geist-SemiBold.ttf'),
+        'Geist-ExtraBold': require('../assets/fonts/Geist-ExtraBold.ttf'),
         'Geist-Light': require('../assets/fonts/Geist-Light.ttf'),
         'GeistMono-Bold': require('../assets/fonts/GeistMono-Bold.ttf'),
         'GeistMono-Regular': require('../assets/fonts/GeistMono-Regular.ttf'),
