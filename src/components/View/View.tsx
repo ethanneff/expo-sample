@@ -10,6 +10,7 @@ import {
 type ViewProperties = ViewStyle & {
   readonly absoluteFillObject?: boolean;
   readonly accessible?: boolean;
+  readonly accessibilityLabel?: string;
   readonly children?: ReactNode;
   readonly dropShadow?: boolean;
   readonly onLayout?: (event: LayoutChangeEvent) => void;
@@ -31,6 +32,7 @@ const getDropShadow = (dropShadow?: boolean) => {
 export const View = ({
   absoluteFillObject,
   accessible,
+  accessibilityLabel,
   children,
   dropShadow,
   onLayout,
@@ -46,7 +48,11 @@ export const View = ({
   });
 
   return (
-    <RNView accessible={accessible} onLayout={onLayout} style={[styles.view, style]}>
+    <RNView
+      accessible={accessible}
+      accessibilityLabel={accessibilityLabel}
+      onLayout={onLayout}
+      style={[styles.view, style]}>
       {children}
     </RNView>
   );
