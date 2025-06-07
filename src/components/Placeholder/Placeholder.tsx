@@ -9,14 +9,7 @@ type Props = {
 export const Placeholder = ({ title, children }: Props) => {
   return (
     <Screen>
-      <Text
-        title={title}
-        color="foreground"
-        size="lg"
-        family="Geist"
-        weight="medium"
-        align="center"
-      />
+      <Text title={title} variant="large" textAlign="center" />
       {children}
     </Screen>
   );
