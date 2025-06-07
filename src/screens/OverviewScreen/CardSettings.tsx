@@ -19,8 +19,8 @@ const ToggleSection = ({ title, description, checked }: ToggleSectionProps) => {
   return (
     <View flexDirection="row" gap={spacing.$12} alignItems="center">
       <View flexShrink={1}>
-        <Text title={title} size="sm" weight="medium" />
-        <Text title={description} color="mutedForeground" size="xs" />
+        <Text title={title} />
+        <Text title={description} variant="muted" />
       </View>
       <Toggle checked={isChecked} onPress={() => setIsChecked(!isChecked)} />
     </View>
@@ -33,8 +33,8 @@ export const CardSettings = () => {
     <Card>
       <View gap={spacing.$16}>
         <View>
-          <Text title="Cookie Settings" tracking="tight" weight="semibold" />
-          <Text title="Manage your cookie settings here" size="sm" color="mutedForeground" />
+          <Text title="Cookie Settings" variant="h3" />
+          <Text title="Manage your cookie settings here" variant="muted" />
         </View>
         <ToggleSection
           title="Strictly Necessary"

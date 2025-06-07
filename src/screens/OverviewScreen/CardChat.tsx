@@ -160,7 +160,7 @@ export const CardChat = () => {
                     source={{ uri: chat.people[personId].avatar }}
                     style={{ width: spacing.$20, height: spacing.$20 }}
                   />
-                  <Text title={chat.people[personId].name} size="xs" color="mutedForeground" />
+                  <Text title={chat.people[personId].name} variant="xsmall" />
                 </View>
               ) : null}
               <View
@@ -169,7 +169,11 @@ export const CardChat = () => {
                 backgroundColor={isMe ? colors.primary : colors.muted}
                 paddingHorizontal={spacing.$12}
                 paddingVertical={spacing.$6}>
-                <Text title={content} size="sm" color={isMe ? 'primaryForeground' : 'primary'} />
+                <Text
+                  title={content}
+                  variant="small"
+                  color={isMe ? 'primaryForeground' : 'primary'}
+                />
               </View>
             </View>
           );

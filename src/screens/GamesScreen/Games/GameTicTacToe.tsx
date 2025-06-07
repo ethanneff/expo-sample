@@ -69,8 +69,7 @@ const GameTicTacToe = () => {
         alignItems="center">
         <Text
           title={board[index] || ''}
-          size="2xl"
-          weight="bold"
+          variant="h3"
           color={board[index] === 'X' ? 'primary' : 'destructive'}
         />
       </View>
@@ -82,8 +81,8 @@ const GameTicTacToe = () => {
       <KeyboardAwareScrollView>
         <Card>
           <View gap={spacing.$8} alignItems="center">
-            <Text title="Tic Tac Toe" size="2xl" weight="bold" />
-            <Text title={status} size="lg" color={winner ? 'primary' : 'foreground'} />
+            <Text title="Tic Tac Toe" variant="h1" />
+            <Text title={status} variant="large" color={winner ? 'primary' : 'foreground'} />
             <View
               flexDirection="row"
               flexWrap="wrap"

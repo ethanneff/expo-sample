@@ -130,8 +130,6 @@ const CalendarHeader = () => {
             month: 'long',
             year: 'numeric',
           })}
-          size="md"
-          weight="medium"
         />
       </Pressable>
       <Button title="" icon="chevron-forward" onPress={actions.handleNextMonth} variant="outline" />
@@ -145,7 +143,7 @@ const CalendarWeekHeader = () => {
     <View flexDirection="row" justifyContent="space-between" paddingVertical={spacing.$8}>
       {days.map((day) => (
         <View key={day} justifyContent="center" alignItems="center" width={`${100 / 7}%`}>
-          <Text title={day} size="sm" color="mutedForeground" />
+          <Text title={day} variant="muted" />
         </View>
       ))}
     </View>
@@ -199,7 +197,7 @@ const CalendarDay = ({ timestamp }: CalendarDayProps) => {
                   ? 'primary'
                   : 'foreground'
           }
-          size="sm"
+          variant="small"
         />
       </View>
     </Pressable>

@@ -21,16 +21,16 @@ const GamesScreen = () => {
       <KeyboardAwareScrollView>
         <View gap={spacing.$4} padding={spacing.$12}>
           <Card>
-            <Text title="Games" size="4xl" />
+            <Text title="Games" variant="h1" />
             <View gap={spacing.$4}>
               <Button title="Game of life" onPress={nav('GameOfLife')} variant="outline" />
               <Button title="Tic tac toe" onPress={nav('GameTicTacToe')} variant="outline" />
               <Button title="Minesweeper" onPress={nav('GameTicTacToe')} variant="outline" />
               <Button title="Snake" onPress={nav('GameTicTacToe')} variant="outline" />
               <Button title="Tetris" onPress={nav('GameTicTacToe')} variant="outline" />
-              <Button title="Bejeweled" onPress={nav('GameTicTacToe')} variant="outline" />
-              <Button title="Flappy bird" onPress={nav('GameTicTacToe')} variant="outline" />
-              <Button title="PadiJump" onPress={nav('GameTicTacToe')} variant="outline" />
+              <Button title="Bejeweled" onPress={nav('GameBejeweled')} variant="outline" />
+              <Button title="Flappy bird" onPress={nav('GameFlappyBird')} variant="outline" />
+              <Button title="PapiJump" onPress={nav('GamePapiJump')} variant="outline" />
               <Button title="CoinMaster" onPress={nav('GameTicTacToe')} variant="outline" />
               <Button title="TempleRun" onPress={nav('GameTicTacToe')} variant="outline" />
             </View>

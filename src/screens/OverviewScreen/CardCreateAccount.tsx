@@ -12,19 +12,8 @@ export const CardCreateAccount = () => {
     <Card>
       <View gap={spacing.$16}>
         <View>
-          <Text
-            title="Create an account"
-            size="2xl"
-            weight="semibold"
-            color="foreground"
-            tracking="tight"
-          />
-          <Text
-            title="Enter your email below to create your account"
-            size="sm"
-            color="mutedForeground"
-            weight="light"
-          />
+          <Text title="Create an account" variant="h3" />
+          <Text title="Enter your email below to create your account" variant="muted" />
         </View>
         <View gap={spacing.$12} flexDirection="row" justifyContent="center">
           <View flex={1}>
@@ -36,12 +25,7 @@ export const CardCreateAccount = () => {
         </View>
         <View flexDirection="row" alignItems="center" gap={spacing.$6}>
           <View height={1} backgroundColor={colors.border} flex={1} />
-          <Text
-            title="Or continue with"
-            color="mutedForeground"
-            size="xs"
-            textTransform="uppercase"
-          />
+          <Text title="Or continue with" variant="muted" textTransform="uppercase" />
           <View height={1} backgroundColor={colors.border} flex={1} />
         </View>
         <Input

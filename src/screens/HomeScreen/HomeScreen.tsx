@@ -24,7 +24,7 @@ const HomeScreen = () => {
       <KeyboardAwareScrollView>
         <View padding={spacing.$12} gap={spacing.$12}>
           <Card>
-            <Text title="Navigation" size="4xl" weight="light" />
+            <Text title="Navigation" variant="h1" />
             <View gap={spacing.$8}>
               <Button
                 title="Debug"
@@ -46,10 +46,15 @@ const HomeScreen = () => {
                 onPress={() => navigation.navigate('SurveyCsat')}
                 variant="outline"
               />
+              <Button
+                title="Template"
+                onPress={() => navigation.navigate('Template')}
+                variant="outline"
+              />
             </View>
           </Card>
           <Card>
-            <Text title="Settings" size="4xl" weight="light" />
+            <Text title="Settings" variant="h1" />
             <View gap={spacing.$8}>
               <Button title={`theme: ${theme}`} onPress={() => toggleTheme()} variant="outline" />
               <Button

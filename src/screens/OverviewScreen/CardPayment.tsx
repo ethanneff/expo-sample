@@ -47,11 +47,10 @@ export const CardPayment = () => {
   return (
     <Card>
       <View marginBottom={spacing.$12}>
-        <Text title="Upgrade your subscription" tracking="tight" weight="semibold" />
+        <Text title="Upgrade your subscription" variant="h3" />
         <Text
           title="You are currently on the free plan. Upgrade to the pro plan to get access to all features."
-          size="sm"
-          color="mutedForeground"
+          variant="muted"
         />
       </View>
       <Input

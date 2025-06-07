@@ -49,14 +49,10 @@ const TeamMember = ({ name, email, roleId, avatar }: TeamMemberProps) => {
     <View flexDirection="row" gap={spacing.$12} alignItems="center">
       <Image source={{ uri: avatar }} style={{ width: 32, height: 32 }} />
       <View flex={1}>
-        <Text title={name} size="sm" weight="medium" />
-        <Text title={email} color="mutedForeground" size="sm" />
+        <Text title={name} variant="small" />
+        <Text title={email} variant="muted" />
       </View>
-      <Text
-        title={roles.find((role) => role.id === roleId)?.name || ''}
-        color="mutedForeground"
-        size="xs"
-      />
+      <Text title={roles.find((role) => role.id === roleId)?.name || ''} variant="xsmall" />
     </View>
   );
 };
@@ -105,8 +101,8 @@ export const CardTeamMembers = () => {
 
   return (
     <Card>
-      <Text title="Team Members" tracking="tight" weight="semibold" />
-      <Text title="Invite your team members to collaborate" color="mutedForeground" size="sm" />
+      <Text title="Team Members" variant="h3" />
+      <Text title="Invite your team members to collaborate" variant="muted" />
       {teamMembers.map(({ id, name, email, roleId, avatar }) => (
         <TeamMember key={id} name={name} email={email} roleId={roleId} avatar={avatar} />
       ))}
