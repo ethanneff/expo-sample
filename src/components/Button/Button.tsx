@@ -77,10 +77,9 @@ export const Button = ({
           ) : null}
           <Text
             title={title}
-            size="sm"
-            weight="medium"
+            variant="small"
             color={color}
-            decoration={variant === 'link' && isPressed ? 'underline' : 'none'}
+            textDecorationLine={variant === 'link' && isPressed ? 'underline' : 'none'}
           />
         </View>
       </View>

@@ -5,7 +5,7 @@ import { Text } from '~/components/Text/Text';
 const DebugScreen = () => (
   <Screen>
     <KeyboardAwareScrollView>
-      <Text title="Action Sheet Screen" size="4xl" weight="light" />
+      <Text title="Action Sheet Screen" variant="h1" />
       <Text title="Content" />
       <Text title="Content" />
       <Text title="Content" />

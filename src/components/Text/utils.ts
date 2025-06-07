@@ -13,7 +13,7 @@ export type Variant =
   | 'large'
   | 'muted';
 
-export type TextSize =
+type TextSize =
   | 'xs'
   | 'sm'
   | 'md'
@@ -28,9 +28,9 @@ export type TextSize =
   | '8xl'
   | '9xl';
 
-export type TextLetterSpacing = 'tighter' | 'tight' | 'normal' | 'wide' | 'wider' | 'widest';
+type TextLetterSpacing = 'tighter' | 'tight' | 'normal' | 'wide' | 'wider' | 'widest';
 
-export type TextWeight = 'light' | 'regular' | 'medium' | 'semibold' | 'bold' | 'extrabold';
+type TextWeight = 'light' | 'regular' | 'medium' | 'semibold' | 'bold' | 'extrabold';
 
 export type FontFamily =
   | 'Geist-Light'

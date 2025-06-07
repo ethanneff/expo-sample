@@ -104,7 +104,7 @@ export const Input = ({
     <View gap={spacing.$4}>
       {label ? (
         <Pressable onPress={handleLabelPress}>
-          <Text title={label} size="sm" weight="medium" />
+          <Text title={label} variant="small" />
         </Pressable>
       ) : null}
       <View>
@@ -147,7 +147,7 @@ export const Input = ({
           </View>
         ) : null}
       </View>
-      {error ? <Text title={error} size="xs" color="destructive" /> : null}
+      {error ? <Text title={error} variant="xsmall" color="destructive" /> : null}
     </View>
   );
 };

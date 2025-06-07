@@ -68,12 +68,7 @@ const RootStack = createNativeStackNavigator({
       if: useUnAuth,
       screens: {
         Splash: SplashScreen,
-        Landing: {
-          screen: LandingScreen,
-          options: {
-            headerBackVisible: false,
-          },
-        },
+        Landing: { screen: LandingScreen, options: { headerBackVisible: false } },
         Onboarding: OnboardingScreen,
         SignIn: SignInScreen,
         SignUp: SignUpScreen,

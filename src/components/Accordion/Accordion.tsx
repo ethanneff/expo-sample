@@ -76,7 +76,7 @@ export const AccordionItem = ({
           justifyContent="space-between"
           padding={spacing.$12}>
           <View flex={1}>
-            <Text title={title} weight="medium" />
+            <Text title={title} variant="large" />
           </View>
           <Animated.View style={chevronStyle}>
             <Icon name="chevron-down" size={20} color="black" />
