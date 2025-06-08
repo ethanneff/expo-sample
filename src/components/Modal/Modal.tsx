@@ -17,7 +17,11 @@ export const Modal = ({ children, onBackdropPress }: Props) => {
         <View absoluteFillObject opacity={0.5} backgroundColor={colors.foreground} />
       </TouchableWithoutFeedback>
       <KeyboardAwareScrollView
-        contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: 'center',
+          padding: spacing.$16,
+        }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled">
         <View

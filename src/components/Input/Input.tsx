@@ -23,11 +23,13 @@ type RequiredTextInputProperties = Required<
   >
 >;
 
+export type InputRef = TextInput;
+
 type Properties = RequiredTextInputProperties &
   TextInputProps & {
     label?: string;
     error?: string;
-    ref?: React.Ref<TextInput>;
+    ref?: React.Ref<InputRef>;
   };
 
 const getIcon = (hasValue: boolean, secureTextEntry: boolean | undefined): IconName => {
