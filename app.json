@@ -8,9 +8,7 @@
       "edgeToEdgeEnabled": true,
       "package": "com.ethanneff.expo"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "experiments": {
       "tsconfigPaths": true
     },
