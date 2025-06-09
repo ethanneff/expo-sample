@@ -1,17 +1,18 @@
-import { Button } from 'react-native';
+import { useCallback } from 'react';
+import { Button } from '~/components/Button/Button';
 import { Placeholder } from '~/components/Placeholder/Placeholder';
 import { useStoreAuth } from '~/store/useStoreAuth';
 
 const SignUpScreen = () => {
   const login = useStoreAuth((state) => state.actions.login);
+
+  const handleLogin = useCallback(() => {
+    login({ email: 'john.doe@example.com', id: '1', name: 'John Doe', token: '1234567890' });
+  }, [login]);
+
   return (
     <Placeholder title="Sign Up Screen">
-      <Button
-        title="Login"
-        onPress={() => {
-          login({ id: '1', name: 'John Doe', email: 'john.doe@example.com', token: '1234567890' });
-        }}
-      />
+      <Button onPress={handleLogin} title="Login" variant="primary" />
     </Placeholder>
   );
 };

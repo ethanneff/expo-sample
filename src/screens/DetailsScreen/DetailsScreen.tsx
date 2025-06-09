@@ -1,33 +1,33 @@
 import * as Haptics from 'expo-haptics';
-import { useRef, useState } from 'react';
-import { Dimensions, FlatList } from 'react-native';
+import { useCallback, useRef, useState } from 'react';
+import { Dimensions, FlatList, type ListRenderItemInfo } from 'react-native';
 import { Icon } from '~/components/Icon/Icon';
 import { Screen } from '~/components/Screen/Screen';
 import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
 import { useAppTheme } from '~/theme/useAppTheme';
 
-type Unit = {
-  id: string;
-  name: string;
-  lessons: Lesson[];
-};
-
-type LessonType = 'normal' | 'chest' | 'exercise' | 'review' | 'mini-challenge';
-
 type Lesson = {
   id: string;
+  lessonInUnit: number;
   name: string;
   sectionId: string;
-  unitId: string;
-  lessonInUnit: number;
-  type: LessonType;
   title: string;
+  type: LessonType;
+  unitId: string;
 };
 
-const numSections = 10;
+type LessonType = 'chest' | 'exercise' | 'mini-challenge' | 'normal' | 'review';
+
+type Unit = {
+  id: string;
+  lessons: Lesson[];
+  name: string;
+};
+
+const numberSections = 10;
 const unitsPerSection = 25;
-const numLessonsInUnit = 10;
+const numberLessonsInUnit = 10;
 
 const getRandomTitle = () => {
   const subjects = [
@@ -84,8 +84,8 @@ const getRandomTitle = () => {
     'a treasure chest',
   ];
 
-  const getRandomElement = (arr: string[]) => {
-    return arr[Math.floor(Math.random() * arr.length)];
+  const getRandomElement = (array: string[]) => {
+    return array[Math.floor(Math.random() * array.length)];
   };
 
   const generateRandomSentence = () => {
@@ -101,11 +101,11 @@ const getRandomTitle = () => {
 const generateUnitData = (): Unit[] => {
   const allUnits: Unit[] = [];
 
-  for (let i = 0; i < numSections; i++) {
+  for (let index = 0; index < numberSections; index += 1) {
     allUnits.push({
-      id: `u${i}`,
-      name: getRandomTitle(),
+      id: `u${index}`,
       lessons: [],
+      name: getRandomTitle(),
     });
   }
 
@@ -115,30 +115,28 @@ const generateUnitData = (): Unit[] => {
 const generateLessonData = (): Lesson[] => {
   const allLessons: Lesson[] = [];
 
-  for (let i = 0; i < numSections; i++) {
-    for (let j = 0; j < unitsPerSection; j++) {
-      for (let k = 0; k < numLessonsInUnit; k++) {
+  for (let index = 0; index < numberSections; index += 1) {
+    for (let index_ = 0; index_ < unitsPerSection; index_ += 1) {
+      for (let k = 0; k < numberLessonsInUnit; k += 1) {
         const lessonNumberInUnit = k + 1;
         let type: LessonType = 'normal';
 
-        if (lessonNumberInUnit === numLessonsInUnit) {
+        if (lessonNumberInUnit === numberLessonsInUnit) {
           type = 'review';
-        } else if (lessonNumberInUnit === numLessonsInUnit - 1) {
+        } else if (lessonNumberInUnit === numberLessonsInUnit - 1) {
           type = 'mini-challenge';
-        } else {
-          if (lessonNumberInUnit % 4 === 0) {
-            type = 'chest';
-          }
+        } else if (lessonNumberInUnit % 4 === 0) {
+          type = 'chest';
         }
 
         allLessons.push({
-          id: `s${i}u${j}l${k}`,
-          name: `Lesson ${lessonNumberInUnit}`,
-          sectionId: `s${i}`,
-          unitId: `u${j}`,
+          id: `s${index}u${index_}l${k}`,
           lessonInUnit: lessonNumberInUnit, // bad practice
-          type,
+          name: `Lesson ${lessonNumberInUnit}`,
+          sectionId: `s${index}`,
           title: getRandomTitle(),
+          type,
+          unitId: `u${index_}`,
         });
       }
     }
@@ -148,24 +146,33 @@ const generateLessonData = (): Lesson[] => {
 
 const getIconForLessonType = (type: LessonType) => {
   switch (type) {
-    case 'normal':
-      return 'star-outline';
-    case 'exercise':
-      return 'barbell-outline';
-    case 'chest':
+    case 'chest': {
       return 'cube-outline';
-    case 'review':
-      return 'trophy-outline';
-    case 'mini-challenge':
+    }
+    case 'exercise': {
+      return 'barbell-outline';
+    }
+    case 'mini-challenge': {
       return 'flame-outline';
+    }
+    case 'normal': {
+      return 'star-outline';
+    }
+    case 'review': {
+      return 'trophy-outline';
+    }
+    default: {
+      return 'star-outline';
+    }
   }
 };
 
 const getIdFromId = (id: string): number => {
-  return parseInt(id.replace(/[^0-9]/g, ''));
+  return Number.parseInt(id.replaceAll(/\D/gu, ''), 10);
 };
 
-const width = Dimensions.get('window').width;
+const { width } = Dimensions.get('window');
+const keyExtractor = (item: Lesson) => item.id;
 
 const DetailsScreen = () => {
   const { colors, spacing } = useAppTheme();
@@ -182,12 +189,12 @@ const DetailsScreen = () => {
 
   // Ref for the callback to ensure it has the latest state setters
   const onViewableItemsChanged = useRef(
-    ({ viewableItems }: { viewableItems: { item: Lesson; isViewable: boolean }[] }) => {
+    ({ viewableItems }: { viewableItems: { isViewable: boolean; item: Lesson }[] }) => {
       if (viewableItems.length > 0) {
         const firstVisibleItem = viewableItems[0].item;
         if (firstVisibleItem) {
           if (firstVisibleItem.sectionId !== currentSection) {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
             setCurrentSection(firstVisibleItem.sectionId);
           }
           if (firstVisibleItem.unitId !== currentUnit) {
@@ -205,46 +212,53 @@ const DetailsScreen = () => {
     return value * maximumMargin;
   };
 
-  const renderLesson = ({ item }: { item: Lesson }) => {
-    return (
-      <View marginRight={getMarginForLesson(item.lessonInUnit, numLessonsInUnit, width / 3)}>
-        <View
-          backgroundColor={colors.primary}
-          borderRadius={100}
-          padding={10}
-          alignItems={'center'}
-          justifyContent={'center'}
-          alignSelf={'center'}
-          width={width / 4}
-          height={width / 4}>
-          <Icon name={getIconForLessonType(item.type)} size={width / 8} color={colors.background} />
+  const renderLesson = useCallback(
+    ({ item }: ListRenderItemInfo<Lesson>) => {
+      return (
+        <View marginRight={getMarginForLesson(item.lessonInUnit, numberLessonsInUnit, width / 3)}>
+          <View
+            alignItems="center"
+            alignSelf="center"
+            backgroundColor={colors.primary}
+            borderRadius={100}
+            height={width / 4}
+            justifyContent="center"
+            padding={10}
+            width={width / 4}>
+            <Icon
+              color={colors.background}
+              name={getIconForLessonType(item.type)}
+              size={width / 8}
+            />
+          </View>
         </View>
-      </View>
-    );
-  };
+      );
+    },
+    [colors.background, colors.primary]
+  );
 
   return (
     <Screen>
       <View
-        padding={spacing.$16}
         backgroundColor={colors.popover}
         borderColor={colors.border}
-        borderWidth={1}>
+        borderWidth={1}
+        padding={spacing.$16}>
         <Text title={`Section ${getIdFromId(currentSection)}, Unit ${getIdFromId(currentUnit)}`} />
-        <Text title={`${unitData[getIdFromId(currentUnit)].name}`} />
+        <Text title={unitData[getIdFromId(currentUnit)].name} />
       </View>
       <FlatList
-        data={lessonData}
-        renderItem={renderLesson}
-        keyExtractor={(item) => item.id}
         contentContainerStyle={{
+          gap: spacing.$16,
           paddingHorizontal: spacing.$16,
           paddingVertical: spacing.$8,
-          gap: spacing.$16,
         }}
+        data={lessonData}
+        keyExtractor={keyExtractor}
         onViewableItemsChanged={onViewableItemsChanged.current}
-        viewabilityConfig={viewabilityConfig.current}
+        renderItem={renderLesson}
         showsVerticalScrollIndicator={false}
+        viewabilityConfig={viewabilityConfig.current}
       />
     </Screen>
   );

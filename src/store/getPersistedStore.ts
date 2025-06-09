@@ -3,15 +3,19 @@ import { createJSONStorage } from 'zustand/middleware';
 
 type Key = 'auth';
 
-type PersistStoreProps<T> = {
+type PersistStoreProperties<T> = {
   key: Key;
-  version?: number;
   partialize: (state: T) => Partial<T>;
+  version?: number;
 };
 
-export const getPersistedStore = <T>({ key, version = 4, partialize }: PersistStoreProps<T>) => ({
+export const getPersistedStore = <T>({
+  key,
+  partialize,
+  version = 4,
+}: PersistStoreProperties<T>) => ({
   name: key,
-  version,
   partialize,
   storage: createJSONStorage(() => AsyncStorage),
+  version,
 });

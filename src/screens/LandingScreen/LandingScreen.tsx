@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import { useCallback } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { Button } from '~/components/Button/Button';
 import { Icon } from '~/components/Icon/Icon';
@@ -8,31 +9,31 @@ import { useAppTheme } from '~/theme/useAppTheme';
 
 const LandingScreen = () => {
   const navigation = useNavigation();
-  const { spacing, colors } = useAppTheme();
+  const { colors, spacing } = useAppTheme();
+
+  const handleGetStarted = useCallback(() => {
+    navigation.navigate('Onboarding');
+  }, [navigation]);
+
+  const handleSignIn = useCallback(() => {
+    navigation.navigate('SignIn');
+  }, [navigation]);
 
   return (
     <Screen>
       <KeyboardAwareScrollView
         contentContainerStyle={{
-          justifyContent: 'center',
           alignItems: 'center',
           flex: 1,
           gap: spacing.$12,
+          justifyContent: 'center',
         }}>
-        <Icon name="trophy-outline" size={100} color={colors.primary} />
+        <Icon color={colors.primary} name="trophy-outline" size={100} />
         <Text title="Duolingo" />
         <Text title="Learn for free. Forever." />
       </KeyboardAwareScrollView>
-      <Button
-        title="Get Started"
-        onPress={() => navigation.navigate('Onboarding')}
-        variant="primary"
-      />
-      <Button
-        title="I already have an account"
-        onPress={() => navigation.navigate('SignIn')}
-        variant="secondary"
-      />
+      <Button onPress={handleGetStarted} title="Get Started" variant="primary" />
+      <Button onPress={handleSignIn} title="I already have an account" variant="secondary" />
     </Screen>
   );
 };

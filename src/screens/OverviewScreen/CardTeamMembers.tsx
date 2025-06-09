@@ -5,40 +5,40 @@ import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
 import { useAppTheme } from '~/theme/useAppTheme';
 
-type TeamMemberProps = {
-  name: string;
-  email: string;
-  roleId: string;
-  avatar: string;
+type TeamMemberProperties = {
+  readonly avatar: string;
+  readonly email: string;
+  readonly name: string;
+  readonly roleId: string;
 };
 
-const TeamMember = ({ name, email, roleId, avatar }: TeamMemberProps) => {
+const TeamMember = ({ avatar, email, name, roleId }: TeamMemberProperties) => {
   const roles: Role[] = useMemo(
     () => [
       {
+        description: 'Can view and comment',
         id: '1',
         name: 'Viewer',
-        description: 'Can view and comment',
       },
       {
+        description: 'Can view, comment, and edit',
         id: '2',
         name: 'Developer',
-        description: 'Can view, comment, and edit',
       },
       {
+        description: 'Can view, comment, and manage billing',
         id: '3',
         name: 'Billing',
-        description: 'Can view, comment, and manage billing',
       },
       {
+        description: 'Admin-level access to all resources',
         id: '4',
         name: 'Owner',
-        description: 'Admin-level access to all resources',
       },
       {
+        description: 'Can view and comment',
         id: '5',
         name: 'Member',
-        description: 'Can view and comment',
       },
     ],
     []
@@ -46,8 +46,8 @@ const TeamMember = ({ name, email, roleId, avatar }: TeamMemberProps) => {
 
   const { spacing } = useAppTheme();
   return (
-    <View flexDirection="row" gap={spacing.$12} alignItems="center">
-      <Image source={{ uri: avatar }} style={{ width: 32, height: 32 }} />
+    <View alignItems="center" flexDirection="row" gap={spacing.$12}>
+      <Image source={{ uri: avatar }} style={{ height: 32, width: 32 }} />
       <View flex={1}>
         <Text title={name} variant="small" />
         <Text title={email} variant="muted" />
@@ -57,43 +57,43 @@ const TeamMember = ({ name, email, roleId, avatar }: TeamMemberProps) => {
   );
 };
 
-type Role = {
+type Member = {
+  avatar: string;
+  email: string;
   id: string;
   name: string;
-  description: string;
+  roleId: string;
 };
 
-type Member = {
+type Role = {
+  description: string;
   id: string;
   name: string;
-  email: string;
-  roleId: string;
-  avatar: string;
 };
 
 export const CardTeamMembers = () => {
   const teamMembers: Member[] = useMemo(
     () => [
       {
+        avatar: 'https://ui.shadcn.com/avatars/01.png',
+        email: 'm@example.com',
         id: '1',
         name: 'Sofia Davis',
-        email: 'm@example.com',
         roleId: '4',
-        avatar: 'https://ui.shadcn.com/avatars/01.png',
       },
       {
+        avatar: 'https://ui.shadcn.com/avatars/02.png',
+        email: 'p@example.com',
         id: '2',
         name: 'Jackson Lee',
-        email: 'p@example.com',
         roleId: '1',
-        avatar: 'https://ui.shadcn.com/avatars/02.png',
       },
       {
+        avatar: 'https://ui.shadcn.com/avatars/03.png',
+        email: 'i@example.com',
         id: '3',
         name: 'Isabella Nguyen',
-        email: 'i@example.com',
         roleId: '1',
-        avatar: 'https://ui.shadcn.com/avatars/03.png',
       },
     ],
     []
@@ -103,8 +103,8 @@ export const CardTeamMembers = () => {
     <Card>
       <Text title="Team Members" variant="h3" />
       <Text title="Invite your team members to collaborate" variant="muted" />
-      {teamMembers.map(({ id, name, email, roleId, avatar }) => (
-        <TeamMember key={id} name={name} email={email} roleId={roleId} avatar={avatar} />
+      {teamMembers.map(({ avatar, email, id, name, roleId }) => (
+        <TeamMember avatar={avatar} email={email} key={id} name={name} roleId={roleId} />
       ))}
     </Card>
   );

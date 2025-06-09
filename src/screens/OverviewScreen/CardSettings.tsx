@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Button } from '~/components/Button/Button';
 import { Card } from '~/components/Card/Card';
 import { Text } from '~/components/Text/Text';
@@ -6,27 +6,34 @@ import { Toggle } from '~/components/Toggle/Toggle';
 import { View } from '~/components/View/View';
 import { useAppTheme } from '~/theme/useAppTheme';
 
-type ToggleSectionProps = {
-  title: string;
-  description: string;
-  checked?: boolean;
+type ToggleSectionProperties = {
+  readonly checked?: boolean;
+  readonly description: string;
+  readonly title: string;
 };
 
-const ToggleSection = ({ title, description, checked }: ToggleSectionProps) => {
+const ToggleSection = ({ checked, description, title }: ToggleSectionProperties) => {
   const { spacing } = useAppTheme();
-  const [isChecked, setIsChecked] = useState(!!checked);
+  const [isChecked, setIsChecked] = useState(Boolean(checked));
+
+  const handlePress = useCallback(() => {
+    setIsChecked(!isChecked);
+  }, [isChecked]);
 
   return (
-    <View flexDirection="row" gap={spacing.$12} alignItems="center">
+    <View alignItems="center" flexDirection="row" gap={spacing.$12}>
       <View flexShrink={1}>
         <Text title={title} />
         <Text title={description} variant="muted" />
       </View>
-      <Toggle checked={isChecked} onPress={() => setIsChecked(!isChecked)} />
+      <Toggle checked={isChecked} onPress={handlePress} />
     </View>
   );
 };
 
+const noop = () => false;
+
+// eslint-disable-next-line react/no-multi-comp
 export const CardSettings = () => {
   const { spacing } = useAppTheme();
   return (
@@ -37,19 +44,19 @@ export const CardSettings = () => {
           <Text title="Manage your cookie settings here" variant="muted" />
         </View>
         <ToggleSection
-          title="Strictly Necessary"
           description="These cookies are essential to use the website and use its features"
+          title="Strictly Necessary"
         />
         <ToggleSection
-          title="Functional Cookies"
+          checked
           description="These cookies allow the website to provide personalized functionality"
-          checked={true}
+          title="Functional Cookies"
         />
         <ToggleSection
-          title="Performance Cookies"
           description="These cookies help to improve the performance of the website"
+          title="Performance Cookies"
         />
-        <Button title="Save preferences" onPress={() => {}} variant="primary" />
+        <Button onPress={noop} title="Save preferences" variant="primary" />
       </View>
     </Card>
   );

@@ -19,26 +19,26 @@ export const CardTypography = () => {
         <Text title="The King's Plan" variant="h2" />
         <Paragraph>
           <Text title="The king thought long and hard, and finally came up with " />
-          <Text title="a brilliant plan" textDecorationLine="underline" />
+          <Text textDecorationLine="underline" title="a brilliant plan" />
           <Text title=": he would tax the jokes in the kingdom." />
         </Paragraph>
         <Text
-          variant="blockquote"
           title={`"After all," he said, "everyone enjoys a good joke, so it's only fair that they should pay for the privilege."`}
+          variant="blockquote"
         />
         <Text title="The Joke Tax" variant="h3" />
         <Text title="The king's subjects were not amused. They grumbled and complained, but the king was firm:" />
         <View flexDirection="row" gap={spacing.$4}>
           <Text title="•" />
-          <Text title="1st level of puns: 5 gold coins" selectable />
+          <Text selectable title="1st level of puns: 5 gold coins" />
         </View>
         <View flexDirection="row" gap={spacing.$4}>
           <Text title="•" />
-          <Text title="2nd level of jokes: 10 gold coins" selectable />
+          <Text selectable title="2nd level of jokes: 10 gold coins" />
         </View>
         <View flexDirection="row" gap={spacing.$4}>
           <Text title="•" />
-          <Text title="3rd level of one-liners: 20 gold coins" selectable />
+          <Text selectable title="3rd level of one-liners: 20 gold coins" />
         </View>
         <Text title="As a result, people stopped telling jokes, and the kingdom fell into a gloom. But there was one person who refused to let the king's foolishness get him down: a court jester named Jokester." />
         <Text title="Jokester's Revolt" variant="h3" />

@@ -1,105 +1,104 @@
 import { Image } from 'expo-image';
-import { useRef, useState } from 'react';
-import { TextInput } from 'react-native';
+import { useCallback, useRef, useState } from 'react';
 import { Button } from '~/components/Button/Button';
 import { Card } from '~/components/Card/Card';
-import { Input } from '~/components/Input/Input';
+import { Input, type InputReference } from '~/components/Input/Input';
 import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
 import { useAppTheme } from '~/theme/useAppTheme';
 
 type Chat = {
   id: string;
-  people: Record<string, Person>;
   messages: Record<string, Message>;
-};
-
-type Person = {
-  id: string;
-  name: string;
-  avatar: string;
-};
-
-type Message = {
-  id: string;
-  content: string;
-  createdAt: Date;
-  personId: string;
-  isRead: boolean;
+  people: Record<string, Person>;
 };
 
 type Me = Person & {
+  avatar: string;
   id: string;
   name: string;
+};
+
+type Message = {
+  content: string;
+  createdAt: Date;
+  id: string;
+  isRead: boolean;
+  personId: string;
+};
+
+type Person = {
   avatar: string;
+  id: string;
+  name: string;
 };
 
 const chat: Chat = {
   id: '1',
-  people: {
-    '1': {
-      id: '1',
-      name: 'Sofia Davis',
-      avatar: 'https://ui.shadcn.com/avatars/01.png',
-    },
-    '2': {
-      id: '2',
-      name: 'Jackson Lee',
-      avatar: 'https://ui.shadcn.com/avatars/02.png',
-    },
-    '3': {
-      id: '3',
-      name: 'Isabella Nguyen',
-      avatar: 'https://ui.shadcn.com/avatars/03.png',
-    },
-    '4': {
-      id: '4',
-      name: 'Mia Kim',
-      avatar: 'https://ui.shadcn.com/avatars/04.png',
-    },
-    '5': {
-      id: '5',
-      name: 'Jackson Lee',
-      avatar: 'https://ui.shadcn.com/avatars/05.png',
-    },
-  },
   messages: {
-    '1': {
-      id: '1',
+    1: {
       content: 'Hi, how can I help you today?',
       createdAt: new Date(),
-      personId: '1',
+      id: '1',
       isRead: true,
+      personId: '1',
     },
-    '2': {
-      id: '2',
+    2: {
       content: "Hey, I'm having trouble with my account",
       createdAt: new Date(),
-      personId: '2',
+      id: '2',
       isRead: true,
+      personId: '2',
     },
-    '3': {
-      id: '3',
+    3: {
       content: 'What seems to be the problem?',
       createdAt: new Date(),
-      personId: '1',
+      id: '3',
       isRead: true,
+      personId: '1',
     },
-    '4': {
-      id: '4',
+    4: {
       content: `I can't log in`,
       createdAt: new Date(),
-      personId: '2',
+      id: '4',
       isRead: true,
+      personId: '2',
+    },
+  },
+  people: {
+    1: {
+      avatar: 'https://ui.shadcn.com/avatars/01.png',
+      id: '1',
+      name: 'Sofia Davis',
+    },
+    2: {
+      avatar: 'https://ui.shadcn.com/avatars/02.png',
+      id: '2',
+      name: 'Jackson Lee',
+    },
+    3: {
+      avatar: 'https://ui.shadcn.com/avatars/03.png',
+      id: '3',
+      name: 'Isabella Nguyen',
+    },
+    4: {
+      avatar: 'https://ui.shadcn.com/avatars/04.png',
+      id: '4',
+      name: 'Mia Kim',
+    },
+    5: {
+      avatar: 'https://ui.shadcn.com/avatars/05.png',
+      id: '5',
+      name: 'Jackson Lee',
     },
   },
 };
 const initialMessages = Object.values(chat.messages);
 
 const me: Me = {
+  avatar: 'https://ui.shadcn.com/avatars/01.png',
   id: '2',
   name: 'Sofia Davis',
-  avatar: 'https://ui.shadcn.com/avatars/01.png',
 };
 
 const getRandomInclusive = (min: number, max: number) => {
@@ -107,96 +106,98 @@ const getRandomInclusive = (min: number, max: number) => {
 };
 
 export const CardChat = () => {
-  const { spacing, colors } = useAppTheme();
-  const messageRef = useRef<TextInput>(null);
+  const { colors, spacing } = useAppTheme();
+  const messageReference = useRef<InputReference>(null);
   const message = useRef('');
 
   const [messages, setMessages] = useState<Message[]>(initialMessages);
 
-  const handleSend = () => {
-    setMessages((prev) => [
-      ...prev,
+  const handleSend = useCallback(() => {
+    setMessages((previous) => [
+      ...previous,
       {
-        id: String(prev.length + 1),
         content: message.current,
         createdAt: new Date(),
-        personId: '2',
+        id: String(previous.length + 1),
         isRead: true,
+        personId: '2',
       },
     ]);
-    messageRef.current?.clear();
+    messageReference.current?.clear();
     const wait = setTimeout(
       () => {
-        setMessages((prev) => [
-          ...prev,
+        setMessages((previous) => [
+          ...previous,
           {
-            id: String(prev.length + 1),
             content: 'How does that make you feel?',
             createdAt: new Date(),
-            personId: getRandomInclusive(1, 5).toString(),
+            id: String(previous.length + 1),
             isRead: true,
+            personId: getRandomInclusive(1, 5).toString(),
           },
         ]);
       },
       getRandomInclusive(500, 2000)
     );
-    return () => clearTimeout(wait);
-  };
+    return () => {
+      clearTimeout(wait);
+    };
+  }, [messages]);
 
-  const handleChangeText = (text: string) => {
+  const handleChangeText = useCallback((text: string) => {
     message.current = text;
-  };
+  }, []);
 
   return (
     <Card>
       <View gap={spacing.$12}>
-        {messages.map(({ id, content, createdAt, personId, isRead }) => {
+        {messages.map(({ content, id, personId }) => {
           const isMe = personId === me.id;
           return (
             <View key={id}>
-              {!isMe ? (
-                <View flexDirection="row" gap={spacing.$4} alignItems="center">
+              {isMe ? null : (
+                <View alignItems="center" flexDirection="row" gap={spacing.$4}>
                   <Image
                     source={{ uri: chat.people[personId].avatar }}
-                    style={{ width: spacing.$20, height: spacing.$20 }}
+                    style={{ height: spacing.$20, width: spacing.$20 }}
                   />
                   <Text title={chat.people[personId].name} variant="xsmall" />
                 </View>
-              ) : null}
+              )}
               <View
                 alignSelf={isMe ? 'flex-end' : 'flex-start'}
-                borderRadius={spacing.$12}
                 backgroundColor={isMe ? colors.primary : colors.muted}
+                borderRadius={spacing.$12}
                 paddingHorizontal={spacing.$12}
                 paddingVertical={spacing.$6}>
                 <Text
+                  color={isMe ? 'primaryForeground' : 'primary'}
                   title={content}
                   variant="small"
-                  color={isMe ? 'primaryForeground' : 'primary'}
                 />
               </View>
             </View>
           );
         })}
-        <View flexDirection="row" gap={spacing.$6} alignItems="center">
+        <View alignItems="center" flexDirection="row" gap={spacing.$6}>
           <View flex={1}>
             <Input
-              ref={messageRef}
-              defaultValue=""
-              onChangeText={handleChangeText}
-              placeholder="Type your message..."
               autoCapitalize="none"
               autoComplete="off"
               autoCorrect={false}
+              defaultValue=""
+              editable
               keyboardType="default"
-              returnKeyType="done"
-              textContentType="none"
-              editable={true}
-              submitBehavior="submit"
+              onChangeText={handleChangeText}
               onSubmitEditing={handleSend}
+              placeholder="Type your message..."
+              ref={messageReference}
+              returnKeyType="done"
+              submitBehavior="submit"
+              textContentType="none"
             />
           </View>
-          <Button title="" onPress={handleSend} variant="outline" icon="send" />
+          <Button icon="send" onPress={handleSend} title="" variant="outline" />
         </View>
       </View>
     </Card>

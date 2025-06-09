@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import { useCallback } from 'react';
 import { Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { Button } from '~/components/Button/Button';
@@ -19,61 +20,70 @@ const HomeScreen = () => {
   const toggleTheme = useStoreTheme((state) => state.actions.toggleTheme);
   const theme = useStoreTheme((state) => state.theme);
 
+  const handleDebug = useCallback(() => {
+    navigation.navigate('Debug');
+  }, [navigation]);
+
+  const handleActionSheet = useCallback(() => {
+    navigation.navigate('ActionSheet');
+  }, [navigation]);
+
+  const handleNps = useCallback(() => {
+    navigation.navigate('SurveyNps');
+  }, [navigation]);
+
+  const handleCsat = useCallback(() => {
+    navigation.navigate('SurveyCsat');
+  }, [navigation]);
+
+  const handleTemplate = useCallback(() => {
+    navigation.navigate('Template');
+  }, [navigation]);
+
+  const handleLogout = useCallback(() => {
+    logout();
+  }, [logout]);
+
+  const handleToggleTheme = useCallback(() => {
+    toggleTheme();
+  }, [toggleTheme]);
+
+  const handleLogoutAlert = useCallback(() => {
+    Alert.alert(
+      'Do you want to logout?',
+      'This will clear your session and you will need to login again.',
+      [
+        {
+          style: 'cancel',
+          text: 'Cancel',
+        },
+        {
+          onPress: handleLogout,
+          text: 'Logout',
+        },
+      ]
+    );
+  }, [handleLogout]);
+
   return (
     <Screen>
       <KeyboardAwareScrollView>
-        <View padding={spacing.$12} gap={spacing.$12}>
+        <View gap={spacing.$16} padding={spacing.$16}>
           <Card>
-            <Text title="Navigation" variant="h1" />
-            <View gap={spacing.$8}>
-              <Button
-                title="Debug"
-                onPress={() => navigation.navigate('Debug')}
-                variant="outline"
-              />
-              <Button
-                title="ActionSheet"
-                onPress={() => navigation.navigate('ActionSheet')}
-                variant="outline"
-              />
-              <Button
-                title="NPS"
-                onPress={() => navigation.navigate('SurveyNps')}
-                variant="outline"
-              />
-              <Button
-                title="CSAT"
-                onPress={() => navigation.navigate('SurveyCsat')}
-                variant="outline"
-              />
-              <Button
-                title="Template"
-                onPress={() => navigation.navigate('Template')}
-                variant="outline"
-              />
+            <View gap={spacing.$12}>
+              <Text title="Navigation" variant="h1" />
+              <Button onPress={handleDebug} title="Debug" variant="outline" />
+              <Button onPress={handleActionSheet} title="ActionSheet" variant="outline" />
+              <Button onPress={handleNps} title="NPS" variant="outline" />
+              <Button onPress={handleCsat} title="CSAT" variant="outline" />
+              <Button onPress={handleTemplate} title="Template" variant="outline" />
             </View>
           </Card>
           <Card>
-            <Text title="Settings" variant="h1" />
-            <View gap={spacing.$8}>
-              <Button title={`theme: ${theme}`} onPress={() => toggleTheme()} variant="outline" />
-              <Button
-                title={`user: ${user?.name}`}
-                onPress={() => {
-                  Alert.alert(
-                    'Do you want to logout?',
-                    'This will clear your session and you will need to login again.',
-                    [
-                      {
-                        text: 'Cancel',
-                        style: 'cancel',
-                      },
-                      { text: 'Logout', onPress: () => logout() },
-                    ]
-                  );
-                }}
-                variant="outline"
-              />
+            <View gap={spacing.$12}>
+              <Text title="Settings" variant="h1" />
+              <Button onPress={handleToggleTheme} title={`theme: ${theme}`} variant="outline" />
+              <Button onPress={handleLogoutAlert} title={`user: ${user?.name}`} variant="outline" />
             </View>
           </Card>
         </View>

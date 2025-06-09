@@ -6,11 +6,17 @@ import { useStoreAuth } from '~/store/useStoreAuth';
 const SplashScreen = () => {
   const navigation = useNavigation();
   const user = useStoreAuth((state) => state.user);
+
   useEffect(() => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       navigation.navigate(user ? 'Tabs' : 'Landing');
     }, 1000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [navigation, user]);
+
   return <Placeholder title="Splash Screen" />;
 };
 

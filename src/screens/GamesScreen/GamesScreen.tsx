@@ -5,7 +5,7 @@ import { Card } from '~/components/Card/Card';
 import { Screen } from '~/components/Screen/Screen';
 import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
-import { Route } from '~/navigation/Navigation';
+import { type Route } from '~/navigation/types';
 import { useAppTheme } from '~/theme/useAppTheme';
 
 const GamesScreen = () => {
@@ -23,16 +23,16 @@ const GamesScreen = () => {
           <Card>
             <Text title="Games" variant="h1" />
             <View gap={spacing.$4}>
-              <Button title="Game of life" onPress={nav('GameOfLife')} variant="outline" />
-              <Button title="Tic tac toe" onPress={nav('GameTicTacToe')} variant="outline" />
-              <Button title="Minesweeper" onPress={nav('GameTicTacToe')} variant="outline" />
-              <Button title="Snake" onPress={nav('GameTicTacToe')} variant="outline" />
-              <Button title="Tetris" onPress={nav('GameTicTacToe')} variant="outline" />
-              <Button title="Bejeweled" onPress={nav('GameBejeweled')} variant="outline" />
-              <Button title="Flappy bird" onPress={nav('GameFlappyBird')} variant="outline" />
-              <Button title="PapiJump" onPress={nav('GamePapiJump')} variant="outline" />
-              <Button title="CoinMaster" onPress={nav('GameTicTacToe')} variant="outline" />
-              <Button title="TempleRun" onPress={nav('GameTicTacToe')} variant="outline" />
+              <Button onPress={nav('GameOfLife')} title="Game of life" variant="outline" />
+              <Button onPress={nav('GameTicTacToe')} title="Tic tac toe" variant="outline" />
+              <Button onPress={nav('GameTicTacToe')} title="Minesweeper" variant="outline" />
+              <Button onPress={nav('GameTicTacToe')} title="Snake" variant="outline" />
+              <Button onPress={nav('GameTicTacToe')} title="Tetris" variant="outline" />
+              <Button onPress={nav('GameBejeweled')} title="Bejeweled" variant="outline" />
+              <Button onPress={nav('GameFlappyBird')} title="Flappy bird" variant="outline" />
+              <Button onPress={nav('GamePapiJump')} title="PapiJump" variant="outline" />
+              <Button onPress={nav('GameTicTacToe')} title="CoinMaster" variant="outline" />
+              <Button onPress={nav('GameTicTacToe')} title="TempleRun" variant="outline" />
             </View>
           </Card>
         </View>

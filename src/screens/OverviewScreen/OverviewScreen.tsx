@@ -20,8 +20,8 @@ const OverviewScreen = () => {
     <Screen>
       <KeyboardAwareScrollView
         contentContainerStyle={{
-          padding: spacing.$12,
           gap: spacing.$12,
+          padding: spacing.$12,
         }}>
         <CardRevenue />
         <CardSubscriptions />

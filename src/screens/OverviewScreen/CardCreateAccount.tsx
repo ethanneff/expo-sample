@@ -5,8 +5,10 @@ import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
 import { useAppTheme } from '~/theme/useAppTheme';
 
+const noop = () => false;
+
 export const CardCreateAccount = () => {
-  const { spacing, colors } = useAppTheme();
+  const { colors, spacing } = useAppTheme();
 
   return (
     <Card>
@@ -15,51 +17,51 @@ export const CardCreateAccount = () => {
           <Text title="Create an account" variant="h3" />
           <Text title="Enter your email below to create your account" variant="muted" />
         </View>
-        <View gap={spacing.$12} flexDirection="row" justifyContent="center">
+        <View flexDirection="row" gap={spacing.$12} justifyContent="center">
           <View flex={1}>
-            <Button title="Google" onPress={() => {}} icon="logo-google" variant="outline" />
+            <Button icon="logo-google" onPress={noop} title="Google" variant="outline" />
           </View>
           <View flex={1}>
-            <Button title="Facebook" onPress={() => {}} icon="logo-facebook" variant="outline" />
+            <Button icon="logo-facebook" onPress={noop} title="Facebook" variant="outline" />
           </View>
         </View>
-        <View flexDirection="row" alignItems="center" gap={spacing.$6}>
-          <View height={1} backgroundColor={colors.border} flex={1} />
-          <Text title="Or continue with" variant="muted" textTransform="uppercase" />
-          <View height={1} backgroundColor={colors.border} flex={1} />
+        <View alignItems="center" flexDirection="row" gap={spacing.$6}>
+          <View backgroundColor={colors.border} flex={1} height={1} />
+          <Text textTransform="uppercase" title="Or continue with" variant="muted" />
+          <View backgroundColor={colors.border} flex={1} height={1} />
         </View>
         <Input
-          label="Email"
-          placeholder="m@example.com"
-          keyboardType="email-address"
           autoCapitalize="none"
           autoComplete="email"
           autoCorrect={false}
           defaultValue=""
-          editable={true}
-          onChangeText={() => {}}
-          submitBehavior="submit"
-          onSubmitEditing={() => {}}
+          editable
+          keyboardType="email-address"
+          label="Email"
+          onChangeText={noop}
+          onSubmitEditing={noop}
+          placeholder="m@example.com"
           returnKeyType="done"
+          submitBehavior="submit"
           textContentType="emailAddress"
         />
         <Input
-          label="Password"
-          placeholder="********"
-          secureTextEntry
-          keyboardType="visible-password"
           autoCapitalize="none"
           autoComplete="password"
           autoCorrect={false}
           defaultValue=""
-          editable={true}
-          onChangeText={() => {}}
-          submitBehavior="submit"
-          onSubmitEditing={() => {}}
+          editable
+          keyboardType="visible-password"
+          label="Password"
+          onChangeText={noop}
+          onSubmitEditing={noop}
+          placeholder="********"
           returnKeyType="done"
+          secureTextEntry
+          submitBehavior="submit"
           textContentType="password"
         />
-        <Button title="Create Account" onPress={() => {}} variant="primary" />
+        <Button onPress={noop} title="Create Account" variant="primary" />
       </View>
     </Card>
   );

@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 import { Pressable } from 'react-native';
 import { create } from 'zustand';
 import { Button } from '~/components/Button/Button';
@@ -8,46 +8,40 @@ import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
 import { useAppTheme } from '~/theme/useAppTheme';
 
-interface GameState {
-  grid: boolean[][];
-  isRunning: boolean;
-  boardSize: number;
-  speed: number;
-  activeCells: Set<string>; // Cache of cells that need to be checked
+type GameState = {
   actions: {
+    clearGrid: () => void;
+    nextGeneration: () => void;
+    randomizeGrid: () => void;
     setBoardSize: (size: number) => void;
     setSpeed: (speed: number) => void;
     toggleCell: (row: number, col: number) => void;
     toggleRunning: () => void;
-    clearGrid: () => void;
-    nextGeneration: () => void;
-    randomizeGrid: () => void;
   };
-}
+  activeCells: Set<string>; // Cache of cells that need to be checked
+  boardSize: number;
+  grid: boolean[][];
+  isRunning: boolean;
+  speed: number;
+};
 
 const createInitialGrid = (size: number): boolean[][] => {
-  return Array(size)
-    .fill(false)
-    .map(() => Array(size).fill(false));
+  return new Array(size).fill(false).map(() => new Array(size).fill(false));
 };
 
 const createRandomGrid = (size: number): boolean[][] => {
-  return Array(size)
+  return new Array(size)
     .fill(false)
-    .map(() =>
-      Array(size)
-        .fill(false)
-        .map(() => Math.random() > 0.7)
-    );
+    .map(() => new Array(size).fill(false).map(() => Math.random() > 0.7));
 };
 
 // Get all neighbors of a cell, including the cell itself
 const getNeighbors = (row: number, col: number, size: number): [number, number][] => {
   const neighbors: [number, number][] = [];
-  for (let i = -1; i <= 1; i++) {
-    for (let j = -1; j <= 1; j++) {
-      const newRow = (row + i + size) % size;
-      const newCol = (col + j + size) % size;
+  for (let index = -1; index <= 1; index++) {
+    for (let index_ = -1; index_ <= 1; index_++) {
+      const newRow = (row + index + size) % size;
+      const newCol = (col + index_ + size) % size;
       neighbors.push([newRow, newCol]);
     }
   }
@@ -59,13 +53,13 @@ const getCellsToCheck = (activeCells: Set<string>, size: number): Set<string> =>
   const cellsToCheck = new Set<string>();
 
   // Only check previously active cells and their neighbors
-  activeCells.forEach((cellKey) => {
+  for (const cellKey of activeCells) {
     const [row, col] = cellKey.split(',').map(Number);
     const neighbors = getNeighbors(row, col, size);
-    neighbors.forEach(([r, c]) => {
+    for (const [r, c] of neighbors) {
       cellsToCheck.add(`${r},${c}`);
-    });
-  });
+    }
+  }
 
   return cellsToCheck;
 };
@@ -75,13 +69,13 @@ const initializeActiveCells = (grid: boolean[][], size: number): Set<string> => 
   const activeCells = new Set<string>();
 
   // Add all live cells and their neighbors
-  for (let i = 0; i < size; i++) {
-    for (let j = 0; j < size; j++) {
-      if (grid[i][j]) {
-        const neighbors = getNeighbors(i, j, size);
-        neighbors.forEach(([row, col]) => {
+  for (let index = 0; index < size; index++) {
+    for (let index_ = 0; index_ < size; index_++) {
+      if (grid[index][index_]) {
+        const neighbors = getNeighbors(index, index_, size);
+        for (const [row, col] of neighbors) {
           activeCells.add(`${row},${col}`);
-        });
+        }
       }
     }
   }
@@ -90,68 +84,22 @@ const initializeActiveCells = (grid: boolean[][], size: number): Set<string> => 
 };
 
 const useGameStore = create<GameState>((set, get) => ({
-  grid: createInitialGrid(20),
-  isRunning: false,
-  boardSize: 20,
-  speed: 10, // 1-10 scale, where 10 is fastest
-  activeCells: new Set<string>(),
   actions: {
-    setBoardSize: (size: number) => {
-      const newGrid = createInitialGrid(size);
-      set({
-        boardSize: size,
-        grid: newGrid,
-        activeCells: initializeActiveCells(newGrid, size),
-      });
-    },
-    setSpeed: (speed: number) => {
-      set({ speed });
-    },
-    toggleCell: (row: number, col: number) => {
-      const { grid, boardSize } = get();
-      const newGrid = grid.map((row) => [...row]);
-      newGrid[row][col] = !newGrid[row][col];
-      set({
-        grid: newGrid,
-        activeCells: initializeActiveCells(newGrid, boardSize),
-      });
-    },
-    toggleRunning: () => {
-      const { isRunning, boardSize } = get();
-      if (!isRunning) {
-        const newGrid = createRandomGrid(boardSize);
-        set({
-          grid: newGrid,
-          isRunning: true,
-          activeCells: initializeActiveCells(newGrid, boardSize),
-        });
-      } else {
-        set({ isRunning: false });
-      }
-    },
     clearGrid: () => {
       const newGrid = createInitialGrid(get().boardSize);
       set({
-        grid: newGrid,
         activeCells: new Set<string>(), // Empty grid has no active cells
-      });
-    },
-    randomizeGrid: () => {
-      const { boardSize } = get();
-      const newGrid = createRandomGrid(boardSize);
-      set({
         grid: newGrid,
-        activeCells: initializeActiveCells(newGrid, boardSize),
       });
     },
     nextGeneration: () => {
-      const { grid, boardSize, activeCells } = get();
+      const { activeCells, boardSize, grid } = get();
       const newGrid = createInitialGrid(boardSize);
       const cellsToCheck = getCellsToCheck(activeCells, boardSize);
       const newActiveCells = new Set<string>();
 
       // Only check cells that are alive or have living neighbors
-      cellsToCheck.forEach((cellKey) => {
+      for (const cellKey of cellsToCheck) {
         const [row, col] = cellKey.split(',').map(Number);
         const neighbors = getNeighbors(row, col, boardSize);
         const liveNeighbors =
@@ -163,9 +111,9 @@ const useGameStore = create<GameState>((set, get) => ({
             newGrid[row][col] = true;
             // Add this live cell and its neighbors to active cells for next generation
             const cellNeighbors = getNeighbors(row, col, boardSize);
-            cellNeighbors.forEach(([r, c]) => {
+            for (const [r, c] of cellNeighbors) {
               newActiveCells.add(`${r},${c}`);
-            });
+            }
           }
         } else {
           // Dead cell becomes alive with exactly 3 neighbors
@@ -173,16 +121,62 @@ const useGameStore = create<GameState>((set, get) => ({
             newGrid[row][col] = true;
             // Add this new live cell and its neighbors to active cells for next generation
             const cellNeighbors = getNeighbors(row, col, boardSize);
-            cellNeighbors.forEach(([r, c]) => {
+            for (const [r, c] of cellNeighbors) {
               newActiveCells.add(`${r},${c}`);
-            });
+            }
           }
         }
-      });
+      }
 
-      set({ grid: newGrid, activeCells: newActiveCells });
+      set({ activeCells: newActiveCells, grid: newGrid });
+    },
+    randomizeGrid: () => {
+      const { boardSize } = get();
+      const newGrid = createRandomGrid(boardSize);
+      set({
+        activeCells: initializeActiveCells(newGrid, boardSize),
+        grid: newGrid,
+      });
+    },
+    setBoardSize: (size: number) => {
+      const newGrid = createInitialGrid(size);
+      set({
+        activeCells: initializeActiveCells(newGrid, size),
+        boardSize: size,
+        grid: newGrid,
+      });
+    },
+    setSpeed: (speed: number) => {
+      set({ speed });
+    },
+    toggleCell: (row: number, col: number) => {
+      const { boardSize, grid } = get();
+      const newGrid = grid.map((row) => [...row]);
+      newGrid[row][col] = !newGrid[row][col];
+      set({
+        activeCells: initializeActiveCells(newGrid, boardSize),
+        grid: newGrid,
+      });
+    },
+    toggleRunning: () => {
+      const { boardSize, isRunning } = get();
+      if (isRunning) {
+        set({ isRunning: false });
+      } else {
+        const newGrid = createRandomGrid(boardSize);
+        set({
+          activeCells: initializeActiveCells(newGrid, boardSize),
+          grid: newGrid,
+          isRunning: true,
+        });
+      }
     },
   },
+  activeCells: new Set<string>(),
+  boardSize: 20,
+  grid: createInitialGrid(20),
+  isRunning: false,
+  speed: 10, // 1-10 scale, where 10 is fastest
 }));
 
 const Board = () => {
@@ -190,10 +184,15 @@ const Board = () => {
 
   return (
     <View flex={1}>
-      {grid.map((row, i) => (
-        <View flexDirection="row" key={i}>
-          {row.map((_, j) => (
-            <Cell key={`${i}-${j}`} rowIndex={i} colIndex={j} isAlive={grid[i][j]} />
+      {grid.map((row, index) => (
+        <View flexDirection="row" key={index}>
+          {row.map((_, index_) => (
+            <Cell
+              colIndex={index_}
+              isAlive={grid[index][index_]}
+              key={`${index}-${index_}`}
+              rowIndex={index}
+            />
           ))}
         </View>
       ))}
@@ -201,28 +200,34 @@ const Board = () => {
   );
 };
 
-type CellProps = {
-  rowIndex: number;
-  colIndex: number;
-  isAlive: boolean;
+type CellProperties = {
+  readonly colIndex: number;
+  readonly isAlive: boolean;
+  readonly rowIndex: number;
 };
 
-const Cell = memo(({ rowIndex, colIndex, isAlive }: CellProps) => {
+// eslint-disable-next-line react/no-multi-comp
+const Cell = memo(function CellMemo({ colIndex, isAlive, rowIndex }: CellProperties) {
   const { colors } = useAppTheme();
   const toggleCell = useGameStore((state) => state.actions.toggleCell);
 
+  const handlePress = useCallback(() => {
+    toggleCell(rowIndex, colIndex);
+  }, [toggleCell, rowIndex, colIndex]);
+
   return (
-    <Pressable onPress={() => toggleCell(rowIndex, colIndex)} style={{ flex: 1, aspectRatio: 1 }}>
+    <Pressable onPress={handlePress} style={{ aspectRatio: 1, flex: 1 }}>
       <View
-        flex={1}
-        borderWidth={1}
-        borderColor={colors.border}
         backgroundColor={isAlive ? colors.foreground : colors.transparent}
+        borderColor={colors.border}
+        borderWidth={1}
+        flex={1}
       />
     </Pressable>
   );
 });
 
+// eslint-disable-next-line react/no-multi-comp
 const GameOfLife = () => {
   const { spacing } = useAppTheme();
   const isRunning = useGameStore((state) => state.isRunning);
@@ -236,25 +241,27 @@ const GameOfLife = () => {
       const intervalMs = 100 - (speed - 1) * (99 / 9);
       interval = setInterval(actions.nextGeneration, intervalMs);
     }
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   }, [isRunning, actions.nextGeneration, speed]);
 
   return (
     <Screen>
-      <View flexDirection="row" justifyContent="center" gap={spacing.$4}>
+      <View flexDirection="row" gap={spacing.$4} justifyContent="center">
         <Button
-          title={isRunning ? 'Stop' : 'Start'}
           onPress={actions.toggleRunning}
+          title={isRunning ? 'Stop' : 'Start'}
           variant={isRunning ? 'destructive' : 'primary'}
         />
-        <Button title="Clear" onPress={actions.clearGrid} variant="outline" />
-        <Button title="Random" onPress={actions.randomizeGrid} variant="outline" />
-        <Button title="Next" onPress={actions.nextGeneration} variant="outline" />
+        <Button onPress={actions.clearGrid} title="Clear" variant="outline" />
+        <Button onPress={actions.randomizeGrid} title="Random" variant="outline" />
+        <Button onPress={actions.nextGeneration} title="Next" variant="outline" />
       </View>
       <Text title={`Board Size: ${boardSize}`} />
-      <Slider value={boardSize} onChange={actions.setBoardSize} min={10} max={50} step={1} />
+      <Slider max={50} min={10} onChange={actions.setBoardSize} step={1} value={boardSize} />
       <Text title={`Speed: ${speed}`} />
-      <Slider value={speed} onChange={actions.setSpeed} min={1} max={10} step={1} />
+      <Slider max={10} min={1} onChange={actions.setSpeed} step={1} value={speed} />
       <Board />
     </Screen>
   );
