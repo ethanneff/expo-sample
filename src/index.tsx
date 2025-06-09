@@ -13,6 +13,7 @@ import { Navigation } from './navigation/Navigation';
 
 SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({ duration: 1000, fade: true });
+if (__DEV__) require('./utils/reactotron');
 
 const fonts = {
   ...Ionicons.font,
