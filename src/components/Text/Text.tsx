@@ -1,145 +1,160 @@
-import { Text as RNText, TextProps, TextStyle } from 'react-native';
-import { ColorName, useAppTheme } from '~/theme/useAppTheme';
+// eslint-disable-next-line no-restricted-imports
+import { Text as RNText, type TextProps, type TextStyle } from 'react-native';
+import { type ColorName, useAppTheme } from '~/theme/useAppTheme';
 import { Typescript } from '~/utils/Typescript';
 import {
-  FontFamily,
+  type FontFamily,
   geistFontFamily,
   geistMonoFontFamily,
   letterSpacing,
   textSize,
-  Variant,
+  type Variant,
 } from './utils';
 
-type Props = {
-  title: string;
-  color?: ColorName;
-  textAlign?: TextStyle['textAlign'];
-  fontFamily?: FontFamily;
-  ellipsizeMode?: TextProps['ellipsizeMode'];
-  lineBreakMode?: TextProps['lineBreakMode'];
-  numberOfLines?: TextProps['numberOfLines'];
-  textDecorationLine?: TextStyle['textDecorationLine'];
-  textDecorationColor?: ColorName;
-  textDecorationStyle?: TextStyle['textDecorationStyle'];
-  textTransform?: TextStyle['textTransform'];
-  selectable?: boolean;
-  accessible?: boolean;
-  variant?: Variant;
+type Properties = {
+  readonly accessible?: boolean;
+  readonly color?: ColorName;
+  readonly ellipsizeMode?: TextProps['ellipsizeMode'];
+  readonly fontFamily?: FontFamily;
+  readonly lineBreakMode?: TextProps['lineBreakMode'];
+  readonly numberOfLines?: TextProps['numberOfLines'];
+  readonly selectable?: boolean;
+  readonly textAlign?: TextStyle['textAlign'];
+  readonly textDecorationColor?: ColorName;
+  readonly textDecorationLine?: TextStyle['textDecorationLine'];
+  readonly textDecorationStyle?: TextStyle['textDecorationStyle'];
+  readonly textTransform?: TextStyle['textTransform'];
+  readonly title: string;
+  readonly variant?: Variant;
 };
 
 const useTypography = (variant: Variant): TextStyle => {
   const { colors, spacing } = useAppTheme();
   switch (variant) {
-    case 'h1':
+    case 'blockquote': {
       return {
-        ...textSize['4xl'],
-        ...geistFontFamily['extrabold'],
-        ...letterSpacing['tight'],
-      };
-    case 'h2':
-      return {
-        ...textSize['3xl'],
-        ...geistFontFamily['semibold'],
-        ...letterSpacing['tight'],
-        borderBottomWidth: 1.5,
-        borderBottomColor: colors.border,
-        paddingBottom: spacing.$4,
-      };
-    case 'h3':
-      return {
-        ...textSize['2xl'],
-        ...geistFontFamily['semibold'],
-        ...letterSpacing['tight'],
-      };
-    case 'h4':
-      return {
-        ...textSize['xl'],
-        ...geistFontFamily['semibold'],
-        ...letterSpacing['tight'],
-      };
-    case 'p':
-      return {
-        ...textSize['md'],
-        ...geistFontFamily['regular'],
-        ...letterSpacing['normal'],
-      };
-    case 'blockquote':
-      return {
-        borderLeftWidth: 2,
         borderLeftColor: colors.border,
-        paddingLeft: spacing.$16,
+        borderLeftWidth: 2,
         color: colors.mutedForeground,
-        ...textSize['md'],
-        ...geistFontFamily['regular'],
-        ...letterSpacing['normal'],
+        paddingLeft: spacing.$16,
+        ...textSize.md,
+        ...geistFontFamily.regular,
+        ...letterSpacing.normal,
       };
-    case 'list':
-      return {
-        ...textSize['md'],
-        ...geistFontFamily['regular'],
-        ...letterSpacing['normal'],
-      };
-    case 'code':
+    }
+    case 'code': {
       return {
         backgroundColor: colors.muted,
-        ...textSize['sm'],
-        ...geistMonoFontFamily['semibold'],
-        ...letterSpacing['normal'],
+        ...textSize.sm,
+        ...geistMonoFontFamily.semibold,
+        ...letterSpacing.normal,
       };
-    case 'lead':
+    }
+    case 'h1': {
+      return {
+        ...textSize['4xl'],
+        ...geistFontFamily.extrabold,
+        ...letterSpacing.tight,
+      };
+    }
+    case 'h2': {
+      return {
+        ...textSize['3xl'],
+        ...geistFontFamily.semibold,
+        ...letterSpacing.tight,
+        borderBottomColor: colors.border,
+        borderBottomWidth: 1.5,
+        paddingBottom: spacing.$4,
+      };
+    }
+    case 'h3': {
+      return {
+        ...textSize['2xl'],
+        ...geistFontFamily.semibold,
+        ...letterSpacing.tight,
+      };
+    }
+    case 'h4': {
+      return {
+        ...textSize.xl,
+        ...geistFontFamily.semibold,
+        ...letterSpacing.tight,
+      };
+    }
+    case 'large': {
+      return {
+        ...textSize.lg,
+        ...geistFontFamily.regular,
+        ...letterSpacing.normal,
+      };
+    }
+    case 'lead': {
       return {
         color: colors.mutedForeground,
-        ...textSize['xl'],
-        ...geistFontFamily['regular'],
-        ...letterSpacing['normal'],
+        ...textSize.xl,
+        ...geistFontFamily.regular,
+        ...letterSpacing.normal,
       };
-    case 'large':
+    }
+    case 'list': {
       return {
-        ...textSize['lg'],
-        ...geistFontFamily['regular'],
-        ...letterSpacing['normal'],
+        ...textSize.md,
+        ...geistFontFamily.regular,
+        ...letterSpacing.normal,
       };
-    case 'small':
-      return {
-        ...textSize['sm'],
-        ...geistFontFamily['medium'],
-        ...letterSpacing['normal'],
-      };
-    case 'xsmall':
+    }
+    case 'muted': {
       return {
         color: colors.mutedForeground,
-        ...textSize['xs'],
-        ...geistFontFamily['regular'],
-        ...letterSpacing['normal'],
+        ...textSize.sm,
+        ...geistFontFamily.regular,
+        ...letterSpacing.normal,
       };
-    case 'muted':
+    }
+    case 'p': {
+      return {
+        ...textSize.md,
+        ...geistFontFamily.regular,
+        ...letterSpacing.normal,
+      };
+    }
+    case 'small': {
+      return {
+        ...textSize.sm,
+        ...geistFontFamily.medium,
+        ...letterSpacing.normal,
+      };
+    }
+    case 'xsmall': {
       return {
         color: colors.mutedForeground,
-        ...textSize['sm'],
-        ...geistFontFamily['regular'],
-        ...letterSpacing['normal'],
+        ...textSize.xs,
+        ...geistFontFamily.regular,
+        ...letterSpacing.normal,
       };
-    default:
+    }
+    default: {
       return Typescript.assertNever(variant);
+    }
   }
 };
 
 export const Text = ({
-  title,
   accessible,
-  color,
-  textAlign = 'left',
+  color = 'foreground',
   ellipsizeMode,
-  variant = 'p',
+  fontFamily,
   lineBreakMode,
   numberOfLines,
-  textTransform,
-  textDecorationLine,
-  textDecorationColor,
-  textDecorationStyle,
   selectable = false,
-  fontFamily,
-}: Props) => {
+  textAlign = 'left',
+  textDecorationColor,
+  textDecorationLine,
+  textDecorationStyle,
+  textTransform,
+  title,
+  variant = 'p',
+}: Properties) => {
   const { colors } = useAppTheme();
   const typography = useTypography(variant);
   const colorOverride = color ? { color: colors[color] } : {};
@@ -149,15 +164,15 @@ export const Text = ({
       accessible={accessible}
       ellipsizeMode={ellipsizeMode}
       lineBreakMode={lineBreakMode}
-      selectable={selectable}
       numberOfLines={numberOfLines}
+      selectable={selectable}
       style={{
         ...typography,
         ...colorOverride,
         fontFamily,
         textAlign,
-        textDecorationLine,
         textDecorationColor,
+        textDecorationLine,
         textDecorationStyle,
         textTransform,
       }}>

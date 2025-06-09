@@ -1,13 +1,9 @@
 import { SafeAreaView } from 'react-native';
-import { View } from '~/components/View/View';
-import { useAppTheme } from '~/theme/useAppTheme';
 
-export const Screen = ({ children }: { children: React.ReactNode }) => {
-  const { colors } = useAppTheme();
+type ScreenProperties = {
+  readonly children: React.ReactNode;
+};
 
-  return (
-    <View backgroundColor={colors.background} flex={1}>
-      <SafeAreaView style={{ flex: 1 }}>{children}</SafeAreaView>
-    </View>
-  );
+export const Screen = ({ children }: ScreenProperties) => {
+  return <SafeAreaView style={{ flex: 1 }}>{children}</SafeAreaView>;
 };

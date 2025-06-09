@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-
 import Animated, {
   Easing,
   interpolate,
@@ -9,54 +8,53 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { View } from '~/components/View/View';
-import { ColorName, useAppTheme } from '~/theme/useAppTheme';
+import { type ColorName, useAppTheme } from '~/theme/useAppTheme';
 
-type DotProps = {
-  size: number;
-  color: ColorName;
+type DotProperties = {
+  readonly color: ColorName;
+  readonly size: number;
 };
 
-const Dot = ({ size = 16, color }: DotProps) => {
+const Dot = ({ color, size = 16 }: DotProperties) => {
   const { colors } = useAppTheme();
   return (
-    <View width={size} height={size} borderRadius={size / 2} backgroundColor={colors[color]} />
+    <View backgroundColor={colors[color]} borderRadius={size / 2} height={size} width={size} />
   );
 };
 
-type LoaderProps = {
-  size?: number;
-  duration?: number;
-  absoluteFillObject?: boolean;
-  visible: boolean;
-  color: ColorName;
+type LoaderProperties = {
+  readonly absoluteFillObject?: boolean;
+  readonly color: ColorName;
+  readonly duration?: number;
+  readonly size?: number;
+  readonly visible: boolean;
 };
 
+// eslint-disable-next-line react/no-multi-comp
 export const Loader = ({
-  size = 8,
-  duration = 1500,
   absoluteFillObject,
-  visible,
   color = 'primary',
-}: LoaderProps) => {
+  duration = 1500,
+  size = 8,
+  visible,
+}: LoaderProperties) => {
   const progress = useSharedValue(0);
   const { spacing } = useAppTheme();
 
   useEffect(() => {
-    if (visible) {
-      progress.value = withRepeat(
-        withTiming(4, {
+    progress.value = visible
+      ? withRepeat(
+          withTiming(4, {
+            duration,
+            easing: Easing.linear,
+          }),
+          -1,
+          false
+        )
+      : withTiming(0, {
           duration,
           easing: Easing.linear,
-        }),
-        -1,
-        false
-      );
-    } else {
-      progress.value = withTiming(0, {
-        duration,
-        easing: Easing.linear,
-      });
-    }
+        });
   }, [duration, progress, visible]);
 
   const dot1Style = useAnimatedStyle(() => {
@@ -92,20 +90,20 @@ export const Loader = ({
 
   return (
     <View
-      opacity={visible ? 1 : 0}
-      flexDirection="row"
+      absoluteFillObject={absoluteFillObject}
       alignItems="center"
-      justifyContent="center"
+      flexDirection="row"
       gap={spacing.$4}
-      absoluteFillObject={absoluteFillObject}>
+      justifyContent="center"
+      opacity={visible ? 1 : 0}>
       <Animated.View style={dot1Style}>
-        <Dot size={size} color={color} />
+        <Dot color={color} size={size} />
       </Animated.View>
       <Animated.View style={dot2Style}>
-        <Dot size={size} color={color} />
+        <Dot color={color} size={size} />
       </Animated.View>
       <Animated.View style={dot3Style}>
-        <Dot size={size} color={color} />
+        <Dot color={color} size={size} />
       </Animated.View>
     </View>
   );

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   runOnJS,
@@ -7,28 +7,29 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
+import { View } from '~/components/View/View';
 import { useAppTheme } from '../../theme/useAppTheme';
 
 const { width } = Dimensions.get('window');
 const SLIDER_WIDTH = width - 40;
 const KNOB_SIZE = 30;
 
-interface SliderProps {
-  onChange: (value: number) => void;
-  min: number;
-  max: number;
-  value: number;
-  step: number;
-}
+type SliderProperties = {
+  readonly max: number;
+  readonly min: number;
+  readonly onChange: (value: number) => void;
+  readonly step: number;
+  readonly value: number;
+};
 
-export const Slider = ({ onChange, min = 0, max = 1, value, step = 1 }: SliderProps) => {
-  const { colors } = useAppTheme();
+export const Slider = ({ max = 1, min = 0, onChange, step = 1, value }: SliderProperties) => {
+  const { colors, spacing } = useAppTheme();
   const translateX = useSharedValue(((value - min) / (max - min)) * (SLIDER_WIDTH - KNOB_SIZE));
   const context = useSharedValue(0);
 
   const onGestureEnd = useCallback(
-    (val: number) => {
-      onChange(val);
+    (value_: number) => {
+      onChange(value_);
     },
     [onChange]
   );
@@ -66,26 +67,26 @@ export const Slider = ({ onChange, min = 0, max = 1, value, step = 1 }: SliderPr
   }));
 
   return (
-    <View style={{ padding: 20, justifyContent: 'center', alignItems: 'center' }}>
+    <View alignItems="center" justifyContent="center" padding={spacing.$20}>
       <GestureDetector gesture={composed}>
         <Animated.View
           style={{
-            width: SLIDER_WIDTH,
-            height: KNOB_SIZE,
             backgroundColor: colors.primaryForeground,
             borderRadius: KNOB_SIZE / 2,
+            height: KNOB_SIZE,
             justifyContent: 'center',
+            width: SLIDER_WIDTH,
           }}>
           <Animated.View
             style={[
               {
-                position: 'absolute',
-                width: KNOB_SIZE,
-                height: KNOB_SIZE,
                 backgroundColor: colors.primaryForeground,
                 borderColor: colors.primary,
-                borderWidth: 2,
                 borderRadius: KNOB_SIZE / 2,
+                borderWidth: 2,
+                height: KNOB_SIZE,
+                position: 'absolute',
+                width: KNOB_SIZE,
               },
               knobStyle,
             ]}

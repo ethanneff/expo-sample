@@ -1,15 +1,15 @@
 import { Screen } from '~/components/Screen/Screen';
 import { Text } from '~/components/Text/Text';
 
-type Props = {
-  title: string;
-  children?: React.ReactNode;
+type Properties = {
+  readonly children?: React.ReactNode;
+  readonly title: string;
 };
 
-export const Placeholder = ({ title, children }: Props) => {
+export const Placeholder = ({ children, title }: Properties) => {
   return (
     <Screen>
-      <Text title={title} variant="large" textAlign="center" />
+      <Text textAlign="center" title={title} variant="large" />
       {children}
     </Screen>
   );

@@ -1,6 +1,7 @@
 import { type ReactNode } from 'react';
 import {
   type LayoutChangeEvent,
+  // eslint-disable-next-line no-restricted-imports
   View as RNView,
   type StyleProp,
   StyleSheet,
@@ -9,8 +10,8 @@ import {
 
 type ViewProperties = ViewStyle & {
   readonly absoluteFillObject?: boolean;
-  readonly accessible?: boolean;
   readonly accessibilityLabel?: string;
+  readonly accessible?: boolean;
   readonly children?: ReactNode;
   readonly dropShadow?: boolean;
   readonly onLayout?: (event: LayoutChangeEvent) => void;
@@ -31,13 +32,11 @@ const getDropShadow = (dropShadow?: boolean) => {
 
 export const View = ({
   absoluteFillObject,
-  accessible,
   accessibilityLabel,
+  accessible,
   children,
   dropShadow,
   onLayout,
-  safeArea,
-  safeAreaEdges,
   style,
   ...rest
 }: ViewProperties) => {
@@ -49,8 +48,8 @@ export const View = ({
 
   return (
     <RNView
-      accessible={accessible}
       accessibilityLabel={accessibilityLabel}
+      accessible={accessible}
       onLayout={onLayout}
       style={[styles.view, style]}>
       {children}

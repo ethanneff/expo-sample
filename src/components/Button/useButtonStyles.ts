@@ -1,54 +1,55 @@
-import { ButtonVariant } from '~/components/Button/types';
-import { ColorName, useAppTheme } from '~/theme/useAppTheme';
+import { type ButtonVariant } from '~/components/Button/types';
+import { type ColorName, useAppTheme } from '~/theme/useAppTheme';
 import { Typescript } from '~/utils/Typescript';
 
 type ButtonStyles = {
-  color: ColorName;
   backgroundColor: string;
   borderColor: string;
+  color: ColorName;
 };
 
 export const useButtonStyles = (variant: ButtonVariant): ButtonStyles => {
   const { colors } = useAppTheme();
 
   switch (variant) {
-    case 'primary':
+    case 'destructive': {
       return {
-        color: 'primaryForeground',
-        backgroundColor: colors.primary,
-        borderColor: colors.accent,
-      };
-    case 'secondary':
-      return {
-        color: 'foreground',
-        backgroundColor: colors.background,
-        borderColor: colors.background,
-      };
-    case 'destructive':
-      return {
-        color: 'primaryForeground',
         backgroundColor: colors.destructive,
         borderColor: colors.destructive,
+        color: 'primaryForeground',
       };
-    case 'outline':
+    }
+    case 'ghost':
+    case 'link': {
       return {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
         color: 'foreground',
+      };
+    }
+    case 'outline': {
+      return {
         backgroundColor: colors.transparent,
         borderColor: colors.border,
-      };
-    case 'ghost':
-      return {
         color: 'foreground',
-        backgroundColor: 'transparent',
-        borderColor: 'transparent',
       };
-    case 'link':
+    }
+    case 'primary': {
       return {
-        color: 'foreground',
-        backgroundColor: 'transparent',
-        borderColor: 'transparent',
+        backgroundColor: colors.primary,
+        borderColor: colors.accent,
+        color: 'primaryForeground',
       };
-    default:
+    }
+    case 'secondary': {
+      return {
+        backgroundColor: colors.background,
+        borderColor: colors.background,
+        color: 'foreground',
+      };
+    }
+    default: {
       return Typescript.assertNever(variant);
+    }
   }
 };

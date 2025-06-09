@@ -2,8 +2,10 @@ import React, {
   Children,
   createContext,
   isValidElement,
-  ReactElement,
-  useContext,
+  type ReactElement,
+  use,
+  useCallback,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -16,47 +18,47 @@ import { View } from '~/components/View/View';
 import { useAppTheme } from '~/theme/useAppTheme';
 
 type AccordionContextType = {
-  activeItem: string | null;
-  setActiveItem: (value: string | null) => void;
+  activeItem: null | string;
+  setActiveItem: (value: null | string) => void;
 };
 
 const AccordionContext = createContext<AccordionContextType | undefined>(undefined);
 
-type AccordionItemProps = {
-  title: string;
-  value: string;
-  children: React.ReactNode;
-  collapsible?: boolean;
-  isLast?: boolean;
+type AccordionItemProperties = {
+  readonly children: React.ReactNode;
+  readonly collapsible?: boolean;
+  readonly isLast?: boolean;
+  readonly title: string;
+  readonly value: string;
 };
 
 export const AccordionItem = ({
-  title,
-  value,
   children,
   collapsible = true,
   isLast = false,
-}: AccordionItemProps) => {
+  title,
+  value,
+}: AccordionItemProperties) => {
   const { spacing } = useAppTheme();
-  const context = useContext(AccordionContext);
+  const context = use(AccordionContext);
   if (!context) throw new Error('AccordionItem must be used within Accordion');
 
   const { activeItem, setActiveItem } = context;
   const isActive = activeItem === value;
   const animation = useSharedValue(isActive ? 1 : 0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     animation.value = withSpring(isActive ? 1 : 0, {
       damping: 15,
-      stiffness: 150,
       mass: 0.5,
+      stiffness: 150,
     });
   }, [isActive, animation]);
 
-  const toggleAccordion = () => {
+  const toggleAccordion = useCallback(() => {
     if (isActive && !collapsible) return;
     setActiveItem(isActive ? null : value);
-  };
+  }, [isActive, collapsible, value, setActiveItem]);
 
   const chevronStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: `${animation.value * 180}deg` }],
@@ -71,20 +73,20 @@ export const AccordionItem = ({
     <View>
       <Pressable onPress={toggleAccordion}>
         <View
-          flexDirection="row"
           alignItems="center"
+          flexDirection="row"
           justifyContent="space-between"
           padding={spacing.$12}>
           <View flex={1}>
             <Text title={title} variant="large" />
           </View>
           <Animated.View style={chevronStyle}>
-            <Icon name="chevron-down" size={20} color="black" />
+            <Icon color="black" name="chevron-down" size={20} />
           </Animated.View>
         </View>
       </Pressable>
       <Animated.View style={contentStyle}>
-        <View padding={spacing.$12} paddingTop={spacing.$4} gap={spacing.$12}>
+        <View gap={spacing.$12} padding={spacing.$12} paddingTop={spacing.$4}>
           {children}
         </View>
       </Animated.View>
@@ -93,13 +95,14 @@ export const AccordionItem = ({
   );
 };
 
-type AccordionProps = {
-  defaultValue?: string;
-  children: React.ReactNode;
+type AccordionProperties = {
+  readonly children: React.ReactNode;
+  readonly defaultValue?: string;
 };
 
-export const Accordion = ({ defaultValue, children }: AccordionProps) => {
-  const [activeItem, setActiveItem] = useState<string | null>(defaultValue || null);
+// eslint-disable-next-line react/no-multi-comp
+export const Accordion = ({ children, defaultValue }: AccordionProperties) => {
+  const [activeItem, setActiveItem] = useState<null | string>(defaultValue ?? null);
   const value = useMemo(() => ({ activeItem, setActiveItem }), [activeItem, setActiveItem]);
 
   const childrenArray = Children.toArray(children);
@@ -107,7 +110,7 @@ export const Accordion = ({ defaultValue, children }: AccordionProps) => {
 
   const enhancedChildren = Children.map(children, (child, index) => {
     if (isValidElement(child) && child.type === AccordionItem) {
-      return React.cloneElement(child as ReactElement<AccordionItemProps>, {
+      return React.cloneElement(child as ReactElement<AccordionItemProperties>, {
         isLast: index === lastIndex,
       });
     }
@@ -115,8 +118,8 @@ export const Accordion = ({ defaultValue, children }: AccordionProps) => {
   });
 
   return (
-    <AccordionContext.Provider value={value}>
+    <AccordionContext value={value}>
       <View>{enhancedChildren}</View>
-    </AccordionContext.Provider>
+    </AccordionContext>
   );
 };

@@ -3,18 +3,18 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { View } from '~/components/View/View';
 import { useAppTheme } from '~/theme/useAppTheme';
 
-type Props = {
-  onBackdropPress?: () => void;
-  children: React.ReactNode;
+type Properties = {
+  readonly children: React.ReactNode;
+  readonly onBackdropPress?: () => void;
 };
 
-export const Modal = ({ children, onBackdropPress }: Props) => {
+export const Modal = ({ children, onBackdropPress }: Properties) => {
   const { colors, spacing } = useAppTheme();
 
   return (
     <RNModal style={{ ...StyleSheet.absoluteFillObject }} transparent>
       <TouchableWithoutFeedback onPress={onBackdropPress}>
-        <View absoluteFillObject opacity={0.5} backgroundColor={colors.foreground} />
+        <View absoluteFillObject backgroundColor={colors.foreground} opacity={0.5} />
       </TouchableWithoutFeedback>
       <KeyboardAwareScrollView
         contentContainerStyle={{
@@ -22,15 +22,15 @@ export const Modal = ({ children, onBackdropPress }: Props) => {
           justifyContent: 'center',
           padding: spacing.$16,
         }}
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled">
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}>
         <View
           alignSelf="center"
           backgroundColor={colors.background}
-          borderRadius={spacing.$8}
-          dropShadow
-          borderWidth={1}
           borderColor={colors.border}
+          borderRadius={spacing.$8}
+          borderWidth={1}
+          dropShadow
           padding={spacing.$8}>
           {children}
         </View>

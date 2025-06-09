@@ -1,9 +1,19 @@
 import { useCallback, useRef, useState } from 'react';
-import { Pressable, TextInput, TextInputProps, TouchableOpacity } from 'react-native';
-import { Icon, IconName } from '~/components/Icon/Icon';
+// eslint-disable-next-line no-restricted-imports
+import { Pressable, TextInput, type TextInputProps, TouchableOpacity } from 'react-native';
+import { Icon, type IconName } from '~/components/Icon/Icon';
 import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
 import { useAppTheme } from '~/theme/useAppTheme';
+
+export type InputReference = TextInput;
+
+type Properties = RequiredTextInputProperties &
+  TextInputProps & {
+    readonly error?: string;
+    readonly label?: string;
+    readonly ref?: React.Ref<InputReference>;
+  };
 
 type RequiredTextInputProperties = Required<
   Pick<
@@ -23,15 +33,6 @@ type RequiredTextInputProperties = Required<
   >
 >;
 
-export type InputRef = TextInput;
-
-type Properties = RequiredTextInputProperties &
-  TextInputProps & {
-    label?: string;
-    error?: string;
-    ref?: React.Ref<InputRef>;
-  };
-
 const getIcon = (hasValue: boolean, secureTextEntry: boolean | undefined): IconName => {
   if (!hasValue) return 'close';
   if (secureTextEntry === undefined) return 'close';
@@ -47,12 +48,12 @@ export const Input = ({
   autoCorrect,
   defaultValue = '',
   editable,
+  error = '',
   keyboardType,
+  label,
   onChangeText,
   onSubmitEditing,
   placeholder,
-  label,
-  error = '',
   ref,
   returnKeyType,
   secureTextEntry,
@@ -60,15 +61,15 @@ export const Input = ({
   submitBehavior,
   textContentType,
 }: Properties) => {
-  const inputRef = useRef<TextInput>(null);
+  const inputReference = useRef<TextInput>(null);
   const [value, setValue] = useState(defaultValue);
   const [isSecureTextEntry, setIsSecureTextEntry] = useState(secureTextEntry);
-  const { spacing, colors } = useAppTheme();
+  const { colors, spacing } = useAppTheme();
 
   const handleChangeText = useCallback(
     (text: string) => {
       setValue(text);
-      onChangeText?.(text);
+      onChangeText(text);
     },
     [onChangeText]
   );
@@ -79,17 +80,17 @@ export const Input = ({
       return;
     }
     setValue('');
-    onChangeText?.('');
-    inputRef.current?.focus();
+    onChangeText('');
+    inputReference.current?.focus();
   }, [onChangeText, secureTextEntry, isSecureTextEntry]);
 
   const handleLabelPress = useCallback(() => {
-    inputRef.current?.focus();
+    inputReference.current?.focus();
   }, []);
 
-  const handleRef = useCallback(
-    (node: TextInput | null) => {
-      inputRef.current = node;
+  const handleReference = useCallback(
+    (node: null | TextInput) => {
+      inputReference.current = node;
       if (typeof ref === 'function') {
         ref(node);
       } else if (ref) {
@@ -111,45 +112,45 @@ export const Input = ({
       ) : null}
       <View>
         <TextInput
-          value={value}
           autoCapitalize={autoCapitalize}
           autoComplete={autoComplete}
           autoCorrect={autoCorrect}
+          cursorColor={colors.primary}
           editable={editable}
-          placeholderTextColor={colors.mutedForeground}
           keyboardType={keyboardType}
           onChangeText={handleChangeText}
           onSubmitEditing={onSubmitEditing}
           placeholder={placeholder}
-          ref={handleRef}
-          cursorColor={colors.primary}
-          selectionColor={colors.primary}
+          placeholderTextColor={colors.mutedForeground}
+          ref={handleReference}
           returnKeyType={returnKeyType}
           secureTextEntry={isSecureTextEntry}
+          selectionColor={colors.primary}
           style={[
             {
               backgroundColor: colors.background,
+              borderColor: error ? colors.destructive : colors.border,
+              borderRadius: spacing.$8,
+              borderWidth: 1,
               color: colors.foreground,
               padding: spacing.$8,
-              borderRadius: spacing.$8,
-              borderColor: error ? colors.destructive : colors.border,
-              borderWidth: 1,
               paddingRight: showIcon ? iconSize + 2 * spacing.$8 : spacing.$8,
             },
             style,
           ]}
           submitBehavior={submitBehavior}
           textContentType={textContentType}
+          value={value}
         />
         {showIcon ? (
-          <View position="absolute" top={0} bottom={0} right={spacing.$8} justifyContent="center">
+          <View bottom={0} justifyContent="center" position="absolute" right={spacing.$8} top={0}>
             <TouchableOpacity onPress={handleIconPress}>
-              <Icon name={icon} size={iconSize} color={colors.mutedForeground} />
+              <Icon color={colors.mutedForeground} name={icon} size={iconSize} />
             </TouchableOpacity>
           </View>
         ) : null}
       </View>
-      {error ? <Text title={error} variant="xsmall" color="destructive" /> : null}
+      {error ? <Text color="destructive" title={error} variant="xsmall" /> : null}
     </View>
   );
 };

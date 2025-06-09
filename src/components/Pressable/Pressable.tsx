@@ -1,12 +1,13 @@
-import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
+// eslint-disable-next-line no-restricted-imports
+import { type StyleProp, TouchableOpacity, type ViewStyle } from 'react-native';
 
-type PressableProps = {
-  children: React.ReactNode;
-  onPress: () => void;
-  style?: StyleProp<ViewStyle>;
+type PressableProperties = {
+  readonly children: React.ReactNode;
+  readonly onPress: () => void;
+  readonly style?: StyleProp<ViewStyle>;
 };
 
-export const Pressable = ({ children, onPress, style }: PressableProps) => {
+export const Pressable = ({ children, onPress, style }: PressableProperties) => {
   return (
     <TouchableOpacity onPress={onPress} style={style}>
       {children}

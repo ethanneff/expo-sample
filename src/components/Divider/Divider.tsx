@@ -3,5 +3,5 @@ import { useAppTheme } from '~/theme/useAppTheme';
 
 export const Divider = () => {
   const { colors } = useAppTheme();
-  return <View height={1} backgroundColor={colors.border} flex={1} />;
+  return <View backgroundColor={colors.border} flex={1} height={1} />;
 };

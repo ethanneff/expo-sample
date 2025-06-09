@@ -1,35 +1,36 @@
 import { useCallback, useState } from 'react';
+// eslint-disable-next-line no-restricted-imports
 import { Pressable } from 'react-native';
-import { ButtonVariant } from '~/components/Button/types';
+import { type ButtonVariant } from '~/components/Button/types';
 import { useButtonStyles } from '~/components/Button/useButtonStyles';
-import { Icon, IconName } from '~/components/Icon/Icon';
+import { Icon, type IconName } from '~/components/Icon/Icon';
 import { Loader } from '~/components/Loader/Loader';
 import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
 import { useAppTheme } from '~/theme/useAppTheme';
 
-type Props = {
-  title: string;
-  icon?: IconName;
-  onPress: () => void;
-  disabled?: boolean;
-  loading?: boolean;
-  variant: ButtonVariant;
-  fitContent?: boolean;
+type Properties = {
+  readonly disabled?: boolean;
+  readonly fitContent?: boolean;
+  readonly icon?: IconName;
+  readonly loading?: boolean;
+  readonly onPress: () => void;
+  readonly title: string;
+  readonly variant: ButtonVariant;
 };
 
 export const Button = ({
-  title,
-  onPress,
   disabled,
+  fitContent,
   icon,
   loading,
+  onPress,
+  title,
   variant = 'primary',
-  fitContent,
-}: Props) => {
+}: Properties) => {
   const { colors, spacing } = useAppTheme();
   const [isPressed, setIsPressed] = useState(false);
-  const isDisabled = disabled || loading;
+  const isDisabled = disabled ?? loading;
   const { backgroundColor, borderColor, color } = useButtonStyles(variant);
 
   const togglePressed = useCallback(
@@ -41,45 +42,45 @@ export const Button = ({
 
   return (
     <Pressable
-      onPress={onPress}
       disabled={isDisabled}
-      onPressIn={togglePressed(true)}
-      onPressOut={togglePressed(false)}
       onHoverIn={togglePressed(true)}
       onHoverOut={togglePressed(false)}
+      onPress={onPress}
+      onPressIn={togglePressed(true)}
+      onPressOut={togglePressed(false)}
       style={({ pressed }) => ({
-        opacity: pressed ? 0.25 : 1,
         cursor: isDisabled ? 'auto' : 'pointer',
+        opacity: pressed ? 0.25 : 1,
       })}>
       <View
-        backgroundColor={backgroundColor}
-        opacity={isDisabled ? 0.5 : 1}
-        borderColor={borderColor}
         alignSelf={fitContent ? 'center' : 'auto'}
+        backgroundColor={backgroundColor}
+        borderColor={borderColor}
+        borderRadius={spacing.$8}
         borderWidth={1}
+        opacity={isDisabled ? 0.5 : 1}
         paddingHorizontal={spacing.$16}
-        paddingVertical={spacing.$6}
-        borderRadius={spacing.$8}>
-        <Loader absoluteFillObject visible={loading ?? false} color={color} />
+        paddingVertical={spacing.$6}>
+        <Loader absoluteFillObject color={color} visible={loading ?? false} />
         <View
-          gap={spacing.$8}
-          flexDirection="row"
-          justifyContent="center"
           alignItems="center"
+          flexDirection="row"
+          gap={spacing.$8}
+          justifyContent="center"
           opacity={loading ? 0 : 1}>
           {icon ? (
             <View
-              position={title.length === 0 ? 'absolute' : 'relative'}
+              alignItems="center"
               justifyContent="center"
-              alignItems="center">
-              <Icon name={icon} size={18} color={colors[color]} />
+              position={title.length === 0 ? 'absolute' : 'relative'}>
+              <Icon color={colors[color]} name={icon} size={18} />
             </View>
           ) : null}
           <Text
-            title={title}
-            variant="small"
             color={color}
             textDecorationLine={variant === 'link' && isPressed ? 'underline' : 'none'}
+            title={title}
+            variant="small"
           />
         </View>
       </View>

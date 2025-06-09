@@ -1,10 +1,12 @@
+import { describe, expect, it } from '@jest/globals';
 import { render, screen } from '@testing-library/react-native';
 import { Text } from '~/components/Text/Text';
 import { Placeholder } from '../Placeholder';
 
-describe('Placeholder', () => {
+describe('placeholder', () => {
   it('renders with title', () => {
     render(<Placeholder title="Test Title" />);
+
     expect(screen.getByText('Test Title')).toBeTruthy();
   });
 

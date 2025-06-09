@@ -1,26 +1,26 @@
-import { StyleProp, ViewStyle } from 'react-native';
+import { type StyleProp, type ViewStyle } from 'react-native';
 import { View } from '~/components/View/View';
 import { useStoreTheme } from '~/store/useStoreTheme';
 import { useAppTheme } from '~/theme/useAppTheme';
 
-type CardProps = {
-  children: React.ReactNode;
-  style?: StyleProp<ViewStyle>;
+type CardProperties = {
+  readonly children: React.ReactNode;
+  readonly style?: StyleProp<ViewStyle>;
 };
 
-export const Card = ({ children, style }: CardProps) => {
-  const { colors, borderRadius, spacing } = useAppTheme();
+export const Card = ({ children, style }: CardProperties) => {
+  const { borderRadius, colors, spacing } = useAppTheme();
   const theme = useStoreTheme((state) => state.theme);
 
   return (
     <View
-      overflow="hidden"
-      dropShadow={theme === 'light'}
       backgroundColor={colors.card}
-      borderRadius={borderRadius.$12}
       borderColor={colors.border}
-      padding={spacing.$12}
+      borderRadius={borderRadius.$12}
       borderWidth={1.5}
+      dropShadow={theme === 'light'}
+      overflow="hidden"
+      padding={spacing.$12}
       style={style}>
       {children}
     </View>

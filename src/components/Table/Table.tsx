@@ -2,47 +2,47 @@ import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
 import { useAppTheme } from '~/theme/useAppTheme';
 
-type TableProps = {
-  headers: string[];
-  rows: string[][];
+type TableProperties = {
+  readonly headers: string[];
+  readonly rows: string[][];
 };
 
-export const Table = ({ headers, rows }: TableProps) => {
-  const { spacing, colors } = useAppTheme();
+export const Table = ({ headers, rows }: TableProperties) => {
+  const { colors, spacing } = useAppTheme();
 
   return (
-    <View borderWidth={1} borderColor={colors.border}>
+    <View borderColor={colors.border} borderWidth={1}>
       <View flexDirection="row">
         {headers.map((header, index) => (
           <View
-            key={index}
-            flexDirection="row"
-            flex={1}
-            borderBottomWidth={1}
             borderBottomColor={colors.border}
+            borderBottomWidth={1}
+            borderRightColor={colors.border}
             borderRightWidth={index < headers.length - 1 ? 1 : 0}
-            borderRightColor={colors.border}>
+            flex={1}
+            flexDirection="row"
+            key={index}>
             <View padding={spacing.$4}>
-              <Text title={header} fontFamily="Geist-Bold" />
+              <Text fontFamily="Geist-Bold" title={header} />
             </View>
           </View>
         ))}
       </View>
       {rows.map((row, rowIndex) => (
         <View
-          key={rowIndex}
-          flexDirection="row"
-          borderBottomWidth={rowIndex < rows.length - 1 ? 1 : 0}
+          backgroundColor={rowIndex % 2 === 0 ? colors.muted : undefined}
           borderBottomColor={colors.border}
-          backgroundColor={rowIndex % 2 === 0 ? colors.muted : undefined}>
+          borderBottomWidth={rowIndex < rows.length - 1 ? 1 : 0}
+          flexDirection="row"
+          key={rowIndex}>
           {row.map((cell, cellIndex) => (
             <View
-              flex={1}
-              key={cellIndex}
+              borderRightColor={colors.border}
               borderRightWidth={cellIndex < headers.length - 1 ? 1 : 0}
-              borderRightColor={colors.border}>
+              flex={1}
+              key={cellIndex}>
               <View padding={spacing.$4}>
-                <Text title={cell} color={'primary'} />
+                <Text color="primary" title={cell} />
               </View>
             </View>
           ))}
