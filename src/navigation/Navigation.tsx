@@ -1,13 +1,15 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStaticNavigation, StaticParamList, Theme } from '@react-navigation/native';
+import { createStaticNavigation } from '@react-navigation/native';
 import {
   createNativeStackNavigator,
-  NativeStackNavigationOptions,
+  type NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { ActivityIndicator } from 'react-native';
-import { Icon, IconName } from '~/components/Icon/Icon';
+import { Loader } from '~/components/Loader/Loader';
+import { Text } from '~/components/Text/Text';
+import { getTabBarIcon } from '~/navigation/getTabBarIcon';
+import { useNavTheme } from '~/navigation/useNavTheme';
 import ActionSheetScreen from '~/screens/ActionSheetScreen/ActionSheetScreen';
 import DebugScreen from '~/screens/DebugScreen/DebugScreen';
 import DetailsScreen from '~/screens/DetailsScreen/DetailsScreen';
@@ -30,124 +32,96 @@ import SignUpScreen from '~/screens/SignUpScreen/SignUpScreen';
 import SplashScreen from '~/screens/SplashScreen/SplashScreen';
 import { SurveyCsatScreen } from '~/screens/SurveyCsatScreen/SurveyCsatScreen';
 import { SurveyNpsScreen } from '~/screens/SurveyNpsScreen/SurveyNpsScreen';
+import TemplateScreen from '~/screens/TemplateScreen/TemplateScreen';
 import TermsScreen from '~/screens/TermsScreen/TermsScreen';
 import { useStoreAuth } from '~/store/useStoreAuth';
-import { useAppTheme } from '~/theme/useAppTheme';
 
 // Lazy load all screens (does not work on web)
 
 const useAuth = () => useStoreAuth((state) => state.user !== null);
 const useUnAuth = () => useStoreAuth((state) => state.user === null);
 
-const getTabBarIcon =
-  (icon: IconName) =>
-  ({ color, size }: { color: string; size: number }) => (
-    <Icon name={icon} size={size - 8} color={color} />
-  );
-
 const Tabs = createBottomTabNavigator({
+  initialRouteName: 'Home',
   options: { headerShown: false },
   screens: {
-    Home: { screen: HomeScreen, options: { tabBarIcon: getTabBarIcon('home') } },
-    Overview: { screen: OverviewScreen, options: { tabBarIcon: getTabBarIcon('bar-chart') } },
-    Details: { screen: DetailsScreen, options: { tabBarIcon: getTabBarIcon('list') } },
-    Profile: { screen: ProfileScreen, options: { tabBarIcon: getTabBarIcon('person') } },
-    Settings: { screen: SettingsScreen, options: { tabBarIcon: getTabBarIcon('cog') } },
-    Games: { screen: GamesScreen, options: { tabBarIcon: getTabBarIcon('game-controller') } },
+    Details: { options: { tabBarIcon: getTabBarIcon('list') }, screen: DetailsScreen },
+    Games: { options: { tabBarIcon: getTabBarIcon('game-controller') }, screen: GamesScreen },
+    Home: { options: { tabBarIcon: getTabBarIcon('home') }, screen: HomeScreen },
+    Overview: { options: { tabBarIcon: getTabBarIcon('bar-chart') }, screen: OverviewScreen },
+    Profile: { options: { tabBarIcon: getTabBarIcon('person') }, screen: ProfileScreen },
+    Settings: { options: { tabBarIcon: getTabBarIcon('cog') }, screen: SettingsScreen },
   },
 });
 
-const RootStack = createNativeStackNavigator({
-  screenLayout: ({ children }) => (
-    <ErrorBoundary fallback={<div>Something went wrong</div>}>
-      <Suspense fallback={<ActivityIndicator />}>{children}</Suspense>
-    </ErrorBoundary>
-  ),
+export const RootStack = createNativeStackNavigator({
   groups: {
+    ActionSheets: {
+      screenOptions: {
+        presentation: 'formSheet',
+        sheetAllowedDetents: [0.25, 0.75],
+        sheetCornerRadius: 16,
+        sheetExpandsWhenScrolledToEdge: false,
+        sheetGrabberVisible: true,
+      } as NativeStackNavigationOptions,
+      screens: {
+        ActionSheet: ActionSheetScreen,
+      },
+    },
     Guest: {
       if: useUnAuth,
       screens: {
-        Splash: SplashScreen,
-        Landing: { screen: LandingScreen, options: { headerBackVisible: false } },
+        ForgotPassword: ForgotPasswordScreen,
+        Landing: { options: { headerBackVisible: false }, screen: LandingScreen },
         Onboarding: OnboardingScreen,
         SignIn: SignInScreen,
         SignUp: SignUpScreen,
-        ForgotPassword: ForgotPasswordScreen,
+        Splash: SplashScreen,
+      },
+    },
+    Modals: {
+      screenOptions: { presentation: 'modal' },
+      screens: {
+        Debug: DebugScreen,
+        GameBejeweled,
+        GameFlappyBird,
+        GameOfLife,
+        GamePapiJump,
+        GameTicTacToe,
+        PrivacyPolicy: PrivacyPolicyScreen,
+        SurveyCsat: SurveyCsatScreen,
+        SurveyNps: SurveyNpsScreen,
+        Template: {
+          options: { headerShown: false },
+          screen: TemplateScreen,
+        },
+        Terms: TermsScreen,
       },
     },
     User: {
       if: useAuth,
+      screenOptions: { headerShown: false },
       screens: {
         Splash: SplashScreen,
         Tabs: {
-          screen: Tabs,
           options: { headerBackVisible: false },
+          screen: Tabs,
         },
       },
-      screenOptions: { headerShown: false },
-    },
-    Modals: {
-      screens: {
-        Debug: DebugScreen,
-        SurveyNps: SurveyNpsScreen,
-        SurveyCsat: SurveyCsatScreen,
-        Terms: TermsScreen,
-        PrivacyPolicy: PrivacyPolicyScreen,
-        GameTicTacToe: GameTicTacToe,
-        GameOfLife: GameOfLife,
-        GameFlappyBird: GameFlappyBird,
-        GamePapiJump: GamePapiJump,
-        GameBejeweled: GameBejeweled,
-      },
-      screenOptions: { presentation: 'modal' },
-    },
-    ActionSheets: {
-      screens: {
-        ActionSheet: ActionSheetScreen,
-      },
-      screenOptions: {
-        presentation: 'formSheet',
-        sheetExpandsWhenScrolledToEdge: false,
-        sheetCornerRadius: 16,
-        sheetGrabberVisible: true,
-        sheetAllowedDetents: [0.25, 0.75],
-      } as NativeStackNavigationOptions,
     },
   },
+  initialRouteName: 'Splash',
+  screenLayout: ({ children }) => (
+    <ErrorBoundary fallback={<Text title="Something went wrong" />}>
+      <Suspense fallback={<Loader color="primary" visible />}>{children}</Suspense>
+    </ErrorBoundary>
+  ),
 });
-
-type RootStackParamList = StaticParamList<typeof RootStack>;
-
-export type Route = keyof RootStackParamList;
-
-declare global {
-  namespace ReactNavigation {
-    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-    interface RootParamList extends RootStackParamList {}
-  }
-}
 
 const RootNavigation = createStaticNavigation(RootStack);
 
 export const Navigation = () => {
-  const { colors, theme } = useAppTheme();
-  const navigationTheme: Theme = {
-    dark: theme === 'dark',
-    colors: {
-      primary: colors.primary,
-      background: colors.background,
-      card: colors.card,
-      text: colors.foreground,
-      border: colors.border,
-      notification: colors.destructive,
-    },
-    fonts: {
-      regular: { fontFamily: 'Geist-Regular', fontWeight: '400' },
-      medium: { fontFamily: 'Geist-Medium', fontWeight: '500' },
-      bold: { fontFamily: 'Geist-Bold', fontWeight: '600' },
-      heavy: { fontFamily: 'Geist-ExtraBold', fontWeight: '700' },
-    },
-  };
+  const navigationTheme = useNavTheme();
 
   return <RootNavigation theme={navigationTheme} />;
 };
