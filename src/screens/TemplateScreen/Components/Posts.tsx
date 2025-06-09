@@ -1,115 +1,110 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
-import { Alert, FlatList } from 'react-native';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import React, { useCallback, useState } from 'react';
+import { FlatList, type ListRenderItemInfo } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from '~/components/Button/Button';
-import { Card } from '~/components/Card/Card';
 import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
-import { mutations } from '~/screens/TemplateScreen/Api/mutations';
 import { queries } from '~/screens/TemplateScreen/Api/queries';
-import { PostType } from '~/screens/TemplateScreen/Api/types';
+import { type PostType } from '~/screens/TemplateScreen/Api/types';
 import { PostUpdate } from '~/screens/TemplateScreen/Components/PostUpdate';
 import { useAppTheme } from '~/theme/useAppTheme';
+import { Post } from './Post';
 import { PostCreate } from './PostCreate';
 
-type Modal =
-  | {
-      type: 'create';
-    }
-  | {
-      type: 'update';
-      postId: string;
-    }
-  | null;
+type Modal = null | { postId: string; type: 'update' } | { type: 'create' };
+
+const keyExtractor = (item: PostType) => item.id;
 
 export const Posts = () => {
-  const { spacing, colors } = useAppTheme();
+  const { colors, spacing } = useAppTheme();
   const [modal, setModal] = useState<Modal>(null);
   const queryClient = useQueryClient();
+  const insets = useSafeAreaInsets();
 
   const posts = useInfiniteQuery({
     ...queries.posts.all(),
-    initialPageParam: 1,
     getNextPageParam: (lastPage: PostType[], pages) =>
       lastPage.length > 0 ? pages.length + 1 : undefined,
-  });
-  const deletePost = useMutation({
-    mutationFn: (id: string) => mutations.posts.delete(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queries.posts.all().queryKey });
-    },
+    initialPageParam: 1,
   });
 
-  if (posts.isPending && !posts.data) return <Text title="Loading posts..." />;
+  const handleCreatePost = useCallback(() => {
+    setModal({ type: 'create' });
+  }, []);
+
+  const handleUpdatePost = useCallback((postId: string) => {
+    setModal({ postId, type: 'update' });
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setModal(null);
+  }, []);
+
+  const handleRefresh = useCallback(() => {
+    void queryClient.invalidateQueries({ queryKey: queries.posts.all().queryKey });
+  }, [queryClient]);
+
+  const handleFetchNextPage = useCallback(() => {
+    if (posts.isPending) return;
+    void posts.fetchNextPage();
+  }, []);
+
+  const handleUpdate = useCallback(
+    (postId: string) => () => {
+      handleUpdatePost(postId);
+    },
+    [handleUpdatePost]
+  );
+
+  const handleRenderItem = useCallback(
+    ({ item }: ListRenderItemInfo<PostType>) => {
+      return <Post onUpdate={handleUpdate(item.id)} post={item} />;
+    },
+    [handleUpdate]
+  );
+
+  const handleListEmptyComponent = useCallback(() => {
+    return (
+      <View alignItems="center" flex={1} justifyContent="center">
+        <Text title="No posts found" variant="muted" />
+      </View>
+    );
+  }, []);
+
+  if (posts.isPending) return <Text title="Loading posts..." />;
   if (posts.error) return <Text title="Error loading posts" />;
 
   return (
-    <View>
+    <React.Fragment>
       <View
+        alignItems="center"
+        backgroundColor={colors.card}
+        borderBottomColor={colors.border}
+        borderBottomWidth={1}
         flexDirection="row"
         justifyContent="space-between"
-        alignItems="center"
-        padding={spacing.$12}
-        borderBottomWidth={1}
-        borderBottomColor={colors.border}
-        backgroundColor={colors.card}>
+        padding={spacing.$12}>
         <Text title="Posts" variant="h1" />
-        <Button
-          title=""
-          icon="add"
-          onPress={() => setModal({ type: 'create' })}
-          variant="outline"
-        />
+        <Button icon="add" onPress={handleCreatePost} title="" variant="outline" />
       </View>
       <FlatList
-        onRefresh={() => posts.refetch()}
-        refreshing={posts.isRefetching}
-        data={posts.data?.pages.flat()}
-        onEndReached={() => {
-          if (!posts.isFetching) return;
-          posts.fetchNextPage();
+        contentContainerStyle={{
+          gap: spacing.$12,
+          padding: spacing.$12,
+          paddingBottom: insets.bottom,
         }}
+        data={posts.data.pages.flat()}
+        keyExtractor={keyExtractor}
+        ListEmptyComponent={handleListEmptyComponent}
+        onEndReached={handleFetchNextPage}
         onEndReachedThreshold={0.5}
-        contentContainerStyle={{ gap: spacing.$12, padding: spacing.$12 }}
-        renderItem={({ item }) => (
-          <Card key={item.id}>
-            <View gap={spacing.$8}>
-              <View flexDirection="row" gap={spacing.$8} alignItems="center">
-                <Text title={item.id} variant="lead" />
-                <View flex={1} flexShrink={1}>
-                  <Text title={item.title} variant="large" numberOfLines={1} />
-                </View>
-                <Button
-                  title=""
-                  icon="trash"
-                  onPress={() => {
-                    Alert.alert('Delete post', 'Are you sure you want to delete this post?', [
-                      { text: 'Cancel', style: 'cancel' },
-                      { text: 'Delete', onPress: () => deletePost.mutate(item.id) },
-                    ]);
-                  }}
-                  variant="outline"
-                />
-                <Button
-                  title=""
-                  icon="pencil"
-                  onPress={() => setModal({ type: 'update', postId: item.id })}
-                  variant="outline"
-                />
-              </View>
-              <Text title={item.body} variant="muted" />
-              <View alignSelf="flex-end">
-                <Button title="Show Comments" onPress={() => {}} variant="outline" fitContent />
-              </View>
-            </View>
-            {/* <Comments postId={post.id} /> */}
-          </Card>
-        )}
+        onRefresh={handleRefresh}
+        refreshing={posts.isRefetching}
+        renderItem={handleRenderItem}
       />
-      {modal?.type === 'create' && <PostCreate onClose={() => setModal(null)} />}
-      {modal?.type === 'update' && (
-        <PostUpdate onClose={() => setModal(null)} postId={modal.postId} />
-      )}
-    </View>
+      {modal?.type === 'create' && <PostCreate onClose={handleCloseModal} />}
+      {modal?.type === 'update' && <PostUpdate onClose={handleCloseModal} postId={modal.postId} />}
+    </React.Fragment>
   );
 };

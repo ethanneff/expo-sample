@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { Button } from '~/components/Button/Button';
 import { Input } from '~/components/Input/Input';
 import { Modal } from '~/components/Modal/Modal';
@@ -7,76 +7,102 @@ import { Text } from '~/components/Text/Text';
 import { View } from '~/components/View/View';
 import { mutations } from '~/screens/TemplateScreen/Api/mutations';
 import { queries } from '~/screens/TemplateScreen/Api/queries';
-import { PostType } from '~/screens/TemplateScreen/Api/types';
+import { type PostType } from '~/screens/TemplateScreen/Api/types';
 import { useAppTheme } from '~/theme/useAppTheme';
 
-type Props = {
-  onClose: () => void;
-  postId: string;
+type UpdatePostFormProperties = {
+  readonly onClose: () => void;
+  readonly post: PostType;
 };
 
-export const PostUpdate = ({ onClose, postId }: Props) => {
+const PostUpdateForm = ({ onClose, post }: UpdatePostFormProperties) => {
+  const titleReference = useRef<string>(post.title);
   const { spacing } = useAppTheme();
-  const post = useQuery(queries.posts.detail(postId));
-  const titleRef = useRef<string>(post.data?.title ?? '');
-  const bodyRef = useRef<string>(post.data?.body ?? '');
+  const bodyReference = useRef<string>(post.body);
   const queryClient = useQueryClient();
 
-  const updatePost = useMutation({
+  const { mutate } = useMutation({
     mutationFn: (data: PostType) => mutations.posts.update(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queries.posts.all().queryKey });
+      void queryClient.invalidateQueries({ queryKey: queries.posts.all().queryKey });
       onClose();
     },
   });
 
-  const handleUpdatePost = () => {
-    if (!post.data) return;
-    const payload = { ...post.data, title: titleRef.current, body: bodyRef.current };
-    updatePost.mutate(payload);
-  };
+  const handleUpdatePost = useCallback(() => {
+    const payload = { ...post, body: bodyReference.current, title: titleReference.current };
+    mutate(payload);
+  }, [mutate, post]);
 
-  if (post.isPending && !post.data) return <Text title="Loading post..." />;
-  if (post.error) return <Text title="Error loading post" />;
+  const handleChangeTitle = useCallback((text: string) => {
+    titleReference.current = text;
+  }, []);
+
+  const handleChangeBody = useCallback((text: string) => {
+    bodyReference.current = text;
+  }, []);
+
+  return (
+    <View gap={spacing.$8} minWidth="80%">
+      <Input
+        autoCapitalize="none"
+        autoComplete="off"
+        autoCorrect={false}
+        defaultValue={post.title}
+        editable
+        keyboardType="default"
+        onChangeText={handleChangeTitle}
+        onSubmitEditing={handleUpdatePost}
+        placeholder="Title"
+        returnKeyType="done"
+        submitBehavior="submit"
+        textContentType="none"
+        value={post.title}
+      />
+      <Input
+        autoCapitalize="none"
+        autoComplete="off"
+        autoCorrect={false}
+        defaultValue={post.body}
+        editable
+        keyboardType="default"
+        onChangeText={handleChangeBody}
+        onSubmitEditing={handleUpdatePost}
+        placeholder="Body"
+        returnKeyType="done"
+        submitBehavior="submit"
+        textContentType="none"
+        value={post.body}
+      />
+      <View flexDirection="row" gap={spacing.$8}>
+        <View flex={1}>
+          <Button onPress={onClose} title="Close" variant="outline" />
+        </View>
+        <View flex={1}>
+          <Button onPress={handleUpdatePost} title="Update" variant="primary" />
+        </View>
+      </View>
+    </View>
+  );
+};
+
+type Properties = {
+  readonly onClose: () => void;
+  readonly postId: string;
+};
+
+// eslint-disable-next-line react/no-multi-comp
+export const PostUpdate = ({ onClose, postId }: Properties) => {
+  const { spacing } = useAppTheme();
+  const post = useQuery(queries.posts.detail(postId));
 
   return (
     <Modal>
-      <View gap={spacing.$12}>
-        <Text title="Create Post" />
-        <Input
-          submitBehavior="submit"
-          onSubmitEditing={handleUpdatePost}
-          defaultValue={post.data?.title}
-          editable
-          placeholder="Title"
-          autoCapitalize="none"
-          autoComplete="off"
-          autoCorrect={false}
-          keyboardType="default"
-          returnKeyType="done"
-          textContentType="none"
-          value={post.data?.title}
-          onChangeText={(text) => (titleRef.current = text)}
-        />
-        <Input
-          defaultValue={post.data?.body}
-          editable
-          submitBehavior="submit"
-          onSubmitEditing={handleUpdatePost}
-          placeholder="Body"
-          autoCapitalize="none"
-          autoComplete="off"
-          autoCorrect={false}
-          keyboardType="default"
-          returnKeyType="done"
-          textContentType="none"
-          value={post.data?.body}
-          onChangeText={(text) => (bodyRef.current = text)}
-        />
-        <View flexDirection="row" gap={spacing.$4} justifyContent="center">
-          <Button title="Update" onPress={handleUpdatePost} variant="primary" />
-          <Button title="Close" onPress={onClose} variant="outline" />
-        </View>
+      <View gap={spacing.$8}>
+        <Text title="Update Post" variant="h3" />
+        {post.isPending ? <Text title="Loading post..." /> : null}
+        {post.error ? <Text title="Error loading post" /> : null}
+        {post.data ? <PostUpdateForm onClose={onClose} post={post.data} /> : null}
       </View>
     </Modal>
   );

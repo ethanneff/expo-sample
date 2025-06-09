@@ -1,38 +1,57 @@
-describe('Template', () => {
+import { describe, it } from '@jest/globals';
+
+describe('template', () => {
   describe('network', () => {
-    it('shows reconnection when lost connection', () => {});
-    it('allows user to reconnect', () => {});
-    it('shows unknown error modal', () => {});
-    it('allows user to refresh', () => {});
+    it.todo('shows reconnection when lost connection');
+
+    it.todo('allows user to reconnect');
+
+    it.todo('shows unknown error modal');
+
+    it.todo('allows user to refresh');
   });
 
   describe('initial load', () => {
-    it('shows loading', () => {});
-    it('shows no connection', () => {});
-    it('allows user to retry', () => {});
-    it('shows empty data', () => {});
-    it('shows data', () => {});
+    it.todo('shows loading');
+
+    it.todo('shows no connection');
+
+    it.todo('allows user to retry');
+
+    it.todo('shows empty data');
+
+    it.todo('shows data');
   });
 
   describe('add data', () => {
-    it('show loading', () => {});
-    it('show error when cannot create todo', () => {});
-    it('allows user to retry', () => {});
-    it('show new todo', () => {});
+    it.todo('show loading');
+
+    it.todo('show error when cannot create todo');
+
+    it.todo('allows user to retry');
+
+    it.todo('show new todo');
   });
 
   describe('update data', () => {
-    it('show loading', () => {});
-    it('show error when cannot update todo', () => {});
-    it('allows user to retry', () => {});
-    it('show updated todo', () => {});
+    it.todo('show loading');
+
+    it.todo('show error when cannot update todo');
+
+    it.todo('allows user to retry');
+
+    it.todo('show updated todo');
   });
 
   describe('delete data', () => {
-    it('shows confirmation dialog', () => {});
-    it('show loading', () => {});
-    it('show error when cannot delete todo', () => {});
-    it('allows user to retry', () => {});
-    it('show deleted todo', () => {});
+    it.todo('shows confirmation dialog');
+
+    it.todo('show loading');
+
+    it.todo('show error when cannot delete todo');
+
+    it.todo('allows user to retry');
+
+    it.todo('show deleted todo');
   });
 });
