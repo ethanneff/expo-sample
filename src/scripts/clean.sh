@@ -14,7 +14,8 @@ rm -rf .expo
 rm -rf .turbo
 rm -rf dist
 rm -rf build
-rm -rf node_modules
+rm -rf ios
+rm -rf android
 
 # Remove Metro bundler cache
 rm -rf /tmp/metro-bundler-cache-* /tmp/haste-map-react-native-packager-*
@@ -35,4 +36,4 @@ xcrun simctl shutdown all
 xcodebuild -resolvePackageDependencies
 
 # Run turbo clean
-npx turbo run clean --parallel
+# npx turbo run clean --parallel
