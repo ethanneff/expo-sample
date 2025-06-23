@@ -1,14 +1,4 @@
-import React, {
-  Children,
-  createContext,
-  isValidElement,
-  type ReactElement,
-  use,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { createContext, use, useCallback, useEffect, useMemo, useState } from 'react';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { Divider } from '~/components/Divider/Divider';
 import { Icon } from '~/components/Icon/Icon';
@@ -27,17 +17,17 @@ const AccordionContext = createContext<AccordionContextType | undefined>(undefin
 type AccordionItemProperties = {
   readonly children: React.ReactNode;
   readonly collapsible?: boolean;
-  readonly isLast?: boolean;
   readonly title: string;
   readonly value: string;
+  readonly withDivider: boolean;
 };
 
 export const AccordionItem = ({
   children,
   collapsible = true,
-  isLast = false,
   title,
   value,
+  withDivider = false,
 }: AccordionItemProperties) => {
   const { spacing } = useAppTheme();
   const context = use(AccordionContext);
@@ -90,7 +80,7 @@ export const AccordionItem = ({
           {children}
         </View>
       </Animated.View>
-      {!isLast && <Divider />}
+      {withDivider ? <Divider /> : null}
     </View>
   );
 };
@@ -105,21 +95,5 @@ export const Accordion = ({ children, defaultValue }: AccordionProperties) => {
   const [activeItem, setActiveItem] = useState<null | string>(defaultValue ?? null);
   const value = useMemo(() => ({ activeItem, setActiveItem }), [activeItem, setActiveItem]);
 
-  const childrenArray = Children.toArray(children);
-  const lastIndex = childrenArray.length - 1;
-
-  const enhancedChildren = Children.map(children, (child, index) => {
-    if (isValidElement(child) && child.type === AccordionItem) {
-      return React.cloneElement(child as ReactElement<AccordionItemProperties>, {
-        isLast: index === lastIndex,
-      });
-    }
-    return child;
-  });
-
-  return (
-    <AccordionContext value={value}>
-      <View>{enhancedChildren}</View>
-    </AccordionContext>
-  );
+  return <AccordionContext value={value}>{children}</AccordionContext>;
 };

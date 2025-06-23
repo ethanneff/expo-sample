@@ -6,7 +6,7 @@ export const CardAccordion = () => {
   return (
     <Card>
       <Accordion>
-        <AccordionItem title="Product Information" value="1">
+        <AccordionItem title="Product Information" value="1" withDivider>
           <Text
             title="Our flagship product combines cutting-edge technology with sleek
             design. Built with premium materials, it offers unparalleled
@@ -17,7 +17,7 @@ export const CardAccordion = () => {
             intuitive user interface designed for both beginners and experts."
           />
         </AccordionItem>
-        <AccordionItem title="Shipping Details" value="2">
+        <AccordionItem title="Shipping Details" value="2" withDivider>
           <Text
             title="We offer worldwide shipping through trusted courier partners.
             Standard delivery takes 3-5 business days, while express shipping
@@ -28,7 +28,7 @@ export const CardAccordion = () => {
             shipment in real-time through our dedicated tracking portal."
           />
         </AccordionItem>
-        <AccordionItem title="Return Policy" value="3">
+        <AccordionItem title="Return Policy" value="3" withDivider={false}>
           <Text
             title="We stand behind our products with a comprehensive 30-day return
             policy. If you're not completely satisfied, simply return the
