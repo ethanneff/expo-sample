@@ -1,4 +1,5 @@
 import memoize from 'lodash/memoize';
+import { useCallback } from 'react';
 import { create } from 'zustand';
 import { Button } from '~/components/Button/Button';
 import { Card } from '~/components/Card/Card';
@@ -8,7 +9,7 @@ import { View } from '~/components/View/View';
 import { isSameDay } from '~/screens/SettingsScreen/calendarUtilities';
 import { useAppTheme } from '~/theme/useAppTheme';
 
-const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+const dayAbbreviations = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
 type CalendarStore = {
   actions: {
@@ -28,7 +29,7 @@ const normalizeToMidnight = (timestamp: number): number => {
   return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
 };
 
-export const useCalendarStore = create<CalendarStore>((set) => ({
+const useCalendarStore = create<CalendarStore>((set) => ({
   actions: {
     handleDayPress: (timestamp) => {
       set((state) => {
@@ -89,13 +90,13 @@ const getMonthData = memoize(
     const previousYear = month === 0 ? year - 1 : year;
     const daysInPreviousMonth = getDaysInMonth(previousYear, previousMonth);
 
-    for (let index = 0; index < dayOfWeek; index++) {
+    for (let index = 0; index < dayOfWeek; index += 1) {
       const day = daysInPreviousMonth - dayOfWeek + index + 1;
       days.push(new Date(previousYear, previousMonth, day).getTime());
     }
 
     // Add days from current month
-    for (let index = 1; index <= daysInMonth; index++) {
+    for (let index = 1; index <= daysInMonth; index += 1) {
       days.push(new Date(year, month, index).getTime());
     }
 
@@ -105,7 +106,7 @@ const getMonthData = memoize(
     const totalDays = days.length;
     const remainingDays = Math.ceil(totalDays / 7) * 7 - totalDays;
 
-    for (let index = 1; index <= remainingDays; index++) {
+    for (let index = 1; index <= remainingDays; index += 1) {
       days.push(new Date(nextYear, nextMonth, index).getTime());
     }
 
@@ -122,6 +123,10 @@ const CalendarHeader = () => {
   const { spacing } = useAppTheme();
   const { actions, currentMonth } = useCalendarStore();
 
+  const handleCurrentMonth = useCallback(() => {
+    actions.setCurrentMonth(Date.now());
+  }, [actions]);
+
   return (
     <View
       alignItems="center"
@@ -129,10 +134,7 @@ const CalendarHeader = () => {
       justifyContent="space-between"
       marginBottom={spacing.$4}>
       <Button icon="chevron-back" onPress={actions.handlePrevMonth} title="" variant="outline" />
-      <Pressable
-        onPress={() => {
-          actions.setCurrentMonth(Date.now());
-        }}>
+      <Pressable onPress={handleCurrentMonth}>
         <Text
           title={new Date(currentMonth).toLocaleString('default', {
             month: 'long',
@@ -150,9 +152,13 @@ const CalendarWeekHeader = () => {
   const { spacing } = useAppTheme();
   return (
     <View flexDirection="row" justifyContent="space-between" paddingVertical={spacing.$8}>
-      {days.map((day) => (
-        <View alignItems="center" justifyContent="center" key={day} width={`${100 / 7}%`}>
-          <Text title={day} variant="muted" />
+      {dayAbbreviations.map((dayAbbreviation) => (
+        <View
+          alignItems="center"
+          justifyContent="center"
+          key={dayAbbreviation}
+          width={`${100 / 7}%`}>
+          <Text title={dayAbbreviation} variant="muted" />
         </View>
       ))}
     </View>
@@ -175,11 +181,43 @@ const CalendarDay = ({ timestamp }: CalendarDayProperties) => {
   const isInRange =
     startDate && endDate && isDateInRange(date, new Date(startDate), new Date(endDate));
 
+  const getBackgroundColor = () => {
+    if (isStartDate || isEndDate) {
+      return colors.primary;
+    }
+    if (isInRange) {
+      return colors.secondary;
+    }
+    return 'transparent';
+  };
+
+  const getBorderColor = () => {
+    if (isToday && !isStartDate && !isEndDate) {
+      return colors.primary;
+    }
+    return 'transparent';
+  };
+
+  const getTextColor = () => {
+    if (isStartDate || isEndDate) {
+      return 'background';
+    }
+    if (isCurrentMonth) {
+      if (isInRange) {
+        return 'primary';
+      }
+      return 'foreground';
+    }
+    return 'mutedForeground';
+  };
+
+  const handleDayPress = useCallback(() => {
+    actions.handleDayPress(timestamp);
+  }, [actions, timestamp]);
+
   return (
     <Pressable
-      onPress={() => {
-        actions.handleDayPress(timestamp);
-      }}
+      onPress={handleDayPress}
       style={{
         width: `${100 / 7}%`,
       }}>
@@ -187,57 +225,38 @@ const CalendarDay = ({ timestamp }: CalendarDayProperties) => {
         style={{
           alignItems: 'center',
           aspectRatio: 1.25,
-          backgroundColor:
-            isStartDate || isEndDate
-              ? colors.primary
-              : isInRange
-                ? colors.secondary
-                : 'transparent',
-          borderColor: isToday && !isStartDate && !isEndDate ? colors.primary : 'transparent',
+          backgroundColor: getBackgroundColor(),
+          borderColor: getBorderColor(),
           borderRadius: spacing.$8,
           borderWidth: 1.2,
           justifyContent: 'center',
         }}>
-        <Text
-          color={
-            isStartDate || isEndDate
-              ? 'background'
-              : isCurrentMonth
-                ? isInRange
-                  ? 'primary'
-                  : 'foreground'
-                : 'mutedForeground'
-          }
-          title={date.getUTCDate().toString()}
-          variant="small"
-        />
+        <Text color={getTextColor()} title={date.getUTCDate().toString()} variant="small" />
       </View>
     </Pressable>
   );
 };
 
+// eslint-disable-next-line react/no-multi-comp
 const CalendarDays = () => {
   const { currentMonth } = useCalendarStore();
   const monthDays = getMonthData(currentMonth);
   return (
     <View flexDirection="row" flexWrap="wrap">
-      {monthDays.map((timestamp, index) => (
-        <CalendarDay key={index} timestamp={timestamp} />
+      {monthDays.map((timestamp) => (
+        <CalendarDay key={timestamp} timestamp={timestamp} />
       ))}
     </View>
   );
 };
 
+// eslint-disable-next-line react/no-multi-comp
 export const CardCalendar = () => {
-  const { spacing } = useAppTheme();
-
   return (
     <Card>
-      <View padding={spacing.$4}>
-        <CalendarHeader />
-        <CalendarWeekHeader />
-        <CalendarDays />
-      </View>
+      <CalendarHeader />
+      <CalendarWeekHeader />
+      <CalendarDays />
     </Card>
   );
 };
