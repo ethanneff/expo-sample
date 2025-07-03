@@ -100,6 +100,7 @@ export const RootStack = createNativeStackNavigator({
     },
     User: {
       if: useAuth,
+      initialRouteName: 'Tabs',
       screenOptions: { headerShown: false },
       screens: {
         Splash: SplashScreen,
