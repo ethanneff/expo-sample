@@ -9,7 +9,7 @@ import {
   letterSpacing,
   textSize,
   type Variant,
-} from './utils';
+} from './utilities';
 
 type Properties = {
   readonly accessible?: boolean;
@@ -96,13 +96,6 @@ const useTypography = (variant: Variant): TextStyle => {
         ...letterSpacing.normal,
       };
     }
-    case 'list': {
-      return {
-        ...textSize.md,
-        ...geistFontFamily.regular,
-        ...letterSpacing.normal,
-      };
-    }
     case 'muted': {
       return {
         color: colors.mutedForeground,
@@ -157,7 +150,6 @@ export const Text = ({
 }: Properties) => {
   const { colors } = useAppTheme();
   const typography = useTypography(variant);
-  const colorOverride = color ? { color: colors[color] } : {};
 
   return (
     <RNText
@@ -168,7 +160,7 @@ export const Text = ({
       selectable={selectable}
       style={{
         ...typography,
-        ...colorOverride,
+        color: colors[color],
         fontFamily,
         textAlign,
         textDecorationColor,
