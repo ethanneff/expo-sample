@@ -17,7 +17,6 @@ export type Variant =
   | 'h4'
   | 'large'
   | 'lead'
-  | 'list'
   | 'muted'
   | 'p'
   | 'small'
