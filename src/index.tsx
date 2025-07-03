@@ -12,9 +12,9 @@ import { View } from '~/components/View/View';
 import { useAppTheme } from '~/theme/useAppTheme';
 import { Navigation } from './navigation/Navigation';
 
-SplashScreen.preventAutoHideAsync();
+void SplashScreen.preventAutoHideAsync();
 SplashScreen.setOptions({ duration: 1000, fade: true });
-if (__DEV__) require('./utils/reactotron');
+// if (__DEV__) require('./utils/reactotron');
 
 const fonts = {
   ...Ionicons.font,
@@ -51,7 +51,7 @@ export const App = () => {
   }, []);
 
   useEffect(() => {
-    initializeApp();
+    void initializeApp();
   }, [initializeApp]);
 
   if (!appIsReady) return null;
