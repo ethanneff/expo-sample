@@ -11,18 +11,19 @@ const alertUser = (error: Error, onPress: () => void) => {
 
 const queryClient = new QueryClient({
   mutationCache: new MutationCache({
+    // eslint-disable-next-line max-params
     onError: (error, _variables, _context, mutation) => {
-      alertUser(error, () => {
-        if (mutation.options?.mutationFn && mutation.state.variables !== undefined) {
-          mutation.options.mutationFn(mutation.state.variables);
+      alertUser(error, async () => {
+        if (mutation.options.mutationFn && mutation.state.variables !== undefined) {
+          await mutation.options.mutationFn(mutation.state.variables);
         }
       });
     },
   }),
   queryCache: new QueryCache({
     onError: (error) => {
-      alertUser(error, () => {
-        queryClient.refetchQueries({ stale: true });
+      alertUser(error, async () => {
+        await queryClient.refetchQueries({ stale: true });
       });
     },
   }),

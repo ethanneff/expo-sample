@@ -23,25 +23,28 @@ export const Comments = ({ postId }: Properties) => {
     initialPageParam: 1,
   });
 
-  const handleRenderItem = useCallback(({ item }: ListRenderItemInfo<CommentType>) => {
-    return (
-      <View
-        key={item.id}
-        style={{
-          backgroundColor: colors.background,
-          borderColor: colors.border,
-          borderRadius: spacing.$12,
-          borderWidth: 1,
-          padding: spacing.$12,
-          width: screenWidth * 0.6,
-        }}>
-        <View style={{ marginBottom: spacing.$8 }}>
-          <Text title={item.name} />
+  const handleRenderItem = useCallback(
+    ({ item }: ListRenderItemInfo<CommentType>) => {
+      return (
+        <View
+          key={item.id}
+          style={{
+            backgroundColor: colors.background,
+            borderColor: colors.border,
+            borderRadius: spacing.$12,
+            borderWidth: 1,
+            padding: spacing.$12,
+            width: screenWidth * 0.6,
+          }}>
+          <View style={{ marginBottom: spacing.$8 }}>
+            <Text title={item.name} />
+          </View>
+          <Text title={item.body} variant="muted" />
         </View>
-        <Text title={item.body} variant="muted" />
-      </View>
-    );
-  }, []);
+      );
+    },
+    [colors, spacing, screenWidth]
+  );
 
   const handleEndReached = useCallback(() => {
     if (isPending) return;

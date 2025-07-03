@@ -22,7 +22,7 @@ export const Posts = () => {
   const queryClient = useQueryClient();
   const insets = useSafeAreaInsets();
 
-  const posts = useInfiniteQuery({
+  const { data, error, fetchNextPage, isLoading, isRefetching } = useInfiniteQuery({
     ...queries.posts.all(),
     getNextPageParam: (lastPage: PostType[], pages) =>
       lastPage.length > 0 ? pages.length + 1 : undefined,
@@ -46,9 +46,9 @@ export const Posts = () => {
   }, [queryClient]);
 
   const handleFetchNextPage = useCallback(() => {
-    if (posts.isPending) return;
-    void posts.fetchNextPage();
-  }, []);
+    if (isLoading) return;
+    void fetchNextPage();
+  }, [isLoading, fetchNextPage]);
 
   const handleUpdate = useCallback(
     (postId: string) => () => {
@@ -72,8 +72,8 @@ export const Posts = () => {
     );
   }, []);
 
-  if (posts.isPending) return <Text title="Loading posts..." />;
-  if (posts.error) return <Text title="Error loading posts" />;
+  if (isLoading) return <Text title="Loading posts..." />;
+  if (error) return <Text title="Error loading posts" />;
 
   return (
     <React.Fragment>
@@ -94,13 +94,13 @@ export const Posts = () => {
           padding: spacing.$12,
           paddingBottom: insets.bottom,
         }}
-        data={posts.data.pages.flat()}
+        data={data?.pages.flat()}
         keyExtractor={keyExtractor}
         ListEmptyComponent={handleListEmptyComponent}
         onEndReached={handleFetchNextPage}
         onEndReachedThreshold={0.5}
         onRefresh={handleRefresh}
-        refreshing={posts.isRefetching}
+        refreshing={isRefetching}
         renderItem={handleRenderItem}
       />
       {modal?.type === 'create' && <PostCreate onClose={handleCloseModal} />}
