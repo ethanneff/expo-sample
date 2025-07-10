@@ -129,6 +129,7 @@ export default typescript.config({
               'View',
               'Text',
               'Button',
+              'ScrollView',
               'ActivityIndicator',
               'Pressable',
               'TouchableOpacity',
