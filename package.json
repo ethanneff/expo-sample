@@ -80,7 +80,7 @@
     "madge": "8.0.0",
     "only-allow": "1.2.1",
     "prettier": "3.6.2",
-    "react-test-renderer": "19.1.0",
+    "react-test-renderer": "19.0.0",
     "reactotron-react-native": "5.1.14",
     "shellcheck": "3.1.0",
     "sherif": "1.6.1",
