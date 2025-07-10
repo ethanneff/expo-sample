@@ -30,7 +30,7 @@ const ProfileScreen = () => {
           <View backgroundColor={colors.border} height={spacing.$1} />
           <Section
             current={0}
-            icon="baseball"
+            icon="rocket"
             title="Get 5 in a row correct in 5 lessons"
             total={5}
           />
