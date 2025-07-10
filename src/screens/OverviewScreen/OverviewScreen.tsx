@@ -1,5 +1,5 @@
-import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { Screen } from '~/components/Screen/Screen';
+import { ScrollView } from '~/components/ScrollView/ScrollView';
 import { CardAccordion } from '~/screens/OverviewScreen/CardAccordion';
 import { CardButtons } from '~/screens/OverviewScreen/CardButtons';
 import { CardCalendar } from '~/screens/OverviewScreen/CardCalendar';
@@ -18,7 +18,7 @@ const OverviewScreen = () => {
 
   return (
     <Screen>
-      <KeyboardAwareScrollView
+      <ScrollView
         contentContainerStyle={{
           gap: spacing.$12,
           padding: spacing.$12,
@@ -34,7 +34,7 @@ const OverviewScreen = () => {
         <CardCreateAccount />
         <CardPayment />
         <CardSettings />
-      </KeyboardAwareScrollView>
+      </ScrollView>
     </Screen>
   );
 };
